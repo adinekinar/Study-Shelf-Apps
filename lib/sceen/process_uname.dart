@@ -2,6 +2,7 @@ import 'dart:io';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_storage/firebase_storage.dart';
+import 'package:flutter/material.dart';
 
 class FirebaseApi {
   static UploadTask? submitPost(String dest, File file) {
@@ -46,22 +47,45 @@ class DatabaseReq {
     });
     return;
   }
-  Future getdbReq() async{
-    List itemlist =[];
-    try{
-      var fillr;
-      await fillr.getDocuments().then((querySnapshot) {
-        querySnapshot.documents.forEach((element){
-          itemlist.add(element.data);
-        });
-      });
-      return itemlist;
-    } catch (e) {
-      print(e.toString());
-      return null;
-    }
+}
+
+class Streamkeyreq extends StatefulWidget {
+  const Streamkeyreq({Key? key}) : super(key: key);
+
+  @override
+  _StreamkeyreqState createState() => _StreamkeyreqState();
+}
+
+class _StreamkeyreqState extends State<Streamkeyreq> {
+  _StreamkeyreqState();
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      backgroundColor: Colors.transparent,
+      body: StreamBuilder(
+        stream: FirebaseFirestore.instance.collection('FormRequest').snapshots(),
+        builder: (BuildContext context, AsyncSnapshot<QuerySnapshot> snapshot) {
+          if(!snapshot.hasData){
+            return Center(
+              child: CircularProgressIndicator(),
+            );
+          }
+          return ListView(
+            children: snapshot.data!.docs.map((document) {
+              return Center(
+                child: Container(
+                  width: 372, height: 117,
+                  child: Text(document['Title']),
+                ),
+              );
+            }).toList(),
+          );
+        },
+      ),
+    );
   }
 }
+
 
 
 

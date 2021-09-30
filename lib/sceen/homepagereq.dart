@@ -14,24 +14,6 @@ class Homreq extends StatefulWidget {
 }
 
 class _HomreqState extends State<Homreq> {
-  List requestList = [];
-  @override
-  void initState() {
-    super.initState();
-    fetchDatabaselist();
-  }
-
-  fetchDatabaselist () async {
-    dynamic result = await DatabaseReq().getdbReq();
-    if(result == null) {
-      print('Unable to retrieve');
-    } else {
-      setState(() {
-        requestList = result;
-      });
-    }
-  }
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -118,30 +100,16 @@ class _HomreqState extends State<Homreq> {
             ),
             Container(
               margin: EdgeInsets.all(10),
-              width: 372, height: 117,
-              decoration: BoxDecoration(color: const Color(0xFFCAB8E0).withOpacity(0.2), borderRadius: BorderRadius.circular(30)),
-              child: Row(
-                children: [
-                  Container(width: 75, height: 75, margin: EdgeInsets.all(10), decoration: BoxDecoration(color: const Color(0xFFCAB8E0), borderRadius: BorderRadius.circular(25)),child: Icon(Icons.paste_rounded, size: 26, color: const Color(0xFF585858),)),
-                  Container(
-                    margin: EdgeInsets.all(10),
-                    child: Column(
-                      children: [
-                        Container(child: Text('title', style: TextStyle(fontSize: 13, color: Colors.black),textAlign: TextAlign.left,)),
-                        Container(child: Text('Caption', style: TextStyle(fontSize: 12, color: const Color(0xFF585858)),)),
-                        Container(
-                          child: ElevatedButton(
-                            child: Text('subject', style: TextStyle(fontSize: 13, color: const Color(0xFF585858)),),
-                            style: ElevatedButton.styleFrom(primary: Color(0xFFCAB8E0).withOpacity(0.33), shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(20.0)), minimumSize: (Size(30, 25))),
-                            onPressed: () {},
-                          ),),
-                        Container(child: Text('#tag', style: TextStyle(fontSize: 13, color: const Color(0xFF585858)),),),
-                      ],
-                    ),
-                  ),
-                ],
+              padding: EdgeInsets.only(left: 20),
+              width: double.infinity, height: 50,
+              decoration: BoxDecoration(
+                  color: Colors.white30,
+                  borderRadius: BorderRadius.circular(20)),
+              child: TextField(
+                decoration: InputDecoration(hintText: 'Search keyword..', icon: Icon(Icons.search_rounded, size: 24), border: InputBorder.none),
               ),
             ),
+            Expanded(child: Container(child: Streamkeyreq())),
           ],
         ),
     );
