@@ -113,26 +113,53 @@ class _HomreqState extends State<Homreq> {
                     ],
                   ),
                 ),
+                ListView.builder(
+                  itemBuilder: (_,int index) => listRequested(this.requestList[index]['title'], this.requestList[index]['caption'], this.requestList[index]['subject'], this.requestList[index]['tag']),
+                  itemCount: this.requestList.length,
+                ),
               ],
             )
             ),
-            Expanded(
-                  child: ListView.builder(
-                      itemCount: requestList.length,
-                      itemBuilder: (context, index) {
-                        return Card(
-                          child: ListTile(
-                            title: Text(requestList[index]['title']),
-                            subtitle: Text(requestList[index]['caption']),
-                            leading: Container(decoration: BoxDecoration(color: const Color(0xFFCAB8E0), borderRadius: BorderRadius.circular(25)),child: Icon(Icons.paste_rounded, size: 26, color: const Color(0xFF585858),)),
-                            trailing: Text(requestList[index]['tag']),
-                          ),
-                        );
-                      }
-                    ),
-                ),
           ],
         ),
+    );
+  }
+}
+
+class listRequested extends StatelessWidget {
+
+  String? title, caption, subject, tag;
+  listRequested(this.title, this.caption, this.subject, this.tag);
+
+  @override
+  Widget build(BuildContext context) {
+    return new Card(
+      child: new Container(
+        margin: EdgeInsets.all(10),
+        width: 372, height: 117,
+        decoration: BoxDecoration(color: const Color(0xFFCAB8E0).withOpacity(0.2), borderRadius: BorderRadius.circular(30)),
+        child: Row(
+          children: [
+            Container(width: 75, height: 75, margin: EdgeInsets.all(10), decoration: BoxDecoration(color: const Color(0xFFCAB8E0), borderRadius: BorderRadius.circular(25)),child: Icon(Icons.paste_rounded, size: 26, color: const Color(0xFF585858),)),
+            Container(
+              margin: EdgeInsets.all(10),
+              child: Column(
+                children: [
+                  Container(child: Text(title!, style: TextStyle(fontSize: 13, color: Colors.black),textAlign: TextAlign.left,)),
+                  Container(child: Text(caption!, style: TextStyle(fontSize: 12, color: const Color(0xFF585858)),)),
+                  Container(
+                    child: ElevatedButton(
+                      child: Text(subject!, style: TextStyle(fontSize: 13, color: const Color(0xFF585858)),),
+                      style: ElevatedButton.styleFrom(primary: Color(0xFFCAB8E0).withOpacity(0.33), shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(20.0)), minimumSize: (Size(30, 25))),
+                      onPressed: () {},
+                    ),),
+                  Container(child: Text(tag!, style: TextStyle(fontSize: 13, color: const Color(0xFF585858)),),),
+                ],
+              ),
+            ),
+          ],
+        ),
+      ),
     );
   }
 }
