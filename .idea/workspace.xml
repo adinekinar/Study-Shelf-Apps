@@ -6,22 +6,7 @@
   <component name="ChangeListManager">
     <list default="true" id="c61d31d8-cd3d-4906-ad7f-1f88d41611a9" name="Default Changelist" comment="">
       <change beforePath="$PROJECT_DIR$/.flutter-plugins-dependencies" beforeDir="false" afterPath="$PROJECT_DIR$/.flutter-plugins-dependencies" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.gitattributes" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/.gitignore" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/libraries/Dart_SDK.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/libraries/Dart_SDK.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/libraries/Flutter_Plugins.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/libraries/Flutter_Plugins.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/libraries/KotlinJavaRuntime.xml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/misc.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/misc.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/modules.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/modules.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/runConfigurations/main_dart.xml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/vcs.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/vcs.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/lib/sceen/formpost.dart" beforeDir="false" afterPath="$PROJECT_DIR$/lib/sceen/formpost.dart" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/lib/sceen/formreq.dart" beforeDir="false" afterPath="$PROJECT_DIR$/lib/sceen/formreq.dart" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/lib/sceen/homepage.dart" beforeDir="false" afterPath="$PROJECT_DIR$/lib/sceen/homepage.dart" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/lib/sceen/homepagereq.dart" beforeDir="false" afterPath="$PROJECT_DIR$/lib/sceen/homepagereq.dart" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/lib/sceen/loginpage.dart" beforeDir="false" afterPath="$PROJECT_DIR$/lib/sceen/loginpage.dart" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/lib/sceen/registerpage.dart" beforeDir="false" afterPath="$PROJECT_DIR$/lib/sceen/registerpage.dart" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/study_shelf.iml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
