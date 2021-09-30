@@ -37,64 +37,79 @@ class _HomeState extends State<Home> {
           onPressed: () => Navigator.push(context, MaterialPageRoute(builder: (context) => SSlogin())),
         ),
       ),
-      body: Container(
-        //alignment: Alignment(30,81),
-        width: 445, height: 53,
-        decoration: BoxDecoration(
-          color: const Color(0xFFA386C8),
-          borderRadius: BorderRadius.only(
-            bottomLeft: Radius.circular(10),
-            bottomRight: Radius.circular(10),
-          ),
-        ),
-        child:Row(
-          children: [
-            Container(
-                margin: EdgeInsets.only(left: 14,top: 13),
-                child: Column(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: [
-                    Center(
-                      child: Text("Posting", style: TextStyle(fontWeight: FontWeight.bold,fontSize: 20, color: Colors.white),),
-                    ),
-                    Container(
-                      width: 185, height: 5,
-                      decoration: BoxDecoration(
-                        color: const Color(0xFFEFD1A9),
-                        borderRadius: BorderRadius.circular(18),
-                      ),
-                    ),
-                  ],
-                ),
-              ),
-            Container(
-              margin: EdgeInsets.only(left: 14),
-              width: 1,
-              height: 35,
-              decoration: BoxDecoration(
-                color: const Color(0xFFE5E5E5),
+      body: Column(
+        children: [
+          Container(
+            //alignment: Alignment(30,81),
+            width: 445, height: 53,
+            decoration: BoxDecoration(
+              color: const Color(0xFFA386C8),
+              borderRadius: BorderRadius.only(
+                bottomLeft: Radius.circular(10),
+                bottomRight: Radius.circular(10),
               ),
             ),
-            MaterialButton(
-              onPressed: () async {
-                Navigator.push(context,
-                MaterialPageRoute(builder: (context) => Homreq()));
-              },
-              child: Container(
-                width: 170, height: 55,
-                margin: EdgeInsets.only(left: 14,top: 13),
-                child: Column(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: [
-                Center(
-                child: Text("Request", style: TextStyle(fontWeight: FontWeight.bold,fontSize: 20, color: Colors.white),),
+            child:Row(
+              children: [
+                Container(
+                    margin: EdgeInsets.only(left: 14,top: 13),
+                    child: Column(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        Center(
+                          child: Text("Posting", style: TextStyle(fontWeight: FontWeight.bold,fontSize: 20, color: Colors.white),),
+                        ),
+                        Container(
+                          width: 185, height: 5,
+                          decoration: BoxDecoration(
+                            color: const Color(0xFFEFD1A9),
+                            borderRadius: BorderRadius.circular(18),
+                          ),
+                        ),
+                      ],
+                    ),
+                  ),
+                Container(
+                  margin: EdgeInsets.only(left: 14),
+                  width: 1,
+                  height: 35,
+                  decoration: BoxDecoration(
+                    color: const Color(0xFFE5E5E5),
+                  ),
+                ),
+                MaterialButton(
+                  onPressed: () async {
+                    Navigator.push(context,
+                    MaterialPageRoute(builder: (context) => Homreq()));
+                  },
+                  child: Container(
+                    width: 170, height: 55,
+                    margin: EdgeInsets.only(left: 14,top: 13),
+                    child: Column(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                    Center(
+                    child: Text("Request", style: TextStyle(fontWeight: FontWeight.bold,fontSize: 20, color: Colors.white),),
+                  ),
+                      ],
+                  ),
               ),
-                  ],
               ),
+            ],
+            ),
           ),
+          Container(
+            margin: EdgeInsets.all(10),
+            padding: EdgeInsets.only(left: 20),
+            width: double.infinity, height: 50,
+            decoration: BoxDecoration(
+                color: Colors.white30,
+                borderRadius: BorderRadius.circular(20)),
+            child: TextField(
+              decoration: InputDecoration(hintText: 'Search keyword..', icon: Icon(Icons.search_rounded, size: 24), border: InputBorder.none),
+            ),
           ),
         ],
-        ),
       ),
     );
   }

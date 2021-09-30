@@ -49,8 +49,8 @@ class _SSloginState extends State<SSlogin> {
                   ),
                   Container(child: Text("Email :", style: TextStyle(fontSize: 18)), margin: EdgeInsets.only(right: 200, top: 5, bottom: 10),),
                   Container(
-                    width: 254,
-                    height: 52,
+                    padding: EdgeInsets.only(left: 20),
+                    width: 254, height: 52,
                     decoration: BoxDecoration(
                         color: Colors.white30,
                         borderRadius: BorderRadius.circular(20)),
@@ -61,8 +61,8 @@ class _SSloginState extends State<SSlogin> {
                   ),
                   Container(child: Text("Password :", style: TextStyle(fontSize: 18),textAlign: TextAlign.left,),margin: EdgeInsets.only(top: 10, right: 165, bottom: 10),),
                   Container(
-                    width: 254,
-                    height: 52,
+                    padding: EdgeInsets.only(left: 20),
+                    width: 254, height: 52,
                     decoration: BoxDecoration(
                         color: Colors.white30,
                         borderRadius: BorderRadius.circular(20)),

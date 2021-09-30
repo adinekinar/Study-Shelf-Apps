@@ -123,6 +123,7 @@ class Inpform extends StatelessWidget {
           ),
           Container(
             width: 335, height: h,
+            padding: EdgeInsets.only(left: 20),
             decoration: BoxDecoration(color: Colors.white30, border: Border.all(color: const Color(0xFFAEAEAE)), borderRadius: BorderRadius.circular(20)),
             child: TextField(
               controller: cont,
