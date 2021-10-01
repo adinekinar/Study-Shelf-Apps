@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
 import 'package:study_shelf/sceen/homepagereq.dart';
 import 'package:study_shelf/sceen/loginpage.dart';
+import 'package:study_shelf/sceen/process_uname.dart';
 import 'package:study_shelf/sceen/selectpage.dart';
 
 class Home extends StatefulWidget {
@@ -109,6 +110,7 @@ class _HomeState extends State<Home> {
               decoration: InputDecoration(hintText: 'Search keyword..', icon: Icon(Icons.search_rounded, size: 24), border: InputBorder.none),
             ),
           ),
+          Expanded(child: Container(child: Streamkeypost())),
         ],
       ),
     );

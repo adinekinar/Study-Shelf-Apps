@@ -80,8 +80,8 @@ class _FormpState extends State<Formp> {
                 ),
               ),
               Inpform(ttl: 'Title file :', r: 280, h: 33, cont: title,),
-              Inpform(ttl: 'Caption file :', r: 260, h: 58, cont: captf,),
-              Inpform(ttl: 'Subject option :', r: 240, h: 33, cont: subop,),
+              Inpform(ttl: 'Subject option :', r: 240, h: 33, cont: captf,),
+              Inpform(ttl: 'Caption file :', r: 260, h: 58, cont: subop,),
               Inpform(ttl: 'Sub-subject tag :', r: 235, h: 120, cont: ssubtag,),
               Container(
                 margin: EdgeInsets.only(top: 20),

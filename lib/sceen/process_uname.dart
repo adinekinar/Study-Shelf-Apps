@@ -74,10 +74,86 @@ class _StreamkeyreqState extends State<Streamkeyreq> {
             children: snapshot.data!.docs.map((document) {
               return Center(
                 child: Container(
-                  width: 372, height: 117,
-                  child: Text(document['Title']),
+                  width: 372, height: 132,
+                  margin: EdgeInsets.all(10),
+                  decoration: BoxDecoration(color: const Color(0xFFCAB8E0).withOpacity(0.2), borderRadius: BorderRadius.circular(30)),
+                  child: Row(
+                    children: [
+                      Container(width: 75, height: 75, margin: EdgeInsets.all(10), decoration: BoxDecoration(color: const Color(0xFFCAB8E0), borderRadius: BorderRadius.circular(25)),child: Icon(Icons.paste_rounded, size: 35, color: const Color(0xFF585858),)),
+                      Container(
+                        child: Column(
+                          children: [
+                            Container(margin: EdgeInsets.only(top: 15), child: Text(document['Title'])),
+                            Container(child: Text(document['Caption request']),),
+                            Container(
+                              child: ElevatedButton(
+                                child: Text(document['Subject'], style: TextStyle(fontSize: 13, color: const Color(0xFF585858)),),
+                                style: ElevatedButton.styleFrom(primary: Color(0xFFCAB8E0).withOpacity(0.33), shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(20.0)), minimumSize: (Size(30, 25))),
+                                onPressed: () {},
+                              ),),
+                            Container(child: Text(document['Sub-subject Tag']),),
+                          ],
+                        ),
+                      ),
+                    ],
+                  ),
                 ),
               );
+            }).toList(),
+          );
+        },
+      ),
+    );
+  }
+}
+
+class Streamkeypost extends StatefulWidget {
+  const Streamkeypost({Key? key}) : super(key: key);
+
+  @override
+  _StreamkeypostState createState() => _StreamkeypostState();
+}
+
+class _StreamkeypostState extends State<Streamkeypost> {
+  _StreamkeypostState();
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      backgroundColor: Colors.transparent,
+      body: StreamBuilder(
+        stream: FirebaseFirestore.instance.collection('FormPost').snapshots(),
+        builder: (BuildContext context, AsyncSnapshot<QuerySnapshot> snapshot) {
+          if(!snapshot.hasData){
+            return Center(
+              child: CircularProgressIndicator(),
+            );
+          }
+          return GridView.count(
+              childAspectRatio: MediaQuery.of(context).size.width / (MediaQuery.of(context).size.height),
+              crossAxisCount: 2,
+              children: snapshot.data!.docs.map((document) {
+                return Center(
+                  child: Container(
+                    width: 179, height: 280,
+                    decoration: BoxDecoration(color: const Color(0xFFCAB8E0).withOpacity(0.2), borderRadius: BorderRadius.circular(20)),
+                    child: Column(
+                      children: [
+                        Container(
+                          width: 179, height: 161, decoration: BoxDecoration(color: Colors.white30, borderRadius: BorderRadius.only(topLeft: Radius.circular(20), topRight: Radius.circular(20), bottomRight: Radius.circular(20))),
+                        ),
+                        Container(
+                          child: ElevatedButton(
+                            child: Text(document['Caption file'], style: TextStyle(fontSize: 13, color: const Color(0xFF585858)),),
+                            style: ElevatedButton.styleFrom(primary: Color(0xFFCAB8E0).withOpacity(0.33), shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(20.0)), minimumSize: (Size(30, 25))),
+                            onPressed: () {},
+                          ),),
+                        Container(child: Text(document['Sub-subject Tag']),),
+                        Container(child: Text(document['Title'], style: TextStyle(fontSize: 16),),),
+                        Container(child: Text('username'),),
+                      ],
+                    ),
+                  ),
+               );
             }).toList(),
           );
         },
