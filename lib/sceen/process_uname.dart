@@ -1,9 +1,11 @@
 import 'dart:io';
+import 'package:get/get.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
 
+//api submit file
 class FirebaseApi {
   static UploadTask? submitPost(String dest, File file) {
     try{
@@ -15,6 +17,7 @@ class FirebaseApi {
   }
 }
 
+//for get uid for username from auth
 Future<void> unameStore(String username) async {
   CollectionReference users = FirebaseFirestore.instance.collection('Users');
   FirebaseAuth auth = FirebaseAuth.instance;
@@ -23,6 +26,7 @@ Future<void> unameStore(String username) async {
   return;
 }
 
+//for store data post
 Future<void> fillPost (String title, String caption, String subject, String tag) async {
   CollectionReference fillp = FirebaseFirestore.instance.collection('FormPost');
   fillp.add({
@@ -49,6 +53,7 @@ class DatabaseReq {
   }
 }
 
+//display data request
 class Streamkeyreq extends StatefulWidget {
   const Streamkeyreq({Key? key}) : super(key: key);
 
@@ -91,7 +96,7 @@ class _StreamkeyreqState extends State<Streamkeyreq> {
                                 style: ElevatedButton.styleFrom(primary: Color(0xFFCAB8E0).withOpacity(0.33), shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(20.0)), minimumSize: (Size(30, 25))),
                                 onPressed: () {},
                               ),),
-                            Container(child: Text(document['Sub-subject Tag']),),
+                            Container(child: Text('#'+document['Sub-subject Tag']),),
                           ],
                         ),
                       ),
@@ -107,6 +112,7 @@ class _StreamkeyreqState extends State<Streamkeyreq> {
   }
 }
 
+//display data post
 class Streamkeypost extends StatefulWidget {
   const Streamkeypost({Key? key}) : super(key: key);
 
@@ -134,21 +140,22 @@ class _StreamkeypostState extends State<Streamkeypost> {
               children: snapshot.data!.docs.map((document) {
                 return Center(
                   child: Container(
-                    width: 179, height: 280,
+                    width: 179, height: 370,
                     decoration: BoxDecoration(color: const Color(0xFFCAB8E0).withOpacity(0.2), borderRadius: BorderRadius.circular(20)),
                     child: Column(
                       children: [
                         Container(
-                          width: 179, height: 161, decoration: BoxDecoration(color: Colors.white30, borderRadius: BorderRadius.only(topLeft: Radius.circular(20), topRight: Radius.circular(20), bottomRight: Radius.circular(20))),
+                          width: 179, height: 190, decoration: BoxDecoration(color: Colors.white30, borderRadius: BorderRadius.only(topLeft: Radius.circular(20), topRight: Radius.circular(20), bottomRight: Radius.circular(20))),
                         ),
                         Container(
+                          margin: EdgeInsets.only(top: 20),
                           child: ElevatedButton(
                             child: Text(document['Caption file'], style: TextStyle(fontSize: 13, color: const Color(0xFF585858)),),
                             style: ElevatedButton.styleFrom(primary: Color(0xFFCAB8E0).withOpacity(0.33), shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(20.0)), minimumSize: (Size(30, 25))),
                             onPressed: () {},
                           ),),
                         Container(child: Text(document['Sub-subject Tag']),),
-                        Container(child: Text(document['Title'], style: TextStyle(fontSize: 16),),),
+                        Container(child: Text(document['Title'], style: TextStyle(fontSize: 18),),),
                         Container(child: Text('username'),),
                       ],
                     ),
@@ -159,6 +166,18 @@ class _StreamkeypostState extends State<Streamkeypost> {
         },
       ),
     );
+  }
+}
+
+//Searching post
+class DatacontPost extends GetxController {
+  Future getData(String collection) async {
+    final FirebaseFirestore firebaseFirestore = FirebaseFirestore.instance;
+    QuerySnapshot snapshot = await firebaseFirestore.collection(collection).get();
+    return snapshot.docs;
+  }
+  Future Searchpost(String qStringpost) async {
+    return FirebaseFirestore.instance.collection('FormPost').where('title', isGreaterThanOrEqualTo: qStringpost).get();
   }
 }
 
