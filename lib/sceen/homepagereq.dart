@@ -4,7 +4,7 @@ import 'package:flutter/rendering.dart';
 import 'package:study_shelf/sceen/homepage.dart';
 import 'package:study_shelf/sceen/loginpage.dart';
 import 'package:study_shelf/sceen/process_uname.dart';
-import 'package:study_shelf/sceen/searchpost.dart';
+import 'package:study_shelf/sceen/searchreq.dart';
 import 'package:study_shelf/sceen/selectpage.dart';
 
 class Homreq extends StatefulWidget {
@@ -31,7 +31,7 @@ class _HomreqState extends State<Homreq> {
             actions: [
               IconButton(
                   icon: Icon(Icons.search_rounded, size: 42, color: Colors.black),
-                  onPressed: () => Navigator.push(context, MaterialPageRoute(builder: (context) => searchPostpages()))
+                  onPressed: () => Navigator.push(context, MaterialPageRoute(builder: (context) => searchReqpages()))
               ),
               MaterialButton(
                 child: Image.network('https://i.postimg.cc/Pq2ZWTHF/Webcam.png'),

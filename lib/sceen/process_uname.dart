@@ -177,6 +177,18 @@ class DatacontPost extends GetxController {
     return snapshot.docs;
   }
   Future Searchpost(String qStringpost) async {
-    return FirebaseFirestore.instance.collection('FormPost').where('Title', isEqualTo: qStringpost).get();
+    return FirebaseFirestore.instance.collection('FormPost').where('Title', isGreaterThanOrEqualTo: qStringpost.substring(0,1).toUpperCase()).get();
+  }
+}
+
+//Searching request
+class DatacontReq extends GetxController {
+  Future getDatareq(String collection) async {
+    final FirebaseFirestore firebaseFirestore = FirebaseFirestore.instance;
+    QuerySnapshot snapshot = await firebaseFirestore.collection(collection).get();
+    return snapshot.docs;
+  }
+  Future Searchreq(String qStringreq) async {
+    return FirebaseFirestore.instance.collection('FormRequest').where('Title', isGreaterThanOrEqualTo: qStringreq.substring(0,1).toUpperCase()).get();
   }
 }
