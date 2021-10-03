@@ -5,13 +5,12 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="c61d31d8-cd3d-4906-ad7f-1f88d41611a9" name="Default Changelist" comment="">
-      <change afterPath="$PROJECT_DIR$/lib/sceen/searchpost.dart" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.flutter-plugins-dependencies" beforeDir="false" afterPath="$PROJECT_DIR$/.flutter-plugins-dependencies" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/libraries/Dart_Packages.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/libraries/Dart_Packages.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/lib/sceen/homepage.dart" beforeDir="false" afterPath="$PROJECT_DIR$/lib/sceen/homepage.dart" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/lib/sceen/homepagereq.dart" beforeDir="false" afterPath="$PROJECT_DIR$/lib/sceen/homepagereq.dart" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/lib/sceen/process_uname.dart" beforeDir="false" afterPath="$PROJECT_DIR$/lib/sceen/process_uname.dart" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/pubspec.yaml" beforeDir="false" afterPath="$PROJECT_DIR$/pubspec.yaml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/lib/sceen/searchpost.dart" beforeDir="false" afterPath="$PROJECT_DIR$/lib/sceen/searchpost.dart" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />

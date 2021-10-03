@@ -177,10 +177,6 @@ class DatacontPost extends GetxController {
     return snapshot.docs;
   }
   Future Searchpost(String qStringpost) async {
-    return FirebaseFirestore.instance.collection('FormPost').where('title', isGreaterThanOrEqualTo: qStringpost).get();
+    return FirebaseFirestore.instance.collection('FormPost').where('Title', isEqualTo: qStringpost).get();
   }
 }
-
-
-
-

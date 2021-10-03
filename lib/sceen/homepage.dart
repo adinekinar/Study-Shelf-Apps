@@ -31,6 +31,10 @@ class _HomeState extends State<Home> {
         title: Text('Study Shelf', style: TextStyle(fontWeight: FontWeight.bold, color: Colors.black)),
         backgroundColor: const Color(0xFFC4B1DC),
         actions: [
+          IconButton(
+            icon: Icon(Icons.search_rounded, size: 42, color: Colors.black),
+            onPressed: () => Navigator.push(context, MaterialPageRoute(builder: (context) => searchPostpages()))
+          ),
           MaterialButton(
             child: Image.network('https://i.postimg.cc/Pq2ZWTHF/Webcam.png'),
             onPressed: () => Navigator.push(context, MaterialPageRoute(builder: (context) => SSlogin())),
