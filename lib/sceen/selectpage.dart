@@ -35,26 +35,46 @@ class _SelectpgState extends State<Selectpg> {
           onPressed: () => Navigator.push(context, MaterialPageRoute(builder: (context) => Home())),
         ),
       ),
-        body: Container(
-          padding: EdgeInsets.all(10),
-          height: 150,
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-            children: [
-              ElevatedButton(
-                  child: Text('Post your new notes..', style: TextStyle(fontSize: 18, color: Colors.black),),
-                  style: ElevatedButton.styleFrom(primary: Color(0xFFEFD1A9), shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(20.0)), minimumSize: Size(double.infinity, 40)),
-                  onPressed: () async {
-                    Navigator.push(context, MaterialPageRoute(builder: (context) => Formp()));
-                  }),
-              ElevatedButton(
-                  child: Text('Post your new notes request..', style: TextStyle(fontSize: 18, color: Colors.black),),
-                  style: ElevatedButton.styleFrom(primary: Color(0xFFEFD1A9), shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(20.0)), minimumSize: Size(double.infinity, 40)),
-                  onPressed: () async {
-                    Navigator.push(context, MaterialPageRoute(builder: (context) => Formq()));
-                  }),
-            ],
-          ),
+        body: Column(
+          children: [
+            Container(margin: EdgeInsets.only(right: 270, top: 30),child: Text('Select One :', style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),)),
+            Container(
+              margin: EdgeInsets.all(20),
+              padding: EdgeInsets.all(20),
+              decoration: BoxDecoration(
+                color: Colors.white30,
+                borderRadius: BorderRadius.circular(30),
+              ),
+              height: 230,
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                children: [
+                  ElevatedButton(
+                      child: Row(
+                        children: [
+                          Container(width: 60, height: 60, margin: EdgeInsets.only(top: 10, bottom: 10, right: 15), decoration: BoxDecoration(color: Colors.white30, borderRadius: BorderRadius.circular(60)),child: Icon(CupertinoIcons.paperclip, color: const Color(0xFF585858), size: 26,),),
+                          Container(child: Text('Post your new notes..', style: TextStyle(fontSize: 18, color: Colors.black),)),
+                        ],
+                      ),
+                      style: ElevatedButton.styleFrom(primary: Color(0xFFEFD1A9), shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(20.0)), minimumSize: Size(double.infinity, 40)),
+                      onPressed: () async {
+                        Navigator.push(context, MaterialPageRoute(builder: (context) => Formp()));
+                      }),
+                  ElevatedButton(
+                      child: Row(
+                        children: [
+                          Container(width: 60, height: 60, margin: EdgeInsets.only(top: 10, bottom: 10, right: 15), decoration: BoxDecoration(color: Colors.white30, borderRadius: BorderRadius.circular(60)),child: Icon(Icons.paste_rounded, color: const Color(0xFF585858), size: 26,),),
+                          Container(child: Text('Post your new notes request..', style: TextStyle(fontSize: 17, color: Colors.black))),
+                        ],
+                      ),
+                      style: ElevatedButton.styleFrom(primary: Color(0xFFEFD1A9), shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(20.0)), minimumSize: Size(double.infinity, 40)),
+                      onPressed: () async {
+                        Navigator.push(context, MaterialPageRoute(builder: (context) => Formq()));
+                      }),
+                ],
+              ),
+            ),
+          ],
         ),
       ),),
     );
