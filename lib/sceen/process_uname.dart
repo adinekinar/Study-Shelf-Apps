@@ -4,6 +4,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
+import 'package:study_shelf/sceen/subjectgroup.dart';
 
 //api submit file
 class FirebaseApi {
@@ -31,12 +32,14 @@ Future<void> fillPost (String title, String caption, String subject, String tag)
   CollectionReference fillp = FirebaseFirestore.instance.collection('FormPost');
   FirebaseAuth auth = FirebaseAuth.instance;
   String uid = auth.currentUser!.uid.toString();
+  String username = auth.currentUser!.displayName.toString();
   fillp.add({
     'Title': title,
     'Caption file': caption,
     'Subject': subject,
     'Sub-subject Tag': tag,
     'uid' : uid,
+    'Username' : username,
   });
   return;
 }
@@ -47,6 +50,7 @@ class DatabaseReq {
   Future<void> fillReq (String title, String caption, String subject, String tag, int point) async {
     FirebaseAuth auth = FirebaseAuth.instance;
     String uid = auth.currentUser!.uid.toString();
+    String username = auth.currentUser!.displayName.toString();
     fillr.add({
       'Title': title,
       'Caption request': caption,
@@ -54,6 +58,7 @@ class DatabaseReq {
       'Sub-subject Tag': tag,
       'Point Reward' : point,
       'uid' : uid,
+      'Username' : username,
     });
     return;
   }
@@ -69,6 +74,8 @@ class Streamkeyreq extends StatefulWidget {
 
 class _StreamkeyreqState extends State<Streamkeyreq> {
   _StreamkeyreqState();
+  late QuerySnapshot snapshotData;
+  bool isExecuted = false;
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -96,12 +103,20 @@ class _StreamkeyreqState extends State<Streamkeyreq> {
                           children: [
                             Container(margin: EdgeInsets.only(top: 15), child: Text(document['Title'])),
                             Container(child: Text(document['Caption request']),),
-                            Container(
-                              child: ElevatedButton(
-                                child: Text(document['Subject'], style: TextStyle(fontSize: 13, color: const Color(0xFF585858)),),
-                                style: ElevatedButton.styleFrom(primary: Color(0xFFCAB8E0).withOpacity(0.33), shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(20.0)), minimumSize: (Size(30, 25))),
-                                onPressed: () {},
-                              ),),
+                            GetBuilder <GroupReq> (
+                              init: GroupReq(),
+                              builder: (val) {
+                                return ElevatedButton(
+                                  child: Text(document['Subject'], style: TextStyle(fontSize: 13, color: const Color(0xFF585858)),),
+                                  style: ElevatedButton.styleFrom(primary: Color(0xFFCAB8E0).withOpacity(0.33), shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(20.0)), minimumSize: (Size(30, 25))),
+                                  onPressed: () {
+                                    val.GrReq(document['Subject']).then((value) {
+                                      snapshotData = value;
+                                    });
+                                    isExecuted ? Navigator.push(context, MaterialPageRoute(builder: (context) => subjectGroup(Subject : document['Subject']))) : {};
+                                  },
+                                );
+                              },),
                             Container(child: Text('#'+document['Sub-subject Tag']),),
                           ],
                         ),
@@ -160,9 +175,9 @@ class _StreamkeypostState extends State<Streamkeypost> {
                             style: ElevatedButton.styleFrom(primary: Color(0xFFCAB8E0).withOpacity(0.33), shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(20.0)), minimumSize: (Size(30, 25))),
                             onPressed: () {},
                           ),),
-                        Container(child: Text(document['Sub-subject Tag']),),
+                        Container(child: Text('#'+document['Sub-subject Tag']),),
                         Container(child: Text(document['Title'], style: TextStyle(fontSize: 18),),),
-                        Container(child: Text('username'),),
+                        Container(child: Text(document['Username']),),
                       ],
                     ),
                   ),
@@ -196,5 +211,16 @@ class DatacontReq extends GetxController {
   }
   Future Searchreq(String qStringreq) async {
     return FirebaseFirestore.instance.collection('FormRequest').where('Title', isGreaterThanOrEqualTo: qStringreq.substring(0,1).toUpperCase()).get();
+  }
+}
+
+class GroupReq extends GetxController {
+  Future getGrReq(String collection) async {
+    final FirebaseFirestore firebaseFirestore = FirebaseFirestore.instance;
+    QuerySnapshot snapshot = await firebaseFirestore.collection(collection).get();
+    return snapshot.docs;
+  }
+  Future GrReq(String Subject) async {
+    return FirebaseFirestore.instance.collection('FormRequest').where('Subject', isEqualTo: Subject);
   }
 }
