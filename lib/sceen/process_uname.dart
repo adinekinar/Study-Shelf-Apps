@@ -75,7 +75,7 @@ class Streamkeyreq extends StatefulWidget {
 class _StreamkeyreqState extends State<Streamkeyreq> {
   _StreamkeyreqState();
   late QuerySnapshot snapshotData;
-  bool isExecuted = false;
+  bool isExecuted = true;
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -143,6 +143,8 @@ class Streamkeypost extends StatefulWidget {
 
 class _StreamkeypostState extends State<Streamkeypost> {
   _StreamkeypostState();
+  late QuerySnapshot snapshotData;
+  bool isExecuted = true;
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -168,13 +170,23 @@ class _StreamkeypostState extends State<Streamkeypost> {
                         Container(
                           width: 179, height: 190, decoration: BoxDecoration(color: Colors.white30, borderRadius: BorderRadius.only(topLeft: Radius.circular(20), topRight: Radius.circular(20), bottomRight: Radius.circular(20))),
                         ),
-                        Container(
-                          margin: EdgeInsets.only(top: 20),
-                          child: ElevatedButton(
-                            child: Text(document['Caption file'], style: TextStyle(fontSize: 13, color: const Color(0xFF585858)),),
-                            style: ElevatedButton.styleFrom(primary: Color(0xFFCAB8E0).withOpacity(0.33), shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(20.0)), minimumSize: (Size(30, 25))),
-                            onPressed: () {},
-                          ),),
+                        GetBuilder<GroupPost> (
+                          init: GroupPost(),
+                          builder: (val) {
+                            return Container(
+                             margin: EdgeInsets.only(top: 20),
+                             child: ElevatedButton(
+                              child: Text(document['Caption file'], style: TextStyle(fontSize: 13, color: const Color(0xFF585858)),),
+                              style: ElevatedButton.styleFrom(primary: Color(0xFFCAB8E0).withOpacity(0.33), shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(20.0)), minimumSize: (Size(30, 25))),
+                              onPressed: () {
+                                val.GrPost(document['Caption file']).then((value) {
+                                snapshotData = value;
+                              });
+                                isExecuted ? Navigator.push(context, MaterialPageRoute(builder: (context) => subjectGroup(Subject : document['Caption file']))) : {};
+                              }
+                            ));
+                          },
+                        ),
                         Container(child: Text('#'+document['Sub-subject Tag']),),
                         Container(child: Text(document['Title'], style: TextStyle(fontSize: 18),),),
                         Container(child: Text(document['Username']),),
@@ -214,6 +226,7 @@ class DatacontReq extends GetxController {
   }
 }
 
+//Group Reguest
 class GroupReq extends GetxController {
   Future getGrReq(String collection) async {
     final FirebaseFirestore firebaseFirestore = FirebaseFirestore.instance;
@@ -221,6 +234,18 @@ class GroupReq extends GetxController {
     return snapshot.docs;
   }
   Future GrReq(String Subject) async {
-    return FirebaseFirestore.instance.collection('FormRequest').where('Subject', isEqualTo: Subject);
+    return FirebaseFirestore.instance.collection('FormRequest').where('Subject', isEqualTo: Subject).get();
+  }
+}
+
+//Group Post
+class GroupPost extends GetxController {
+  Future getGrPost(String collection) async {
+    final FirebaseFirestore firebaseFirestore = FirebaseFirestore.instance;
+    QuerySnapshot snapshot = await firebaseFirestore.collection(collection).get();
+    return snapshot.docs;
+  }
+  Future GrPost(String Subject) async {
+    return FirebaseFirestore.instance.collection('FormPost').where('Caption file', isEqualTo: Subject).get();
   }
 }
