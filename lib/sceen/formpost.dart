@@ -1,5 +1,6 @@
 import 'dart:async';
 import 'dart:io';
+import 'package:flutter/foundation.dart';
 import 'package:path/path.dart';
 import 'package:firebase_storage/firebase_storage.dart' as firebase_storage;
 import 'package:file_picker/file_picker.dart';
@@ -22,6 +23,9 @@ class _FormpState extends State<Formp> {
   final ssubtag = TextEditingController();
   firebase_storage.UploadTask? task;
   File? file;
+
+  String? valueDropmenu;
+  List listpoint = ['pdf', 'png', 'jpg', 'jpeg'];
 
   @override
   Widget build(BuildContext context) {
@@ -79,10 +83,33 @@ class _FormpState extends State<Formp> {
                   ],
                 ),
               ),
+              Container(
+                margin: EdgeInsets.only(top: 10),
+                padding: EdgeInsets.only(left: 16, right: 16),
+                decoration: BoxDecoration(
+                  color: Colors.white30,
+                  border: Border.all(color: Color(0xFFAEAEAE)),
+                  borderRadius: BorderRadius.circular(20),
+                ),
+                child: DropdownButton(
+                  hint: Text('Choose format..    '),
+                  icon: Icon(Icons.arrow_drop_down_rounded),
+                  value: valueDropmenu,
+                  onChanged: (newValue) {
+                    setState(() {
+                      valueDropmenu = newValue as String?;
+                    });
+                  },
+                  underline: SizedBox(),
+                  items: listpoint.map((valueItem) {
+                    return DropdownMenuItem(value: valueItem, child: Text('$valueItem'),);
+                  }).toList(),
+                ),
+              ),
               Inpform(ttl: 'Title file :', r: 280, h: 33, cont: title,),
               Inpform(ttl: 'Subject option :', r: 240, h: 33, cont: captf,),
               Inpform(ttl: 'Caption file :', r: 260, h: 58, cont: subop,),
-              Inpform(ttl: 'Sub-subject tag :', r: 235, h: 120, cont: ssubtag,),
+              Inpform(ttl: 'Sub-subject tag :', r: 235, h: 58, cont: ssubtag,),
               Container(
                 margin: EdgeInsets.only(top: 20),
                 child: ElevatedButton(
@@ -98,17 +125,26 @@ class _FormpState extends State<Formp> {
     );
   }
   Future selectFile() async {
-    final result = await FilePicker.platform.pickFiles(allowMultiple: false);
+    final result = await FilePicker.platform.pickFiles(allowMultiple: false, type: FileType.custom, allowedExtensions: ['jpg', 'png', 'jpeg', 'pdf']);
     if(result == null) return;
     final path = result.files.single.path!;
     setState(() => file = File(path));
   }
+
+  Future<String> uploadFile(File file) async {
+    String filename = basename(file.path);
+    firebase_storage.FirebaseStorage storage = firebase_storage.FirebaseStorage.instance;
+    firebase_storage.Reference ref = storage.ref().child('upload/$filename');
+    firebase_storage.UploadTask uploadTask = ref.putFile(file);
+    await Future.value(uploadTask);
+    var newurl = await ref.getDownloadURL();
+    return newurl;
+  }
+
   Future submitPost() async {
-    if (file == null) return;
-    final filename = basename(file!.path);
-    final dest = 'files/$filename';
-    FirebaseApi.submitPost(dest, file!);
-    content : fillPost(title.text, captf.text, subop.text, ssubtag.text);
+    if(file==null) return;
+    var downloadurl = await uploadFile(file!);
+    content : fillPost(title.text, captf.text, subop.text, ssubtag.text, downloadurl, valueDropmenu!);
     Navigator.push(this.context, MaterialPageRoute(builder: (context) => Home()));
   }
 }

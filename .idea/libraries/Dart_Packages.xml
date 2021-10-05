@@ -163,6 +163,13 @@
             </list>
           </value>
         </entry>
+        <entry key="flutter_downloader">
+          <value>
+            <list>
+              <option value="C:/Program Files/flutter/.pub-cache/hosted/pub.dartlang.org/flutter_downloader-1.7.0/lib" />
+            </list>
+          </value>
+        </entry>
         <entry key="flutter_plugin_android_lifecycle">
           <value>
             <list>
@@ -342,6 +349,7 @@
       <root url="file://C:/Program Files/flutter/.pub-cache/hosted/pub.dartlang.org/firebase_storage-10.0.3/lib" />
       <root url="file://C:/Program Files/flutter/.pub-cache/hosted/pub.dartlang.org/firebase_storage_platform_interface-4.0.2/lib" />
       <root url="file://C:/Program Files/flutter/.pub-cache/hosted/pub.dartlang.org/firebase_storage_web-3.0.2/lib" />
+      <root url="file://C:/Program Files/flutter/.pub-cache/hosted/pub.dartlang.org/flutter_downloader-1.7.0/lib" />
       <root url="file://C:/Program Files/flutter/.pub-cache/hosted/pub.dartlang.org/flutter_plugin_android_lifecycle-2.0.3/lib" />
       <root url="file://C:/Program Files/flutter/.pub-cache/hosted/pub.dartlang.org/get-4.3.8/lib" />
       <root url="file://C:/Program Files/flutter/.pub-cache/hosted/pub.dartlang.org/http-0.13.3/lib" />

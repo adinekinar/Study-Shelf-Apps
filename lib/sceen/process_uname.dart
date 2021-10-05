@@ -1,10 +1,14 @@
 import 'dart:io';
+import 'package:file_picker/file_picker.dart';
+import 'package:flutter_downloader/flutter_downloader.dart';
 import 'package:get/get.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
 import 'package:study_shelf/sceen/subjectgroup.dart';
+import 'package:study_shelf/sceen/formpost.dart';
+import 'package:study_shelf/sceen/subjectgroupreq.dart';
 
 //api submit file
 class FirebaseApi {
@@ -28,18 +32,20 @@ Future<void> unameStore(String username) async {
 }
 
 //for store data post
-Future<void> fillPost (String title, String caption, String subject, String tag) async {
+Future<void> fillPost (String title, String caption, String subject, String tag, url, String format) async {
   CollectionReference fillp = FirebaseFirestore.instance.collection('FormPost');
   FirebaseAuth auth = FirebaseAuth.instance;
   String uid = auth.currentUser!.uid.toString();
   String username = auth.currentUser!.displayName.toString();
   fillp.add({
+    'File format' : format,
     'Title': title,
     'Caption file': caption,
     'Subject': subject,
     'Sub-subject Tag': tag,
     'uid' : uid,
     'Username' : username,
+    'url' : url,
   });
   return;
 }
@@ -112,8 +118,11 @@ class _StreamkeyreqState extends State<Streamkeyreq> {
                                   onPressed: () {
                                     val.GrReq(document['Subject']).then((value) {
                                       snapshotData = value;
+                                      setState(() {
+                                        isExecuted = true;
+                                      });
                                     });
-                                    isExecuted ? Navigator.push(context, MaterialPageRoute(builder: (context) => subjectGroup(Subject : document['Subject']))) : {};
+                                    isExecuted ? Navigator.push(context, MaterialPageRoute(builder: (context) => subjectGroupreq(Subject : document['Subject'], snapshotData: snapshotData,))) : {};
                                   },
                                 );
                               },),
@@ -146,6 +155,19 @@ class _StreamkeypostState extends State<Streamkeypost> {
   late QuerySnapshot snapshotData;
   bool isExecuted = true;
   @override
+
+  imagedisp(document, src) {
+    if (document == 'pdf'){
+      NetworkImage('https://i.postimg.cc/bYxZKKK8/pdfnoback.png');
+    }
+    else
+      NetworkImage('src');
+  }
+
+  void _requestDownload(String link) async {
+    final taskId = await FlutterDownloader.enqueue(url: link, savedDir: '/downloads', showNotification: true, openFileFromNotification: true);
+  }
+
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: Colors.transparent,
@@ -168,7 +190,14 @@ class _StreamkeypostState extends State<Streamkeypost> {
                     child: Column(
                       children: [
                         Container(
-                          width: 179, height: 190, decoration: BoxDecoration(color: Colors.white30, borderRadius: BorderRadius.only(topLeft: Radius.circular(20), topRight: Radius.circular(20), bottomRight: Radius.circular(20))),
+                          width: 179, height: 190,
+                          decoration: BoxDecoration(
+                            color: Colors.white30,
+                            borderRadius: BorderRadius.only(topLeft: Radius.circular(20), topRight: Radius.circular(20), bottomRight: Radius.circular(20)),
+                            image: DecorationImage(
+                              image: NetworkImage('https://i.postimg.cc/VNTd9w2Q/PDF-File-Online-1-removebg-preview.png'),
+                            ),
+                          ),
                         ),
                         GetBuilder<GroupPost> (
                           init: GroupPost(),
@@ -182,7 +211,7 @@ class _StreamkeypostState extends State<Streamkeypost> {
                                 val.GrPost(document['Caption file']).then((value) {
                                 snapshotData = value;
                               });
-                                isExecuted ? Navigator.push(context, MaterialPageRoute(builder: (context) => subjectGroup(Subject : document['Caption file']))) : {};
+                                isExecuted ? Navigator.push(context, MaterialPageRoute(builder: (context) => subjectGroup(Subject : document['Caption file'], snapshotData: snapshotData,))) : {};
                               }
                             ));
                           },
@@ -190,6 +219,8 @@ class _StreamkeypostState extends State<Streamkeypost> {
                         Container(child: Text('#'+document['Sub-subject Tag']),),
                         Container(child: Text(document['Title'], style: TextStyle(fontSize: 18),),),
                         Container(child: Text(document['Username']),),
+                        IconButton(icon: Icon(Icons.download_rounded), onPressed:() {
+                          _requestDownload(document['url']);}),
                       ],
                     ),
                   ),
