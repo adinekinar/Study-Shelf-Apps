@@ -50,7 +50,7 @@ class subjectGroup extends StatelessWidget {
                         style: ElevatedButton.styleFrom(primary: Color(0xFFCAB8E0).withOpacity(0.33), shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(20.0)), minimumSize: (Size(30, 25))),
                         onPressed: () {},
                       ),),
-                    Container(child: Text(snapshotData.docs[index]['Sub-subject Tag']),),
+                    Container(child: Text('#'+snapshotData.docs[index]['Sub-subject Tag']),),
                     Container(child: Text(snapshotData.docs[index]['Title'], style: TextStyle(fontSize: 18),),),
                     Container(child: Text(snapshotData.docs[index]['Username']),),
                     IconButton(icon: Icon(Icons.download_rounded, color: const Color(0xFF585858),),

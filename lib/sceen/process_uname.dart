@@ -41,6 +41,7 @@ Future<void> fillPost (String title, String caption, String subject, String tag,
   String uid = auth.currentUser!.uid.toString();
   String username = auth.currentUser!.displayName.toString();
   fillp.add({
+    'Upload Time' : Timestamp.now(),
     'File format' : format,
     'Title': title,
     'Caption file': caption,
@@ -68,6 +69,7 @@ class DatabaseReq {
       'Point Reward' : point,
       'uid' : uid,
       'Username' : username,
+      'Upload Time' : Timestamp.now(),
     });
     return;
   }
@@ -90,7 +92,7 @@ class _StreamkeyreqState extends State<Streamkeyreq> {
     return Scaffold(
       backgroundColor: Colors.transparent,
       body: StreamBuilder(
-        stream: FirebaseFirestore.instance.collection('FormRequest').snapshots(),
+        stream: FirebaseFirestore.instance.collection('FormRequest').orderBy('Upload Time', descending: true).snapshots(),
         builder: (BuildContext context, AsyncSnapshot<QuerySnapshot> snapshot) {
           if(!snapshot.hasData){
             return Center(
@@ -118,13 +120,10 @@ class _StreamkeyreqState extends State<Streamkeyreq> {
                                 return ElevatedButton(
                                   child: Text(document['Subject'], style: TextStyle(fontSize: 13, color: const Color(0xFF585858)),),
                                   style: ElevatedButton.styleFrom(primary: Color(0xFFCAB8E0).withOpacity(0.33), shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(20.0)), minimumSize: (Size(30, 25))),
-                                  onPressed: () {
+                                  onPressed: () { (snapshotData != null) ?
                                     val.GrReq(document['Subject']).then((value) {
                                       snapshotData = value;
-                                      setState(() {
-                                        isExecuted = true;
-                                      });
-                                    });
+                                    }): (snapshotData = document['Caption file']);
                                     isExecuted ? Navigator.push(context, MaterialPageRoute(builder: (context) => subjectGroupreq(Subject : document['Subject'], snapshotData: snapshotData,))) : {};
                                   },
                                 );
@@ -155,52 +154,18 @@ class Streamkeypost extends StatefulWidget {
 
 class _StreamkeypostState extends State<Streamkeypost> {
   _StreamkeypostState();
-  late String _fileFullPath;
-  late Dio dio;
   late QuerySnapshot snapshotData;
-  late String progress;
   bool isExecuted = true;
-  bool isLoading=false;
-  //@override
-  /*void initState() {
-    dio = Dio();
-    super.initState();
-  }*/
-
-  /*Future <List<Directory>?> _getExternalStoragePath() {
-    return p.getExternalStorageDirectories(type: p.StorageDirectory.documents);
-  }*/
-
-  /*Future _downloadStorage(String urlp, String filename) async {
-    try{
-      final dirList = await p.getApplicationDocumentsDirectory();
-      final path = dirList.path;
-      final file = File('$path/$filename');
-      await dio.download(urlp, file.path, onReceiveProgress: (rec, total) {
-        setState(() {
-          isLoading = true;
-          progress = ((rec/total)* 100).toStringAsFixed(0)+"%";
-          print(progress);
-        });
-      });
-      _fileFullPath = file.path;
-    }catch(e) {
-      print(e);
-    }
-  }*/
 
   Future<void> _launchInBrowser(String url, {bool forceWebView = false, bool enableJavaScript = false}) async {
     await launch(url);
   }
-
-
   @override
-
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: Colors.transparent,
       body: StreamBuilder(
-        stream: FirebaseFirestore.instance.collection('FormPost').snapshots(),
+        stream: FirebaseFirestore.instance.collection('FormPost').orderBy('Upload Time', descending: true).snapshots(),
         builder: (BuildContext context, AsyncSnapshot<QuerySnapshot> snapshot) {
           if(!snapshot.hasData){
             return Center(
@@ -235,10 +200,10 @@ class _StreamkeypostState extends State<Streamkeypost> {
                              child: ElevatedButton(
                               child: Text(document['Caption file'], style: TextStyle(fontSize: 13, color: const Color(0xFF585858)),),
                               style: ElevatedButton.styleFrom(primary: Color(0xFFCAB8E0).withOpacity(0.33), shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(20.0)), minimumSize: (Size(30, 25))),
-                              onPressed: () {
+                              onPressed: () { (snapshotData != null) ?
                                 val.GrPost(document['Caption file']).then((value) {
                                 snapshotData = value;
-                              });
+                              }): (snapshotData = document['Caption file']);
                                 isExecuted ? Navigator.push(context, MaterialPageRoute(builder: (context) => subjectGroup(Subject : document['Caption file'], snapshotData: snapshotData,))) : {};
                               }
                             ));

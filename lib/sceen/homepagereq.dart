@@ -103,17 +103,6 @@ class _HomreqState extends State<Homreq> {
               ],
             )
             ),
-            Container(
-              margin: EdgeInsets.all(10),
-              padding: EdgeInsets.only(left: 20),
-              width: double.infinity, height: 50,
-              decoration: BoxDecoration(
-                  color: Colors.white30,
-                  borderRadius: BorderRadius.circular(20)),
-              child: TextField(
-                decoration: InputDecoration(hintText: 'Search keyword..', icon: Icon(Icons.search_rounded, size: 24), border: InputBorder.none),
-              ),
-            ),
             Expanded(child: Container(child: Streamkeyreq())),
           ],
         ),
