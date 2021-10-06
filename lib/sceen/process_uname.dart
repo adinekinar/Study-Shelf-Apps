@@ -1,14 +1,17 @@
 import 'dart:io';
+import 'package:dio/dio.dart';
+import 'package:path_provider/path_provider.dart' as p;
 import 'package:file_picker/file_picker.dart';
-import 'package:flutter_downloader/flutter_downloader.dart';
 import 'package:get/get.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
+import 'package:path_provider/path_provider.dart';
 import 'package:study_shelf/sceen/subjectgroup.dart';
 import 'package:study_shelf/sceen/formpost.dart';
 import 'package:study_shelf/sceen/subjectgroupreq.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 //api submit file
 class FirebaseApi {
@@ -152,21 +155,46 @@ class Streamkeypost extends StatefulWidget {
 
 class _StreamkeypostState extends State<Streamkeypost> {
   _StreamkeypostState();
+  late String _fileFullPath;
+  late Dio dio;
   late QuerySnapshot snapshotData;
+  late String progress;
   bool isExecuted = true;
-  @override
+  bool isLoading=false;
+  //@override
+  /*void initState() {
+    dio = Dio();
+    super.initState();
+  }*/
 
-  imagedisp(document, src) {
-    if (document == 'pdf'){
-      NetworkImage('https://i.postimg.cc/bYxZKKK8/pdfnoback.png');
+  /*Future <List<Directory>?> _getExternalStoragePath() {
+    return p.getExternalStorageDirectories(type: p.StorageDirectory.documents);
+  }*/
+
+  /*Future _downloadStorage(String urlp, String filename) async {
+    try{
+      final dirList = await p.getApplicationDocumentsDirectory();
+      final path = dirList.path;
+      final file = File('$path/$filename');
+      await dio.download(urlp, file.path, onReceiveProgress: (rec, total) {
+        setState(() {
+          isLoading = true;
+          progress = ((rec/total)* 100).toStringAsFixed(0)+"%";
+          print(progress);
+        });
+      });
+      _fileFullPath = file.path;
+    }catch(e) {
+      print(e);
     }
-    else
-      NetworkImage('src');
+  }*/
+
+  Future<void> _launchInBrowser(String url, {bool forceWebView = false, bool enableJavaScript = false}) async {
+    await launch(url);
   }
 
-  void _requestDownload(String link) async {
-    final taskId = await FlutterDownloader.enqueue(url: link, savedDir: '/downloads', showNotification: true, openFileFromNotification: true);
-  }
+
+  @override
 
   Widget build(BuildContext context) {
     return Scaffold(
@@ -192,10 +220,10 @@ class _StreamkeypostState extends State<Streamkeypost> {
                         Container(
                           width: 179, height: 190,
                           decoration: BoxDecoration(
-                            color: Colors.white30,
+                            color: Color((document['File format'] == 'pdf') ? (0xFFCAB8E0) : (0xFFFFFFFF)),
                             borderRadius: BorderRadius.only(topLeft: Radius.circular(20), topRight: Radius.circular(20), bottomRight: Radius.circular(20)),
                             image: DecorationImage(
-                              image: NetworkImage('https://i.postimg.cc/VNTd9w2Q/PDF-File-Online-1-removebg-preview.png'),
+                              image: NetworkImage((document['File format'] == 'pdf') ?  'https://i.postimg.cc/VNTd9w2Q/PDF-File-Online-1-removebg-preview.png' : document['url']),
                             ),
                           ),
                         ),
@@ -219,8 +247,11 @@ class _StreamkeypostState extends State<Streamkeypost> {
                         Container(child: Text('#'+document['Sub-subject Tag']),),
                         Container(child: Text(document['Title'], style: TextStyle(fontSize: 18),),),
                         Container(child: Text(document['Username']),),
-                        IconButton(icon: Icon(Icons.download_rounded), onPressed:() {
-                          _requestDownload(document['url']);}),
+                        IconButton(icon: Icon(Icons.download_rounded, color: const Color(0xFF585858),),
+                            onPressed: () async {
+                              await _launchInBrowser(document['url']);
+                            }
+                        ),
                       ],
                     ),
                   ),
