@@ -84,6 +84,7 @@ class _SSregisterState extends State<SSregister> {
                         borderRadius: BorderRadius.circular(20)),
                       child: TextField(
                         controller: passcnt,
+                        obscureText: true,
                         decoration: InputDecoration(hintText: 'Input Password..', icon: Icon(Icons.vpn_key, size: 24), border: InputBorder.none),
                     ),
                   ),

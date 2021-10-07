@@ -88,6 +88,7 @@ class _StreamkeyreqState extends State<Streamkeyreq> {
   late QuerySnapshot snapshotData;
   bool isExecuted = true;
   @override
+
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: Colors.transparent,
@@ -161,6 +162,7 @@ class _StreamkeypostState extends State<Streamkeypost> {
     await launch(url);
   }
   @override
+
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: Colors.transparent,
@@ -203,6 +205,7 @@ class _StreamkeypostState extends State<Streamkeypost> {
                               onPressed: () { (snapshotData != null) ?
                                 val.GrPost(document['Caption file']).then((value) {
                                 snapshotData = value;
+                                document['Caption file'].clear();
                               }): (snapshotData = document['Caption file']);
                                 isExecuted ? Navigator.push(context, MaterialPageRoute(builder: (context) => subjectGroup(Subject : document['Caption file'], snapshotData: snapshotData,))) : {};
                               }

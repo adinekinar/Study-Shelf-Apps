@@ -2,6 +2,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:study_shelf/sceen/homepage.dart';
 import 'package:study_shelf/sceen/registerpage.dart';
+import 'package:study_shelf/sceen/resetpassword.dart';
 
 class SSlogin extends StatefulWidget {
   const SSlogin({Key? key}) : super(key: key);
@@ -68,12 +69,15 @@ class _SSloginState extends State<SSlogin> {
                         borderRadius: BorderRadius.circular(20)),
                     child: TextField(
                       controller: passcnt,
+                      obscureText: true,
                       decoration: InputDecoration(hintText: 'Input Password..', icon: Icon(Icons.vpn_key, size: 24), border: InputBorder.none),
                     ),
                   ),
                   Container(
                     child: MaterialButton(child: Text('Forgot password?', style: TextStyle(fontSize: 18, fontWeight: FontWeight.normal),),
-                      onPressed: () {},
+                      onPressed: () {
+                        Navigator.push(context, MaterialPageRoute(builder: (context) => PassReset()));
+                      },
                     ),
                     margin: EdgeInsets.only(left: 105),
                   ),
