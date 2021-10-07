@@ -240,7 +240,7 @@ class DatacontPost extends GetxController {
     return snapshot.docs;
   }
   Future Searchpost(String qStringpost) async {
-    return FirebaseFirestore.instance.collection('FormPost').where('Title', isGreaterThanOrEqualTo: qStringpost.substring(0,1).toUpperCase()).get();
+    return FirebaseFirestore.instance.collection('FormPost').where('Caption file', isEqualTo: qStringpost).get();
   }
 }
 
@@ -252,7 +252,7 @@ class DatacontReq extends GetxController {
     return snapshot.docs;
   }
   Future Searchreq(String qStringreq) async {
-    return FirebaseFirestore.instance.collection('FormRequest').where('Title', isGreaterThanOrEqualTo: qStringreq.substring(0,1).toUpperCase()).get();
+    return FirebaseFirestore.instance.collection('FormRequest').where('Title', isEqualTo: qStringreq).get();
   }
 }
 

@@ -1,4 +1,5 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:study_shelf/sceen/homepage.dart';
 import 'package:study_shelf/sceen/process_uname.dart';
@@ -22,7 +23,7 @@ class subjectGroup extends StatelessWidget {
         title: Text(Subject),
         backgroundColor: const Color(0xFFCAB8E0),
         leading: IconButton(
-          icon: Icon(Icons.arrow_back_rounded, size: 40, color: Colors.white),
+          icon: Icon(CupertinoIcons.back, size: 40, color: Colors.white),
           onPressed: () {
             //snapshotData.docs[index]['Subject'].clear();
             Navigator.push(context, MaterialPageRoute(builder: (context) => Home()));

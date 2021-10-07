@@ -1,5 +1,7 @@
+import 'package:flutter/cupertino.dart';
 import 'package:get/get.dart';
 import 'package:flutter/material.dart';
+import 'package:study_shelf/sceen/homepagereq.dart';
 import 'package:study_shelf/sceen/process_uname.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 
@@ -54,6 +56,12 @@ class _searchReqpagesState extends State<searchReqpages> {
     return Scaffold(
       appBar: AppBar(
         toolbarHeight: 80,
+        leading: IconButton(
+        icon: Icon(CupertinoIcons.back, size: 40, color: Colors.white),
+          onPressed: () {
+          //snapshotData.docs[index]['Subject'].clear();
+          Navigator.push(context, MaterialPageRoute(builder: (context) => Homreq()));
+          }),
         actions: [
           IconButton(
             icon: Icon(Icons.clear_rounded),

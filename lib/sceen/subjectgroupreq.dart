@@ -1,5 +1,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:study_shelf/sceen/homepagereq.dart';
 import 'package:study_shelf/sceen/process_uname.dart';
 
 class subjectGroupreq extends StatelessWidget {
@@ -14,6 +16,12 @@ class subjectGroupreq extends StatelessWidget {
     appBar: AppBar(
       title: Text(Subject),
       backgroundColor: const Color(0xFFCAB8E0),
+      leading: IconButton(
+      icon: Icon(CupertinoIcons.back, size: 40, color: Colors.white),
+      onPressed: () {
+        //snapshotData.docs[index]['Subject'].clear();
+        Navigator.push(context, MaterialPageRoute(builder: (context) => Homreq()));
+      }),
     ),
     body: ListView.builder(
         itemCount: snapshotData.docs.length,
