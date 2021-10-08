@@ -8,9 +8,11 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
 import 'package:path_provider/path_provider.dart';
+import 'package:study_shelf/sceen/eachpostpages.dart';
 import 'package:study_shelf/sceen/subjectgroup.dart';
 import 'package:study_shelf/sceen/formpost.dart';
 import 'package:study_shelf/sceen/subjectgroupreq.dart';
+import 'package:study_shelf/sceen/temporary.dart';
 import 'package:url_launcher/url_launcher.dart';
 
 //api submit file
@@ -103,38 +105,29 @@ class _StreamkeyreqState extends State<Streamkeyreq> {
           return ListView(
             children: snapshot.data!.docs.map((document) {
               return Center(
-                child: Container(
-                  width: 372, height: 132,
-                  margin: EdgeInsets.all(10),
-                  decoration: BoxDecoration(color: const Color(0xFFCAB8E0).withOpacity(0.2), borderRadius: BorderRadius.circular(30)),
-                  child: Row(
-                    children: [
-                      Container(width: 75, height: 75, margin: EdgeInsets.all(10), decoration: BoxDecoration(color: const Color(0xFFCAB8E0), borderRadius: BorderRadius.circular(25)),child: Icon(Icons.paste_rounded, size: 35, color: const Color(0xFF585858),)),
-                      Container(
-                        child: Column(
-                          children: [
-                            Container(margin: EdgeInsets.only(top: 15), child: Text(document['Title'])),
-                            Container(child: Text(document['Caption request']),),
-                            GetBuilder <GroupReq> (
-                              init: GroupReq(),
-                              builder: (val) {
-                                return ElevatedButton(
-                                  child: Text(document['Subject'], style: TextStyle(fontSize: 13, color: const Color(0xFF585858)),),
-                                  style: ElevatedButton.styleFrom(primary: Color(0xFFCAB8E0).withOpacity(0.33), shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(20.0)), minimumSize: (Size(30, 25))),
-                                  onPressed: () { (snapshotData != null) ?
-                                    val.GrReq(document['Subject']).then((value) {
-                                      snapshotData = value;
-                                    }): (snapshotData = document['Caption file']);
-                                    isExecuted ? Navigator.push(context, MaterialPageRoute(builder: (context) => subjectGroupreq(Subject : document['Subject'], snapshotData: snapshotData,))) : {};
-                                  },
-                                );
-                              },),
-                            Container(child: Text('#'+document['Sub-subject Tag']),),
-                          ],
+                child: MaterialButton(
+                  child: Container(
+                    width: 372, height: 132,
+                    margin: EdgeInsets.all(10),
+                    decoration: BoxDecoration(color: const Color(0xFFCAB8E0).withOpacity(0.2), borderRadius: BorderRadius.circular(30)),
+                    child: Row(
+                      children: [
+                        Container(width: 75, height: 75, margin: EdgeInsets.all(10), decoration: BoxDecoration(color: const Color(0xFFCAB8E0), borderRadius: BorderRadius.circular(25)),child: Icon(Icons.paste_rounded, size: 35, color: const Color(0xFF585858),)),
+                        Container(
+                          child: Column(
+                            children: [
+                              Container(margin: EdgeInsets.only(top: 15, bottom: 15), child: Text(document['Title'])),
+                              Container(child: Text('#'+document['Sub-subject Tag']),),
+                              ElevatedButton(child: Text(document['Subject'], style: TextStyle(fontSize: 13, color: const Color(0xFF585858)),),
+                              style: ElevatedButton.styleFrom(primary: Color(0xFFCAB8E0).withOpacity(0.33), shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(20.0)), minimumSize: (Size(30, 25))),
+                              onPressed: () {}),
+                            ],
+                          ),
                         ),
-                      ),
-                    ],
+                      ],
+                    ),
                   ),
+                  onPressed: (){Navigator.push(context, MaterialPageRoute(builder: (context) => eachReq(Title: document['Title'], Caption: document['Caption request'], Tag: document['Sub-subject Tag'], Uname: document['Username'], Subject: document['Subject'],)));},
                 ),
               );
             }).toList(),
@@ -179,49 +172,52 @@ class _StreamkeypostState extends State<Streamkeypost> {
               crossAxisCount: 2,
               children: snapshot.data!.docs.map((document) {
                 return Center(
-                  child: Container(
-                    width: 179, height: 370,
-                    decoration: BoxDecoration(color: const Color(0xFFCAB8E0).withOpacity(0.2), borderRadius: BorderRadius.circular(20)),
-                    child: Column(
-                      children: [
-                        Container(
-                          width: 179, height: 190,
-                          decoration: BoxDecoration(
-                            color: Color((document['File format'] == 'pdf') ? (0xFFCAB8E0) : (0xFFFFFFFF)),
-                            borderRadius: BorderRadius.only(topLeft: Radius.circular(20), topRight: Radius.circular(20), bottomRight: Radius.circular(20)),
-                            image: DecorationImage(
-                              image: NetworkImage((document['File format'] == 'pdf') ?  'https://i.postimg.cc/VNTd9w2Q/PDF-File-Online-1-removebg-preview.png' : document['url']),
+                  child: MaterialButton(
+                    child: Container(
+                      width: 179, height: 370,
+                      decoration: BoxDecoration(color: const Color(0xFFCAB8E0).withOpacity(0.2), borderRadius: BorderRadius.circular(20)),
+                      child: Column(
+                        children: [
+                          Container(
+                            width: 179, height: 190,
+                            decoration: BoxDecoration(
+                              color: Color((document['File format'] == 'pdf') ? (0xFFCAB8E0) : (0xFFFFFFFF)),
+                              borderRadius: BorderRadius.only(topLeft: Radius.circular(20), topRight: Radius.circular(20), bottomRight: Radius.circular(20)),
+                              image: DecorationImage(
+                                image: NetworkImage((document['File format'] == 'pdf') ?  'https://i.postimg.cc/VNTd9w2Q/PDF-File-Online-1-removebg-preview.png' : document['url']),
+                              ),
                             ),
                           ),
-                        ),
-                        GetBuilder<GroupPost> (
-                          init: GroupPost(),
-                          builder: (val) {
-                            return Container(
-                             margin: EdgeInsets.only(top: 20),
-                             child: ElevatedButton(
-                              child: Text(document['Caption file'], style: TextStyle(fontSize: 13, color: const Color(0xFF585858)),),
-                              style: ElevatedButton.styleFrom(primary: Color(0xFFCAB8E0).withOpacity(0.33), shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(20.0)), minimumSize: (Size(30, 25))),
-                              onPressed: () { (snapshotData != null) ?
-                                val.GrPost(document['Caption file']).then((value) {
-                                snapshotData = value;
-                                document['Caption file'].clear();
-                              }): (snapshotData = document['Caption file']);
-                                isExecuted ? Navigator.push(context, MaterialPageRoute(builder: (context) => subjectGroup(Subject : document['Caption file'], snapshotData: snapshotData,))) : {};
+                          GetBuilder<GroupPost> (
+                            init: GroupPost(),
+                            builder: (val) {
+                              return Container(
+                               margin: EdgeInsets.only(top: 20),
+                               child: ElevatedButton(
+                                child: Text(document['Caption file'], style: TextStyle(fontSize: 13, color: const Color(0xFF585858)),),
+                                style: ElevatedButton.styleFrom(primary: Color(0xFFCAB8E0).withOpacity(0.33), shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(20.0)), minimumSize: (Size(30, 25))),
+                                onPressed: () { (snapshotData != null) ?
+                                  val.GrPost(document['Caption file']).then((value) {
+                                  snapshotData = value;
+                                  document['Caption file'].clear();
+                                }): (snapshotData = document['Caption file']);
+                                  isExecuted ? Navigator.push(context, MaterialPageRoute(builder: (context) => subjectGroup(Subject : document['Caption file'], snapshotData: snapshotData,))) : {};
+                                }
+                              ));
+                            },
+                          ),
+                          Container(child: Text('#'+document['Sub-subject Tag']),),
+                          Container(child: Text(document['Title'], style: TextStyle(fontSize: 18),),),
+                          Container(child: Text(document['Username']),),
+                          IconButton(icon: Icon(Icons.download_rounded, color: const Color(0xFF585858),),
+                              onPressed: () async {
+                                await _launchInBrowser(document['url']);
                               }
-                            ));
-                          },
-                        ),
-                        Container(child: Text('#'+document['Sub-subject Tag']),),
-                        Container(child: Text(document['Title'], style: TextStyle(fontSize: 18),),),
-                        Container(child: Text(document['Username']),),
-                        IconButton(icon: Icon(Icons.download_rounded, color: const Color(0xFF585858),),
-                            onPressed: () async {
-                              await _launchInBrowser(document['url']);
-                            }
-                        ),
-                      ],
+                          ),
+                        ],
+                      ),
                     ),
+                    onPressed: (){Navigator.push(context, MaterialPageRoute(builder: (context) => eachPost(Title: document['Title'], Url: document['url'],Format: document['File format'], Caption: document['Subject'], Tag: document['Sub-subject Tag'], Uname: document['Username'], Subject: document['Caption file'],)));},
                   ),
                );
             }).toList(),

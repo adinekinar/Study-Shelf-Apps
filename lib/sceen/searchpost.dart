@@ -88,14 +88,14 @@ class _searchPostpagesState extends State<searchPostpages> {
       appBar: AppBar(
         toolbarHeight: 80,
         leading: IconButton(
-        icon: Icon(CupertinoIcons.back, size: 40, color: Colors.white),
+        icon: Icon(CupertinoIcons.back, size: 35, color: Colors.black),
             onPressed: () {
             //snapshotData.docs[index]['Subject'].clear();
             Navigator.push(context, MaterialPageRoute(builder: (context) => Home()));
            }),
         actions: [
           IconButton(
-          icon: Icon(Icons.clear_rounded),
+          icon: Icon(Icons.clear_rounded, color: Colors.black,),
           onPressed: () {
             searchcont.clear();
             setState(() {
@@ -106,7 +106,7 @@ class _searchPostpagesState extends State<searchPostpages> {
               init: DatacontPost(),
               builder: (val) {
                 return IconButton(
-                    icon: Icon(Icons.search_rounded, size: 26),
+                    icon: Icon(Icons.search_rounded, size: 26, color: Colors.black,),
                     onPressed: () {
                       val.Searchpost(searchcont.text).then((value) {
                         snapshotData = value;

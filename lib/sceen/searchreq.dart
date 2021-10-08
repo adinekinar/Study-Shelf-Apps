@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:study_shelf/sceen/homepagereq.dart';
 import 'package:study_shelf/sceen/process_uname.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:study_shelf/sceen/subjectgroupreq.dart';
 
 class searchReqpages extends StatefulWidget {
   const searchReqpages({Key? key}) : super(key: key);
@@ -35,13 +36,23 @@ class _searchReqpagesState extends State<searchReqpages> {
                     child: Column(
                       children: [
                         Container(margin: EdgeInsets.only(top: 15), child: Text(snapshotData.docs[index]['Title'])),
-                        //Container(child: Text(snapshotData.docs[index]['Caption request']),),
-                        Container(
-                          child: ElevatedButton(
-                            child: Text(snapshotData.docs[index]['Subject'], style: TextStyle(fontSize: 13, color: const Color(0xFF585858)),),
-                            style: ElevatedButton.styleFrom(primary: Color(0xFFCAB8E0).withOpacity(0.33), shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(20.0)), minimumSize: (Size(30, 25))),
-                            onPressed: () {},
-                          ),),
+                        GetBuilder<GroupPost> (
+                          init: GroupPost(),
+                          builder: (val) {
+                            return Container(
+                                child: ElevatedButton(
+                                    child: Text(snapshotData.docs[index]['Subject'], style: TextStyle(fontSize: 13, color: const Color(0xFF585858)),),
+                                    style: ElevatedButton.styleFrom(primary: Color(0xFFCAB8E0).withOpacity(0.33), shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(20.0)), minimumSize: (Size(30, 25))),
+                                    onPressed: () { (snapshotData != null) ?
+                                    val.GrPost(snapshotData.docs[index]['Subject']).then((value) {
+                                      snapshotData = value;
+                                      snapshotData.docs[index]['Subject'].clear();
+                                    }): (snapshotData = snapshotData.docs[index]['Subject']);
+                                    isExecuted ? Navigator.push(context, MaterialPageRoute(builder: (context) => subjectGroupreq(Subject : snapshotData.docs[index]['Subject'], snapshotData: snapshotData,))) : {};
+                                    }
+                                ));
+                          },
+                        ),
                         Container(child: Text('#'+snapshotData.docs[index]['Sub-subject Tag']),),
                       ],
                     ),
@@ -57,14 +68,14 @@ class _searchReqpagesState extends State<searchReqpages> {
       appBar: AppBar(
         toolbarHeight: 80,
         leading: IconButton(
-        icon: Icon(CupertinoIcons.back, size: 40, color: Colors.white),
+        icon: Icon(CupertinoIcons.back, size: 35, color: Colors.black),
           onPressed: () {
           //snapshotData.docs[index]['Subject'].clear();
           Navigator.push(context, MaterialPageRoute(builder: (context) => Homreq()));
           }),
         actions: [
           IconButton(
-            icon: Icon(Icons.clear_rounded),
+            icon: Icon(Icons.clear_rounded, color: Colors.black),
             onPressed: () {
               searchcont.clear();
               setState(() {
@@ -75,7 +86,7 @@ class _searchReqpagesState extends State<searchReqpages> {
               init: DatacontReq(),
               builder: (val) {
                 return IconButton(
-                    icon: Icon(Icons.search_rounded, size: 26),
+                    icon: Icon(Icons.search_rounded, size: 26, color: Colors.black),
                     onPressed: () {
                       val.Searchreq(searchcont.text).then((value) {
                         snapshotData = value;

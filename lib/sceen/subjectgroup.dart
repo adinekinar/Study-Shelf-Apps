@@ -20,10 +20,10 @@ class subjectGroup extends StatelessWidget {
     return Scaffold(
       backgroundColor: const Color(0xFFF1EEEE),
       appBar: AppBar(
-        title: Text(Subject),
+        title: Text(Subject, style: TextStyle(color: Colors.black),),
         backgroundColor: const Color(0xFFCAB8E0),
         leading: IconButton(
-          icon: Icon(CupertinoIcons.back, size: 40, color: Colors.white),
+          icon: Icon(CupertinoIcons.back, size: 35, color: Colors.black),
           onPressed: () {
             //snapshotData.docs[index]['Subject'].clear();
             Navigator.push(context, MaterialPageRoute(builder: (context) => Home()));
