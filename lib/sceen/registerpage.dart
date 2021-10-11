@@ -2,6 +2,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:study_shelf/sceen/homepage.dart';
+import 'package:study_shelf/sceen/loginpage.dart';
 import 'package:study_shelf/sceen/process_uname.dart';
 
 class SSregister extends StatefulWidget {
@@ -15,6 +16,7 @@ class _SSregisterState extends State<SSregister> {
   final emailcnt = TextEditingController();
   final passcnt = TextEditingController();
   final usercnt = TextEditingController();
+  final int point = 10;
 
   @override
   Widget build(BuildContext context) {
@@ -95,17 +97,17 @@ class _SSregisterState extends State<SSregister> {
                         content: await FirebaseAuth.instance.createUserWithEmailAndPassword(email: emailcnt.text, password: passcnt.text);
                         content: User? userupdate = FirebaseAuth.instance.currentUser;
                         content: userupdate!.updateProfile(displayName: usercnt.text);
-                        content: unameStore(usercnt.text);
-                        Navigator.push(context, MaterialPageRoute(builder: (context) => Home()));
+                        content: unameStore(usercnt.text, point);
+                        popUp(context);
                         setState(() {});
                       }),
                       Container(child: Text('Have an account?', style: TextStyle(fontSize: 18),), margin: EdgeInsets.only(top: 10, bottom: 10),),
                       ElevatedButton(
                           child: Text('Login', style: TextStyle(fontSize: 25),),
                           style: ElevatedButton.styleFrom(primary: Color(0xFFCAB8E0).withOpacity(0.33), shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(20.0))),
-                          onPressed: () async {
-                            Navigator.push(context, MaterialPageRoute(builder: (context) => SSregister()));
-                          }),
+                          onPressed: () {
+                            Navigator.push(context, MaterialPageRoute(builder: (context) => SSlogin()));
+                          } ),
                     ],
                   ),),
                 ],
@@ -116,4 +118,26 @@ class _SSregisterState extends State<SSregister> {
       ),
     );
   }
+  void popUp(BuildContext context) => showDialog(
+    context: context,
+    builder: (BuildContext context) {
+      return Dialog(
+          child: Container(
+          height: 368,
+          decoration: BoxDecoration(
+              color: Colors.white,
+              borderRadius: BorderRadius.circular(60)
+          ),
+          child:
+          Column(
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              Image.network('https://i.postimg.cc/Hk1vdwD2/You-Got-10-points.png', height: 300, width: 300,),
+              Container(margin : EdgeInsets.only(bottom: 20), child: RaisedButton(color: const Color(0xFFCAB8E0),child: Text('Next to Homepage'), onPressed: () {Navigator.push(context, MaterialPageRoute(builder: (context) => Home()));}))
+            ],
+          ),
+        ),
+      );
+    }
+  );
 }

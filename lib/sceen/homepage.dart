@@ -15,7 +15,7 @@ class Home extends StatefulWidget {
 }
 
 class _HomeState extends State<Home> {
-
+  bool isAscending = false;
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -104,6 +104,12 @@ class _HomeState extends State<Home> {
               ),
             ],
             ),
+          ),
+          IconButton(
+            icon: Icon(Icons.sort_rounded),
+            onPressed: (){
+
+            },
           ),
           Expanded(child: Container(child: Streamkeypost())),
         ],

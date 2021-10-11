@@ -1,7 +1,5 @@
 import 'dart:io';
-import 'package:dio/dio.dart';
-import 'package:path_provider/path_provider.dart' as p;
-import 'package:file_picker/file_picker.dart';
+import 'dart:math';
 import 'package:get/get.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
@@ -28,11 +26,11 @@ class FirebaseApi {
 }
 
 //for get uid for username from auth
-Future<void> unameStore(String username) async {
+Future<void> unameStore(String username, int points) async {
   CollectionReference users = FirebaseFirestore.instance.collection('Users');
   FirebaseAuth auth = FirebaseAuth.instance;
   String uid = auth.currentUser!.uid.toString();
-  users.add({'username': username, 'uid': uid});
+  users.add({'username': username, 'uid': uid, 'points' : points});
   return;
 }
 
@@ -90,50 +88,49 @@ class _StreamkeyreqState extends State<Streamkeyreq> {
   late QuerySnapshot snapshotData;
   bool isExecuted = true;
   @override
-
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: Colors.transparent,
       body: StreamBuilder(
-        stream: FirebaseFirestore.instance.collection('FormRequest').orderBy('Upload Time', descending: true).snapshots(),
-        builder: (BuildContext context, AsyncSnapshot<QuerySnapshot> snapshot) {
-          if(!snapshot.hasData){
-            return Center(
-              child: CircularProgressIndicator(),
-            );
-          }
-          return ListView(
-            children: snapshot.data!.docs.map((document) {
-              return Center(
-                child: MaterialButton(
-                  child: Container(
-                    width: 372, height: 132,
-                    margin: EdgeInsets.all(10),
-                    decoration: BoxDecoration(color: const Color(0xFFCAB8E0).withOpacity(0.2), borderRadius: BorderRadius.circular(30)),
-                    child: Row(
-                      children: [
-                        Container(width: 75, height: 75, margin: EdgeInsets.all(10), decoration: BoxDecoration(color: const Color(0xFFCAB8E0), borderRadius: BorderRadius.circular(25)),child: Icon(Icons.paste_rounded, size: 35, color: const Color(0xFF585858),)),
-                        Container(
-                          child: Column(
-                            children: [
-                              Container(margin: EdgeInsets.only(top: 15, bottom: 15), child: Text(document['Title'])),
-                              Container(child: Text('#'+document['Sub-subject Tag']),),
-                              ElevatedButton(child: Text(document['Subject'], style: TextStyle(fontSize: 13, color: const Color(0xFF585858)),),
-                              style: ElevatedButton.styleFrom(primary: Color(0xFFCAB8E0).withOpacity(0.33), shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(20.0)), minimumSize: (Size(30, 25))),
-                              onPressed: () {}),
-                            ],
-                          ),
+            stream: FirebaseFirestore.instance.collection('FormRequest').orderBy('Upload Time', descending: true).snapshots(),
+            builder: (BuildContext context, AsyncSnapshot<QuerySnapshot> snapshot) {
+              if(!snapshot.hasData){
+                return Center(
+                  child: CircularProgressIndicator(),
+                );
+              }
+              return ListView(
+                children: snapshot.data!.docs.map((document) {
+                  return Center(
+                    child: MaterialButton(
+                      child: Container(
+                        width: 372, height: 132,
+                        margin: EdgeInsets.all(10),
+                        decoration: BoxDecoration(color: const Color(0xFFCAB8E0).withOpacity(0.2), borderRadius: BorderRadius.circular(30)),
+                        child: Row(
+                          children: [
+                            Container(width: 75, height: 75, margin: EdgeInsets.all(10), decoration: BoxDecoration(color: const Color(0xFFCAB8E0), borderRadius: BorderRadius.circular(25)),child: Icon(Icons.paste_rounded, size: 35, color: const Color(0xFF585858),)),
+                            Container(
+                              child: Column(
+                                children: [
+                                  Container(margin: EdgeInsets.only(top: 15, bottom: 15), child: Text(document['Title'])),
+                                  Container(child: Text('#'+document['Sub-subject Tag']),),
+                                  ElevatedButton(child: Text(document['Subject'], style: TextStyle(fontSize: 13, color: const Color(0xFF585858)),),
+                                  style: ElevatedButton.styleFrom(primary: Color(0xFFCAB8E0).withOpacity(0.33), shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(20.0)), minimumSize: (Size(30, 25))),
+                                  onPressed: () {}),
+                                ],
+                              ),
+                            ),
+                          ],
                         ),
-                      ],
+                      ),
+                      onPressed: (){Navigator.push(context, MaterialPageRoute(builder: (context) => eachReq(Title: document['Title'], Caption: document['Caption request'], Tag: document['Sub-subject Tag'], Uname: document['Username'], Subject: document['Subject'], doc_id: document.id,)));},
                     ),
-                  ),
-                  onPressed: (){Navigator.push(context, MaterialPageRoute(builder: (context) => eachReq(Title: document['Title'], Caption: document['Caption request'], Tag: document['Sub-subject Tag'], Uname: document['Username'], Subject: document['Subject'],)));},
-                ),
+                  );
+                }).toList(),
               );
-            }).toList(),
-          );
-        },
-      ),
+            },
+          ),
     );
   }
 }
@@ -217,7 +214,7 @@ class _StreamkeypostState extends State<Streamkeypost> {
                         ],
                       ),
                     ),
-                    onPressed: (){Navigator.push(context, MaterialPageRoute(builder: (context) => eachPost(Title: document['Title'], Url: document['url'],Format: document['File format'], Caption: document['Subject'], Tag: document['Sub-subject Tag'], Uname: document['Username'], Subject: document['Caption file'],)));},
+                    onPressed: (){Navigator.push(context, MaterialPageRoute(builder: (context) => eachPost(Title: document['Title'], Url: document['url'],Format: document['File format'], Caption: document['Subject'], Tag: document['Sub-subject Tag'], Uname: document['Username'], Subject: document['Caption file'], doc_id: document.id,)));},
                   ),
                );
             }).toList(),
