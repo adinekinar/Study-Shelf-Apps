@@ -1,3 +1,5 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:study_shelf/sceen/homepagereq.dart';
@@ -88,11 +90,17 @@ class _FormqState extends State<Formq> {
                   style: ElevatedButton.styleFrom(primary: Color(0xFFEFD1A9), shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(20.0))),
                   onPressed: () async {
                     value = int.parse(valueDropmenu!);
+                    content: getReward(value!);
                     content: DatabaseReq().fillReq(title.text, captf.text, subop.text, ssubtag.text, value!);
                     Navigator.push(this.context, MaterialPageRoute(builder: (context) => Homreq()));
                   },
                 ),
               ),
+              IconButton(
+              icon: Icon(Icons.add),
+              onPressed: (){
+                int point = 25;
+              getReward(point);}),
             ],
           ),
         ),
@@ -136,4 +144,21 @@ class Inpform extends StatelessWidget {
   }
 }
 
-
+//get Reward
+Future getReward (int point) async {
+  final firebase = FirebaseFirestore.instance;
+  final pnrewrd = firebase.collection('Users').get();
+  pnrewrd.then((QuerySnapshot docsnap) {
+    docsnap.docs.forEach((doc) {
+      int rwrd = doc['points'];
+      int rewrd = rwrd-point;
+      rewardUpdate(rewrd);
+    });
+  });
+}
+Future rewardUpdate(int points) async {
+  final firebase = FirebaseFirestore.instance;
+  FirebaseAuth auth = FirebaseAuth.instance;
+  String uid = auth.currentUser!.uid.toString();
+  final updt = firebase.collection('Users').doc(uid).update({'points' : points});
+}

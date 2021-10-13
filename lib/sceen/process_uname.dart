@@ -1,5 +1,6 @@
 import 'dart:io';
 import 'dart:math';
+import 'package:flutter/cupertino.dart';
 import 'package:get/get.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
@@ -27,10 +28,10 @@ class FirebaseApi {
 
 //for get uid for username from auth
 Future<void> unameStore(String username, int points) async {
-  CollectionReference users = FirebaseFirestore.instance.collection('Users');
   FirebaseAuth auth = FirebaseAuth.instance;
   String uid = auth.currentUser!.uid.toString();
-  users.add({'username': username, 'uid': uid, 'points' : points});
+  DocumentReference users = FirebaseFirestore.instance.collection('Users').doc(uid);
+  users.set({'username': username, 'uid': uid, 'points' : points});
   return;
 }
 
@@ -112,6 +113,7 @@ class _StreamkeyreqState extends State<Streamkeyreq> {
                             Container(width: 75, height: 75, margin: EdgeInsets.all(10), decoration: BoxDecoration(color: const Color(0xFFCAB8E0), borderRadius: BorderRadius.circular(25)),child: Icon(Icons.paste_rounded, size: 35, color: const Color(0xFF585858),)),
                             Container(
                               child: Column(
+                                crossAxisAlignment: CrossAxisAlignment.start,
                                 children: [
                                   Container(margin: EdgeInsets.only(top: 15, bottom: 15), child: Text(document['Title'])),
                                   Container(child: Text('#'+document['Sub-subject Tag']),),
@@ -175,32 +177,36 @@ class _StreamkeypostState extends State<Streamkeypost> {
                       decoration: BoxDecoration(color: const Color(0xFFCAB8E0).withOpacity(0.2), borderRadius: BorderRadius.circular(20)),
                       child: Column(
                         children: [
-                          Container(
-                            width: 179, height: 190,
-                            decoration: BoxDecoration(
-                              color: Color((document['File format'] == 'pdf') ? (0xFFCAB8E0) : (0xFFFFFFFF)),
-                              borderRadius: BorderRadius.only(topLeft: Radius.circular(20), topRight: Radius.circular(20), bottomRight: Radius.circular(20)),
-                              image: DecorationImage(
-                                image: NetworkImage((document['File format'] == 'pdf') ?  'https://i.postimg.cc/VNTd9w2Q/PDF-File-Online-1-removebg-preview.png' : document['url']),
+                          Column(
+                            children: [
+                              Container(
+                                width: 179, height: 190,
+                                decoration: BoxDecoration(
+                                  color: Color((document['File format'] == 'pdf') ? (0xFFCAB8E0) : (0xFFFFFFFF)),
+                                  borderRadius: BorderRadius.only(topLeft: Radius.circular(20), topRight: Radius.circular(20), bottomRight: Radius.circular(20)),
+                                  image: DecorationImage(
+                                    image: NetworkImage((document['File format'] == 'pdf') ?  'https://i.postimg.cc/VNTd9w2Q/PDF-File-Online-1-removebg-preview.png' : document['url']),
+                                  ),
+                                ),
                               ),
-                            ),
+                            ],
                           ),
                           GetBuilder<GroupPost> (
                             init: GroupPost(),
                             builder: (val) {
                               return Container(
-                               margin: EdgeInsets.only(top: 20),
-                               child: ElevatedButton(
-                                child: Text(document['Caption file'], style: TextStyle(fontSize: 13, color: const Color(0xFF585858)),),
-                                style: ElevatedButton.styleFrom(primary: Color(0xFFCAB8E0).withOpacity(0.33), shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(20.0)), minimumSize: (Size(30, 25))),
-                                onPressed: () { (snapshotData != null) ?
-                                  val.GrPost(document['Caption file']).then((value) {
-                                  snapshotData = value;
-                                  document['Caption file'].clear();
-                                }): (snapshotData = document['Caption file']);
-                                  isExecuted ? Navigator.push(context, MaterialPageRoute(builder: (context) => subjectGroup(Subject : document['Caption file'], snapshotData: snapshotData,))) : {};
-                                }
-                              ));
+                                  margin: EdgeInsets.only(top: 20),
+                                  child: ElevatedButton(
+                                      child: Text(document['Caption file'], style: TextStyle(fontSize: 13, color: const Color(0xFF585858)),),
+                                      style: ElevatedButton.styleFrom(primary: Color(0xFFCAB8E0).withOpacity(0.33), shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(20.0)), minimumSize: (Size(30, 25))),
+                                      onPressed: () { (snapshotData != null) ?
+                                      val.GrPost(document['Caption file']).then((value) {
+                                        snapshotData = value;
+                                        document['Caption file'].clear();
+                                      }): (snapshotData = document['Caption file']);
+                                      isExecuted ? Navigator.push(context, MaterialPageRoute(builder: (context) => subjectGroup(Subject : document['Caption file'], snapshotData: snapshotData,))) : {};
+                                      }
+                                  ));
                             },
                           ),
                           Container(child: Text('#'+document['Sub-subject Tag']),),

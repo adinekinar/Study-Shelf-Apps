@@ -1,6 +1,7 @@
 import 'dart:async';
 import 'dart:io';
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/foundation.dart';
 import 'package:path/path.dart';
 import 'package:firebase_storage/firebase_storage.dart' as firebase_storage;
@@ -119,6 +120,13 @@ class _FormpState extends State<Formp> {
                   onPressed: submitPost,
                 ),
               ),
+              IconButton(
+                icon: Icon(Icons.add),
+                onPressed: (){
+                  int point = 10;
+                  getReward(point);
+                },
+              ),
             ],
           ),
         ),
@@ -145,14 +153,8 @@ class _FormpState extends State<Formp> {
   Future submitPost() async {
     if(file==null) return;
     var downloadurl = await uploadFile(file!);
-    String poin = getReward().toString();
-    print(poin);
-    int a = int.parse(poin);
-    int point = a+10;
-    print(point);
-    String rwrd = point.toString();
-    print(rwrd);
-    content : rewardUpdate(rwrd);
+    int point = 10;
+    content: getReward(point);
     content : fillPost(title.text, captf.text, subop.text, ssubtag.text, downloadurl, valueDropmenu!);
     Navigator.push(this.context, MaterialPageRoute(builder: (context) => Home()));
   }
@@ -194,13 +196,22 @@ class Inpform extends StatelessWidget {
 }
 
 //for update reward
-  Future getReward () async {
+  Future getReward (int point) async {
     final firebase = FirebaseFirestore.instance;
-    final pnrewrd = firebase.collection('Users').doc('points').get();
-    return pnrewrd;
+    final pnrewrd = firebase.collection('Users').get();
+    pnrewrd.then((QuerySnapshot docsnap) {
+     docsnap.docs.forEach((doc) {
+       int rwrd = doc['points'];
+       int rewrd = rwrd+point;
+       rewardUpdate(rewrd);
+     });
+    });
   }
-  Future<void> rewardUpdate(String point) async {
-    return await FirebaseFirestore.instance.collection('Users').doc().update({'points' : point});
+  Future rewardUpdate(int points) async {
+    final firebase = FirebaseFirestore.instance;
+    FirebaseAuth auth = FirebaseAuth.instance;
+    String uid = auth.currentUser!.uid.toString();
+    final updt = firebase.collection('Users').doc(uid).update({'points' : points});
   }
 
 

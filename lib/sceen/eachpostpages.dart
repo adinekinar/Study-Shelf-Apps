@@ -8,6 +8,7 @@ import 'package:get/get_state_manager/src/simple/get_state.dart';
 import 'package:path/path.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:study_shelf/sceen/homepage.dart';
+import 'package:study_shelf/sceen/homepagereq.dart';
 import 'package:study_shelf/sceen/pdfviewpage.dart';
 import 'package:study_shelf/sceen/process_uname.dart';
 import 'package:study_shelf/sceen/subjectgroup.dart';
@@ -69,74 +70,118 @@ class eachPost extends StatelessWidget {
       ),
       body: SingleChildScrollView(
         child: Container(
-          child: Column(
-            children: [
-              MaterialButton(
-                child: Center(
-                  child: Container(
-                    margin: EdgeInsets.only(top: 30, bottom: 20),
-                    height: 202, width: 267,
-                    decoration: BoxDecoration(
-                      color: Color((Format == 'pdf') ? (0xFFCAB8E0) : (0xFFFFFFFF)),
-                      borderRadius: BorderRadius.circular(20),
-                      image: DecorationImage(
-                        image: NetworkImage((Format == 'pdf') ?  'https://i.postimg.cc/VNTd9w2Q/PDF-File-Online-1-removebg-preview.png' : Url),
+          child: Stack(
+            children: <Widget>[
+              Column(
+                children: [
+                  MaterialButton(
+                    child: Center(
+                      child: Container(
+                        margin: EdgeInsets.only(top: 30, bottom: 20),
+                        height: 202, width: 267,
+                        decoration: BoxDecoration(
+                          color: Color((Format == 'pdf') ? (0xFFCAB8E0) : (0xFFFFFFFF)),
+                          borderRadius: BorderRadius.circular(20),
+                          image: DecorationImage(
+                            image: NetworkImage((Format == 'pdf') ?  'https://i.postimg.cc/VNTd9w2Q/PDF-File-Online-1-removebg-preview.png' : Url),
+                          ),
+                        ),
                       ),
                     ),
+                    onPressed: () async {
+                      final file = await FileApi.loadFile(Url);
+                      (Format == 'pdf') ? openPdf(context, file) : {};
+                    },
                   ),
+                  Container(child: Text(Title+' :', style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),)),
+                  Container(child: Text(Caption, style: TextStyle(fontSize: 20))),
+                  Container(child: Text('tag : #'+Tag)),
+                  ElevatedButton(
+                    child: Text(Subject, style: TextStyle(
+                    fontSize: 16, color: const Color(0xFF585858)),),
+                    style: ElevatedButton.styleFrom(
+                    primary: Color(0xFFCAB8E0).withOpacity(0.33),
+                    shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(20.0)),
+                    minimumSize: (Size(50, 30))),
+                    onPressed: () {}),
+                  Text('Created by : '+Uname),
+                  Container(height: 357.5),
+                 ]
                 ),
-                onPressed: () async {
-                  final file = await FileApi.loadFile(Url);
-                  (Format == 'pdf') ? openPdf(context, file) : {};
-                },
-              ),
-              Container(child: Text(Title+' :', style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),)),
-              Container(child: Text(Caption, style: TextStyle(fontSize: 20))),
-              Container(child: Text('tag : #'+Tag)),
-              ElevatedButton(
-                child: Text(Subject, style: TextStyle(
-                fontSize: 16, color: const Color(0xFF585858)),),
-                style: ElevatedButton.styleFrom(
-                primary: Color(0xFFCAB8E0).withOpacity(0.33),
-                shape: RoundedRectangleBorder(
-                borderRadius: BorderRadius.circular(20.0)),
-                minimumSize: (Size(50, 30))),
-                onPressed: () {}),
-              Text('Created by : '+Uname),
-              Container(
-                margin: EdgeInsets.only(top: 30),
-                width: double.infinity, height: 328,
-                decoration: BoxDecoration(
-                  color: Colors.white30,
-                  borderRadius: BorderRadius.only(topRight: Radius.circular(40), topLeft: Radius.circular(40)),
-                ),
-                child: Column(
-                  children: [
-                    Container(margin: EdgeInsets.only(top: 20, bottom: 7), child: Text('Comments', style: TextStyle(color: const Color(0xFF585858), fontSize: 20, fontWeight: FontWeight.bold),)),
-                    Container(margin: EdgeInsets.only(bottom: 10), height: 7, width: 125, decoration: BoxDecoration(borderRadius: BorderRadius.circular(10), color: const Color(0xFFCAB8E0)),),
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: [
-                        Container(
-                            margin: EdgeInsets.only(right: 5),
-                            width: 300, height: 50,
-                            padding: EdgeInsets.only(left: 20),
-                            decoration: BoxDecoration(color: Colors.white30, border: Border.all(color: const Color(0xFFAEAEAE).withOpacity(0.2)), borderRadius: BorderRadius.circular(20)),
-                            child: TextField(controller: comment, decoration: InputDecoration(border: InputBorder.none, hintText: "Type your comment.."),)
+              Positioned.fill(
+                child: DraggableScrollableSheet(
+                    initialChildSize: 0.47,
+                    maxChildSize: 0.55,
+                    minChildSize: 0.47,
+                    builder: (_, ScrollController){
+                      return Container(
+                        decoration: BoxDecoration(color: Color(0xFFF7F5F5), borderRadius: BorderRadius.only(topRight: Radius.circular(40), topLeft: Radius.circular(40)),
                         ),
-                        IconButton(
-                          icon: Icon(Icons.send_rounded, size: 30, color: const Color(0xFF585858),),
-                          onPressed: (){
-                            commentS('FormPost', doc_id, comment.text);
-                          },
-                        )
-                      ],
-                    ),
-                  ],
+                        child: Column(
+                          children: [
+                            Container(margin: EdgeInsets.only(top: 20, bottom: 7), child: Text('Comments', style: TextStyle(color: const Color(0xFF585858), fontSize: 20, fontWeight: FontWeight.bold),)),
+                            Container(margin: EdgeInsets.only(bottom: 10), height: 7, width: 125, decoration: BoxDecoration(borderRadius: BorderRadius.circular(10), color: const Color(0xFFCAB8E0)),),
+                            Row(
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              children: [
+                                Container(
+                                    margin: EdgeInsets.only(right: 5),
+                                    width: 300, height: 50,
+                                    padding: EdgeInsets.only(left: 20),
+                                    decoration: BoxDecoration(color: Colors.white30, border: Border.all(color: const Color(0xFFAEAEAE).withOpacity(0.2)), borderRadius: BorderRadius.circular(20)),
+                                    child: TextField(controller: comment, decoration: InputDecoration(border: InputBorder.none, hintText: "Type your comment.."),)
+                                ),
+                                IconButton(
+                                  icon: Icon(Icons.send_rounded, size: 30, color: const Color(0xFF585858),),
+                                  onPressed: (){
+                                    commentS('FormPost', doc_id, comment.text);
+                                  },
+                                ),
+                              ],
+                            ),
+                            StreamBuilder(
+                              stream: FirebaseFirestore.instance.collection('FormPost').doc(doc_id).collection('Comments').snapshots(),
+                              builder: (context, AsyncSnapshot<QuerySnapshot> snapshot) {
+                                if(!snapshot.hasData){
+                                  return Center(
+                                    child: CircularProgressIndicator(),
+                                  );
+                                }
+                                return Expanded(
+                                  child: ListView.builder(
+                                    itemCount: snapshot.data!.docs.length,
+                                    controller: ScrollController,
+                                    itemBuilder: (context, index) {
+                                      DocumentSnapshot docsnapshot = snapshot.data!.docs[index];
+                                      return Container(
+                                        padding: EdgeInsets.all(20),
+                                        margin: EdgeInsets.only(top: 10, left: 20, right: 20, bottom: 10),
+                                        decoration: BoxDecoration(
+                                          color: const Color(0xFFE9E3EB),
+                                          borderRadius: BorderRadius.circular(10),
+                                        ),
+                                        child : Column(
+                                          crossAxisAlignment: CrossAxisAlignment.start,
+                                          children: [
+                                            Text(docsnapshot['Username']+' :', style: TextStyle(color: Color(0xFF585858),)),
+                                            Text(docsnapshot['Context comment']),
+                                          ],
+                                        ),
+                                      );
+                                    },
+                                  ),
+                                );
+                              }
+                            ),
+                          ],
+                        ),
+                      );
+                    }
                 ),
               ),
-             ]
-            )
+            ],
+          )
           ),
       ),
       );
@@ -167,69 +212,113 @@ class eachReq extends StatelessWidget {
         backgroundColor: const Color(0xFFCAB8E0),
         leading: IconButton(
         icon: Icon(CupertinoIcons.back, size: 35, color: Colors.black),
-        onPressed: () {Navigator.push(context, MaterialPageRoute(builder: (context) => Home()));}),
+        onPressed: () {Navigator.push(context, MaterialPageRoute(builder: (context) => Homreq()));}),
       ),
       body: SingleChildScrollView(
         child: Container(
-            child: Column(
-                children: [
-                  Center(
-                    child: Container(
-                      margin: EdgeInsets.only(top: 30, bottom: 20),
-                      height: 150, width: 150,
-                      decoration: BoxDecoration(
-                        color: const Color(0xFFCAB8E0),
-                        borderRadius: BorderRadius.circular(20),
-                        ),
-                      child: Icon(Icons.paste_rounded, color: const Color(0xFF585858), size: 80,),
-                      ),
-                    ),
-                  Container(child: Text(Title+' :', style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),)),
-                  Container(child: Text(Caption, style: TextStyle(fontSize: 20))),
-                  Container(child: Text('tag : #'+Tag)),
-                  ElevatedButton(
-                      child: Text(Subject, style: TextStyle(
-                          fontSize: 16, color: const Color(0xFF585858)),),
-                      style: ElevatedButton.styleFrom(
-                          primary: Color(0xFFCAB8E0).withOpacity(0.33),
-                          shape: RoundedRectangleBorder(
-                              borderRadius: BorderRadius.circular(20.0)),
-                          minimumSize: (Size(50, 30))),
-                      onPressed: () {}),
-                  Text('Request by : '+Uname),
-                  Container(
-                    margin: EdgeInsets.only(top: 50),
-                    width: double.infinity, height: 358,
-                    decoration: BoxDecoration(
-                      color: Colors.white30,
-                      borderRadius: BorderRadius.only(topRight: Radius.circular(40), topLeft: Radius.circular(40)),
-                    ),
-                    child: Column(
-                      children: [
-                        Container(margin: EdgeInsets.only(top: 20, bottom: 7), child: Text('Comments', style: TextStyle(color: const Color(0xFF585858), fontSize: 20, fontWeight: FontWeight.bold),)),
-                        Container(margin: EdgeInsets.only(bottom: 10), height: 7, width: 125, decoration: BoxDecoration(borderRadius: BorderRadius.circular(10), color: const Color(0xFFCAB8E0)),),
-                        Row(
-                          mainAxisAlignment: MainAxisAlignment.center,
-                          children: [
-                            Container(
-                                margin: EdgeInsets.only(right: 5),
-                                width: 335, height: 50,
-                                padding: EdgeInsets.only(left: 20),
-                                decoration: BoxDecoration(color: Colors.white30, border: Border.all(color: const Color(0xFFAEAEAE).withOpacity(0.2)), borderRadius: BorderRadius.circular(20)),
-                                child: TextField(controller: comment, decoration: InputDecoration(border: InputBorder.none, hintText: "Type your comment.."),)
+            child: Stack(
+              children: <Widget>[
+                Column(
+                    children: [
+                      Center(
+                        child: Container(
+                          margin: EdgeInsets.only(top: 30, bottom: 20),
+                          height: 150, width: 150,
+                          decoration: BoxDecoration(
+                            color: const Color(0xFFCAB8E0),
+                            borderRadius: BorderRadius.circular(20),
                             ),
-                            IconButton(
-                              icon: Icon(Icons.send_rounded, size: 30, color: const Color(0xFF585858),),
-                              onPressed: (){
-                                commentS('FormRequest', doc_id, comment.text);
-                              },
-                            ),
-                          ],
+                          child: Icon(Icons.paste_rounded, color: const Color(0xFF585858), size: 80,),
+                          ),
                         ),
-                      ],
-                    ),
+                      Container(child: Text(Title+' :', style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),)),
+                      Align(alignment: Alignment.center,child: Text(Caption, style: TextStyle(fontSize: 20))),
+                      Container(child: Text('tag : #'+Tag)),
+                      ElevatedButton(
+                          child: Text(Subject, style: TextStyle(
+                              fontSize: 16, color: const Color(0xFF585858)),),
+                          style: ElevatedButton.styleFrom(
+                              primary: Color(0xFFCAB8E0).withOpacity(0.33),
+                              shape: RoundedRectangleBorder(
+                                  borderRadius: BorderRadius.circular(20.0)),
+                              minimumSize: (Size(50, 30))),
+                          onPressed: () {}),
+                      Text('Request by : '+Uname),
+                      Container(height: 410),
+                    ]
+                ),
+                Positioned.fill(
+                  child: DraggableScrollableSheet(
+                      initialChildSize: 0.53,
+                      maxChildSize: 0.6,
+                      minChildSize: 0.53,
+                      builder: (_, ScrollController){
+                        return Container(
+                          decoration: BoxDecoration(color: Color((0xFFF7F5F5)), borderRadius: BorderRadius.only(topRight: Radius.circular(40), topLeft: Radius.circular(40)),
+                          ),
+                          child: Column(
+                            children: [
+                              Container(margin: EdgeInsets.only(top: 20, bottom: 7), child: Text('Comments', style: TextStyle(color: const Color(0xFF585858), fontSize: 20, fontWeight: FontWeight.bold),)),
+                              Container(margin: EdgeInsets.only(bottom: 10), height: 7, width: 125, decoration: BoxDecoration(borderRadius: BorderRadius.circular(10), color: const Color(0xFFCAB8E0)),),
+                              Row(
+                                mainAxisAlignment: MainAxisAlignment.center,
+                                children: [
+                                  Container(
+                                      margin: EdgeInsets.only(right: 5),
+                                      width: 300, height: 50,
+                                      padding: EdgeInsets.only(left: 20),
+                                      decoration: BoxDecoration(color: Colors.white30, border: Border.all(color: const Color(0xFFAEAEAE).withOpacity(0.2)), borderRadius: BorderRadius.circular(20)),
+                                      child: TextField(controller: comment, decoration: InputDecoration(border: InputBorder.none, hintText: "Type your comment.."),)
+                                  ),
+                                  IconButton(
+                                    icon: Icon(Icons.send_rounded, size: 30, color: const Color(0xFF585858),),
+                                    onPressed: (){
+                                      commentS('FormRequest', doc_id, comment.text);
+                                    },
+                                  ),
+                                ],
+                              ),
+                              StreamBuilder(
+                                stream: FirebaseFirestore.instance.collection('FormRequest').doc(doc_id).collection('Comments').snapshots(),
+                                builder: (BuildContext context, AsyncSnapshot<QuerySnapshot> snapshot) {
+                                  if(!snapshot.hasData){
+                                    return Center(
+                                      child: CircularProgressIndicator(),
+                                    );
+                                  }
+                                  return Expanded(
+                                    child: ListView.builder(
+                                      controller: ScrollController,
+                                      itemCount: snapshot.data!.docs.length,
+                                      itemBuilder: (context, index) {
+                                        DocumentSnapshot docsnapshot = snapshot.data!.docs[index];
+                                        return Container(
+                                          padding: EdgeInsets.all(20),
+                                          margin: EdgeInsets.only(top: 10, left: 20, right: 20, bottom: 10),
+                                          decoration: BoxDecoration(
+                                            color: const Color(0xFFE9E3EB),
+                                            borderRadius: BorderRadius.circular(10),
+                                          ),
+                                          child : Column(
+                                            crossAxisAlignment: CrossAxisAlignment.start,
+                                            children: [
+                                              Text(docsnapshot['Username']+' :', style: TextStyle(color: Color(0xFF585858),)),
+                                              Text(docsnapshot['Context comment']),
+                                            ],
+                                          ),
+                                        );
+                                      },
+                                    ),
+                                  );
+                                }
+                              ),
+                            ],
+                          ),
+                        );
+                      }
                   ),
-                ]
+                ),
+              ],
             )
         ),
       ),
