@@ -7,9 +7,11 @@ import 'package:flutter/material.dart';
 import 'package:get/get_state_manager/src/simple/get_state.dart';
 import 'package:path/path.dart';
 import 'package:path_provider/path_provider.dart';
+import 'package:study_shelf/sceen/formpost.dart';
 import 'package:study_shelf/sceen/homepage.dart';
 import 'package:study_shelf/sceen/homepagereq.dart';
 import 'package:study_shelf/sceen/pdfviewpage.dart';
+import 'package:study_shelf/sceen/postreplay.dart';
 import 'package:study_shelf/sceen/process_uname.dart';
 import 'package:study_shelf/sceen/subjectgroup.dart';
 import 'package:url_launcher/url_launcher.dart';
@@ -31,6 +33,7 @@ class FileApi {
 
 }
 
+//Post
 class eachPost extends StatelessWidget {
   final String Title;
   final String Url;
@@ -192,6 +195,7 @@ void openPdf(BuildContext context, File file) => Navigator.of(context).push(
   MaterialPageRoute(builder: (context) => pdfViewerpage(file: file))
 );
 
+//Request
 class eachReq extends StatelessWidget {
   final String Title;
   final String Caption;
@@ -199,12 +203,20 @@ class eachReq extends StatelessWidget {
   final String Uname;
   final String Subject;
   final String doc_id;
-  const eachReq({Key? key, required this.Title, required this.Caption, required this.Tag, required this.Uname, required this.Subject, required this.doc_id}) : super(key: key);
+  final int value;
+  eachReq({Key? key, required this.Title, required this.Caption, required this.Tag, required this.Uname, required this.Subject, required this.doc_id, required this.value}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     final comment = TextEditingController();
     return Scaffold(
+        floatingActionButton: FloatingActionButton(
+          child: const Icon(Icons.reply_rounded, color: const Color(0xFF585858),size: 35,),
+          backgroundColor: const Color(0xFFEFD1A9),
+          onPressed: () async {
+            Navigator.push(context, MaterialPageRoute(builder: (context) =>  Formp(doc_id: doc_id, value: value)));
+          },
+        ),
           backgroundColor: const Color(0xFFF1EEEE),
           appBar: AppBar(
           title: Text(Title, style: TextStyle(color: Colors.black),),
@@ -232,7 +244,7 @@ class eachReq extends StatelessWidget {
                           ),
                         ),
                       Container(child: Text(Title+' :', style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),)),
-                      Align(alignment: Alignment.center,child: Text(Caption, style: TextStyle(fontSize: 20))),
+                      Center(child: Text(Caption, style: TextStyle(fontSize: 20))),
                       Container(child: Text('tag : #'+Tag)),
                       ElevatedButton(
                           child: Text(Subject, style: TextStyle(
@@ -326,6 +338,7 @@ class eachReq extends StatelessWidget {
   }
 }
 
+//comment
 Future<void> commentS (String maincollection, String doc_id, String com) async {
   DocumentReference cmnt = FirebaseFirestore.instance.collection(maincollection).doc(doc_id).collection('Comments').doc();
   FirebaseAuth auth = FirebaseAuth.instance;
@@ -336,3 +349,18 @@ Future<void> commentS (String maincollection, String doc_id, String com) async {
   });
   return;
 }
+
+Future solvedOrno (String docidrequest) async {
+  final firsol =  FirebaseFirestore.instance.collection('FormPost').where('docid' == docidrequest).get();
+  firsol.then((QuerySnapshot docsnap) {
+    docsnap.docs.forEach((doc) {
+      String n = doc['docid'];
+      prnt(n);
+    });
+  });
+}
+String prnt (String n) {
+  return n;
+}
+
+//solvedOrno(doc_id) ? subjectGroup(Subject: ' ', snapshotData: snapshotData) :

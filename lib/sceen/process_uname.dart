@@ -36,7 +36,7 @@ Future<void> unameStore(String username, int points) async {
 }
 
 //for store data post
-Future<void> fillPost (String title, String caption, String subject, String tag, url, String format) async {
+Future<void> fillPost (String title, String caption, String subject, String tag, url, String format, String doc_id) async {
   CollectionReference fillp = FirebaseFirestore.instance.collection('FormPost');
   FirebaseAuth auth = FirebaseAuth.instance;
   String uid = auth.currentUser!.uid.toString();
@@ -51,6 +51,7 @@ Future<void> fillPost (String title, String caption, String subject, String tag,
     'uid' : uid,
     'Username' : username,
     'url' : url,
+    'docid' : doc_id,
   });
   return;
 }
@@ -126,7 +127,7 @@ class _StreamkeyreqState extends State<Streamkeyreq> {
                           ],
                         ),
                       ),
-                      onPressed: (){Navigator.push(context, MaterialPageRoute(builder: (context) => eachReq(Title: document['Title'], Caption: document['Caption request'], Tag: document['Sub-subject Tag'], Uname: document['Username'], Subject: document['Subject'], doc_id: document.id,)));},
+                      onPressed: (){Navigator.push(context, MaterialPageRoute(builder: (context) => eachReq(Title: document['Title'], Caption: document['Caption request'], Tag: document['Sub-subject Tag'], Uname: document['Username'], Subject: document['Subject'], doc_id: document.id, value: document['Point Reward'],)));},
                     ),
                   );
                 }).toList(),

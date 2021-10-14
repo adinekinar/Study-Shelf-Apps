@@ -13,12 +13,15 @@ import 'package:study_shelf/sceen/selectpage.dart';
 import 'package:study_shelf/sceen/process_uname.dart';
 
 class Formp extends StatefulWidget {
-  const Formp({Key? key}) : super(key: key);
+  final String doc_id;
+  final int value;
+  const Formp({Key? key, required this.doc_id, required this.value}) : super(key: key);
   @override
-  _FormpState createState() => _FormpState();
+  _FormpState createState() => _FormpState(doc_id, value);
 }
 
 class _FormpState extends State<Formp> {
+
   final title = TextEditingController();
   final captf = TextEditingController();
   final subop = TextEditingController();
@@ -28,6 +31,14 @@ class _FormpState extends State<Formp> {
 
   String? valueDropmenu;
   List listpoint = ['pdf', 'png', 'jpg', 'jpeg'];
+
+  late String doc_id;
+  late int value;
+
+  _FormpState(String doc_id, int value){
+    this.doc_id = doc_id;
+    this.value = value;
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -153,9 +164,9 @@ class _FormpState extends State<Formp> {
   Future submitPost() async {
     if(file==null) return;
     var downloadurl = await uploadFile(file!);
-    int point = 10;
+    int point = value;
     content: getReward(point);
-    content : fillPost(title.text, captf.text, subop.text, ssubtag.text, downloadurl, valueDropmenu!);
+    content : fillPost(title.text, captf.text, subop.text, ssubtag.text, downloadurl, valueDropmenu!, doc_id);
     Navigator.push(this.context, MaterialPageRoute(builder: (context) => Home()));
   }
 }

@@ -58,7 +58,7 @@ class _SelectpgState extends State<Selectpg> {
                       ),
                       style: ElevatedButton.styleFrom(primary: Color(0xFFEFD1A9), shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(20.0)), minimumSize: Size(double.infinity, 40)),
                       onPressed: () async {
-                        Navigator.push(context, MaterialPageRoute(builder: (context) => Formp()));
+                        Navigator.push(context, MaterialPageRoute(builder: (context) => Formp(doc_id: '0', value: 10,)));
                       }),
                   ElevatedButton(
                       child: Row(
