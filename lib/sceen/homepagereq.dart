@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
 import 'package:study_shelf/sceen/homepage.dart';
 import 'package:study_shelf/sceen/loginpage.dart';
+import 'package:study_shelf/sceen/navbar.dart';
 import 'package:study_shelf/sceen/process_uname.dart';
 import 'package:study_shelf/sceen/searchreq.dart';
 import 'package:study_shelf/sceen/selectpage.dart';
@@ -19,6 +20,7 @@ class _HomreqState extends State<Homreq> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      drawer: Navbar(),
       floatingActionButton: FloatingActionButton(onPressed: () async {
         Navigator.push(context, MaterialPageRoute(builder: (context) => Selectpg()),);},
         child: const Icon(Icons.add, color: const Color(0xFF585858),size: 35,),
@@ -39,10 +41,6 @@ class _HomreqState extends State<Homreq> {
                 onPressed: () => Navigator.push(context, MaterialPageRoute(builder: (context) => SSlogin())),
               ),
             ],
-            leading: IconButton(
-            icon: Icon(Icons.view_headline_rounded, size: 40, color: Colors.black),
-            onPressed: () => Navigator.push(context, MaterialPageRoute(builder: (context) => SSlogin())),
-            ),
           ),
         body: Column(
           children: [

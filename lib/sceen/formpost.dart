@@ -224,8 +224,3 @@ class Inpform extends StatelessWidget {
     String uid = auth.currentUser!.uid.toString();
     final updt = firebase.collection('Users').doc(uid).update({'points' : points});
   }
-
-
-
-
-

@@ -207,14 +207,19 @@ class eachReq extends StatelessWidget {
   eachReq({Key? key, required this.Title, required this.Caption, required this.Tag, required this.Uname, required this.Subject, required this.doc_id, required this.value}) : super(key: key);
 
   @override
+
   Widget build(BuildContext context) {
     final comment = TextEditingController();
+    late QuerySnapshot snapshotData;
+    bool solved;
+    String i;
     return Scaffold(
         floatingActionButton: FloatingActionButton(
           child: const Icon(Icons.reply_rounded, color: const Color(0xFF585858),size: 35,),
           backgroundColor: const Color(0xFFEFD1A9),
           onPressed: () async {
-            Navigator.push(context, MaterialPageRoute(builder: (context) =>  Formp(doc_id: doc_id, value: value)));
+            final String uid = await getSolved();
+            Navigator.push(context, MaterialPageRoute(builder: (context) => postReplay(doc_id: doc_id)));
           },
         ),
           backgroundColor: const Color(0xFFF1EEEE),
@@ -222,6 +227,21 @@ class eachReq extends StatelessWidget {
           title: Text(Title, style: TextStyle(color: Colors.black),),
         centerTitle: true,
         backgroundColor: const Color(0xFFCAB8E0),
+        actions: [
+          GetBuilder<ReqSolved>(
+              init: ReqSolved(),
+              builder: (val) {
+                return IconButton(
+                    icon: Icon(Icons.search_rounded, size: 26, color: Colors.black),
+                    onPressed: () {
+                      val.RSolved(doc_id).then((value) {
+                        snapshotData = value;
+                        solved = true;
+                      });
+                    });
+              }
+          ),
+        ],
         leading: IconButton(
         icon: Icon(CupertinoIcons.back, size: 35, color: Colors.black),
         onPressed: () {Navigator.push(context, MaterialPageRoute(builder: (context) => Homreq()));}),
@@ -284,8 +304,9 @@ class eachReq extends StatelessWidget {
                                   ),
                                   IconButton(
                                     icon: Icon(Icons.send_rounded, size: 30, color: const Color(0xFF585858),),
-                                    onPressed: (){
-                                      commentS('FormRequest', doc_id, comment.text);
+                                    onPressed: () async {
+                                      //commentS('FormRequest', doc_id, comment.text);
+                                      print(getSolved());
                                     },
                                   ),
                                 ],
@@ -350,16 +371,32 @@ Future<void> commentS (String maincollection, String doc_id, String com) async {
   return;
 }
 
+//nyoba 2
+Future getSolved () async {
+  final firebase = FirebaseFirestore.instance;
+  final pnrewrd = firebase.collection('FormPost').get();
+  String id;
+  pnrewrd.then((QuerySnapshot docsnap) {
+    docsnap.docs.forEach((doc) {
+      return doc['docid'];
+    });
+  });
+}
+String prnt (String n) {
+  return n;
+}
+
+//nyoba 1
 Future solvedOrno (String docidrequest) async {
   final firsol =  FirebaseFirestore.instance.collection('FormPost').where('docid' == docidrequest).get();
   firsol.then((QuerySnapshot docsnap) {
     docsnap.docs.forEach((doc) {
       String n = doc['docid'];
-      prnt(n);
+      prnts(n);
     });
   });
 }
-String prnt (String n) {
+String prnts (String n) {
   return n;
 }
 

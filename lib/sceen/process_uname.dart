@@ -186,7 +186,8 @@ class _StreamkeypostState extends State<Streamkeypost> {
                                   color: Color((document['File format'] == 'pdf') ? (0xFFCAB8E0) : (0xFFFFFFFF)),
                                   borderRadius: BorderRadius.only(topLeft: Radius.circular(20), topRight: Radius.circular(20), bottomRight: Radius.circular(20)),
                                   image: DecorationImage(
-                                    image: NetworkImage((document['File format'] == 'pdf') ?  'https://i.postimg.cc/VNTd9w2Q/PDF-File-Online-1-removebg-preview.png' : document['url']),
+                                    image: NetworkImage((document['File format'] == 'pdf') ?  'https://i.postimg.cc/VNTd9w2Q/PDF-File-Online-1-removebg-preview.png' : document['url'],),
+                                    fit: BoxFit.cover,
                                   ),
                                 ),
                               ),
@@ -256,7 +257,7 @@ class DatacontReq extends GetxController {
   }
 }
 
-//Group Reguest
+//Group Request
 class GroupReq extends GetxController {
   Future getGrReq(String collection) async {
     final FirebaseFirestore firebaseFirestore = FirebaseFirestore.instance;
@@ -277,5 +278,17 @@ class GroupPost extends GetxController {
   }
   Future GrPost(String Subject) async {
     return FirebaseFirestore.instance.collection('FormPost').where('Caption file', isEqualTo: Subject).get();
+  }
+}
+
+//request solved
+class ReqSolved extends GetxController {
+  Future getRSolved(String collection) async {
+    final FirebaseFirestore firebaseFirestore = FirebaseFirestore.instance;
+    QuerySnapshot snapshot = await firebaseFirestore.collection(collection).get();
+    return snapshot.docs;
+  }
+  Future RSolved(String doc_id) async {
+    return FirebaseFirestore.instance.collection('FormPost').where('docid', isEqualTo: doc_id).get();
   }
 }
