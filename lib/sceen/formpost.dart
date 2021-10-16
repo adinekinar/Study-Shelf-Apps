@@ -1,5 +1,6 @@
 import 'dart:async';
 import 'dart:io';
+import 'dart:typed_data';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/foundation.dart';
@@ -86,7 +87,17 @@ class _FormpState extends State<Formp> {
                         width: 80, height: 80,
                         decoration: BoxDecoration(color: Colors.white30, borderRadius: BorderRadius.circular(20)),
                       ),
-                      onPressed: selectFile,
+                      onPressed: () async {
+                        final result = await FilePicker.platform.pickFiles(allowMultiple: false, type: FileType.custom, allowedExtensions: ['jpg', 'png', 'jpeg', 'pdf']);
+                        if(result == null) return;
+                        PlatformFile files = result.files.single;
+                        setState(() => file = File(files.path!));
+                        String name = files.name;
+                        Uint8List? byt = files.bytes;
+                        int size = files.size;
+                        String? ex = files.extension;
+                        String? flpth = files.path;
+                      },
                     ),
                     Container(child: Text(filename,style: TextStyle(fontSize: 11)), margin: EdgeInsets.only(top: 4),),
                     Container(
@@ -143,12 +154,6 @@ class _FormpState extends State<Formp> {
         ),
       ),
     );
-  }
-  Future selectFile() async {
-    final result = await FilePicker.platform.pickFiles(allowMultiple: false, type: FileType.custom, allowedExtensions: ['jpg', 'png', 'jpeg', 'pdf']);
-    if(result == null) return;
-    final path = result.files.single.path!;
-    setState(() => file = File(path));
   }
 
   Future<String> uploadFile(File file) async {
@@ -224,3 +229,16 @@ class Inpform extends StatelessWidget {
     String uid = auth.currentUser!.uid.toString();
     final updt = firebase.collection('Users').doc(uid).update({'points' : points});
   }
+
+//save file information
+Future<void> postInfo (String namefile, String doc_id, Uint8List byt, int size, String exten, String flpath) async {
+  DocumentReference posInf = FirebaseFirestore.instance.collection('PostForm').doc(doc_id).collection('FileInformation').doc();
+  posInf.set({
+    'filename' : namefile,
+    'bytes' : byt,
+    'filesize' : size,
+    'extension' : exten,
+    'filepath' : flpath,
+  });
+  return;
+}

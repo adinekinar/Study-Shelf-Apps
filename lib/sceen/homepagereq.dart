@@ -33,11 +33,11 @@ class _HomreqState extends State<Homreq> {
             backgroundColor: const Color(0xFFC4B1DC),
             actions: [
               IconButton(
-                  icon: Icon(Icons.search_rounded, size: 42, color: Colors.black),
+                  icon: Icon(Icons.search_rounded, size: 35, color: Colors.black),
                   onPressed: () => Navigator.push(context, MaterialPageRoute(builder: (context) => searchReqpages()))
               ),
               MaterialButton(
-                child: Image.network('https://i.postimg.cc/Pq2ZWTHF/Webcam.png'),
+                child: Image.network('https://i.postimg.cc/Pq2ZWTHF/Webcam.png', width: 35, height: 35),
                 onPressed: () => Navigator.push(context, MaterialPageRoute(builder: (context) => SSlogin())),
               ),
             ],

@@ -22,6 +22,7 @@ class _FormqState extends State<Formq> {
   String? valueDropmenu;
   int? value;
   List listpoint = ['5','10','15','20','25'];
+  late int index;
 
   @override
   Widget build(BuildContext context) {
@@ -68,19 +69,24 @@ class _FormqState extends State<Formq> {
                         border: Border.all(color: Color(0xFFAEAEAE)),
                         borderRadius: BorderRadius.circular(20),
                       ),
-                      child: DropdownButton(
-                        hint: Text('Choose point..    '),
-                        icon: Icon(Icons.arrow_drop_down_rounded),
-                        value: valueDropmenu,
-                        onChanged: (newValue) {
-                          setState(() {
-                            valueDropmenu = newValue as String?;
-                          });
-                        },
-                        underline: SizedBox(),
-                        items: listpoint.map((valueItem) {
-                          return DropdownMenuItem(value: valueItem, child: Text('$valueItem points'),);
-                      }).toList(),
+                      child: StreamBuilder(
+                        stream: FirebaseFirestore.instance.collection('Users').doc(FirebaseAuth.instance.currentUser!.uid).snapshots(),
+                        builder: (context, AsyncSnapshot<DocumentSnapshot>snapshot) {
+                          return DropdownButton(
+                            hint: Text('Choose point..    '),
+                            icon: Icon(Icons.arrow_drop_down_rounded),
+                            value: valueDropmenu,
+                            onChanged: (newValue) {
+                              setState(() {
+                                valueDropmenu = newValue as String?;
+                              });
+                            },
+                            underline: SizedBox(),
+                            items: (listpoint).map((valueItem) {
+                              return DropdownMenuItem(value: valueItem, child: Text('$valueItem points'),);
+                          }).toList(),
+                          );
+                        }
                       ),
                     ),
               Container(
@@ -99,8 +105,8 @@ class _FormqState extends State<Formq> {
               IconButton(
               icon: Icon(Icons.add),
               onPressed: (){
-                int point = 25;
-              getReward(point);}),
+                print(listpoint[1]);
+              }),
             ],
           ),
         ),
@@ -162,3 +168,5 @@ Future rewardUpdate(int points) async {
   String uid = auth.currentUser!.uid.toString();
   final updt = firebase.collection('Users').doc(uid).update({'points' : points});
 }
+
+//snapshot.data!['points']<listpoint ? listpoint :

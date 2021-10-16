@@ -1,6 +1,7 @@
 import 'dart:core';
 import 'dart:io';
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:file_picker/file_picker.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -54,6 +55,7 @@ class eachPost extends StatelessWidget {
     late QuerySnapshot snapshotData;
     final bool isExecuted = true;
     final comment = TextEditingController();
+
     return Scaffold(
       backgroundColor: const Color(0xFFF1EEEE),
       appBar: AppBar(
@@ -94,6 +96,9 @@ class eachPost extends StatelessWidget {
                     onPressed: () async {
                       final file = await FileApi.loadFile(Url);
                       (Format == 'pdf') ? openPdf(context, file) : {};
+                    },
+                    onLongPress: () async {
+                      infoPopUp(context);
                     },
                   ),
                   Container(child: Text(Title+' :', style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),)),
@@ -189,6 +194,40 @@ class eachPost extends StatelessWidget {
       ),
       );
   }
+  Future infoPopUp (BuildContext context) => showDialog (
+    context: context,
+    builder: (BuildContext context) {
+      return Dialog(
+        child: StreamBuilder<QuerySnapshot>(
+          stream: FirebaseFirestore.instance.collection('FormPost').doc(doc_id).collection('FileInformation').snapshots(),
+            builder: (context, AsyncSnapshot<QuerySnapshot> snapshot) {
+              if(!snapshot.hasData){
+                return Center(
+                  child: CircularProgressIndicator(),
+                );
+              }
+            return Container(
+              padding: EdgeInsets.all(30),
+              height: 250,
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Center(child: Icon(Icons.info_outline_rounded, size: 50, color: const Color(0xFF585858),)),
+                  //Text(snapshot.data!.docs[0]['namefile']),
+                  Text('name file'),
+                  Text('Byte file'),
+                  Text('Size file'),
+                  Text('Extension file'),
+                  Text('Path file'),
+                ],
+              ),
+            );
+          }
+        ),
+      );
+    }
+  );
 }
 
 void openPdf(BuildContext context, File file) => Navigator.of(context).push(
@@ -212,149 +251,155 @@ class eachReq extends StatelessWidget {
     final comment = TextEditingController();
     late QuerySnapshot snapshotData;
     bool solved;
-    String i;
-    return Scaffold(
-        floatingActionButton: FloatingActionButton(
-          child: const Icon(Icons.reply_rounded, color: const Color(0xFF585858),size: 35,),
-          backgroundColor: const Color(0xFFEFD1A9),
-          onPressed: () async {
-            final String uid = await getSolved();
-            Navigator.push(context, MaterialPageRoute(builder: (context) => postReplay(doc_id: doc_id)));
-          },
-        ),
-          backgroundColor: const Color(0xFFF1EEEE),
-          appBar: AppBar(
-          title: Text(Title, style: TextStyle(color: Colors.black),),
-        centerTitle: true,
-        backgroundColor: const Color(0xFFCAB8E0),
-        actions: [
-          GetBuilder<ReqSolved>(
-              init: ReqSolved(),
-              builder: (val) {
-                return IconButton(
-                    icon: Icon(Icons.search_rounded, size: 26, color: Colors.black),
-                    onPressed: () {
-                      val.RSolved(doc_id).then((value) {
-                        snapshotData = value;
-                        solved = true;
-                      });
-                    });
-              }
+    return StreamBuilder(
+      stream: FirebaseFirestore.instance.collection('FormPost').snapshots(),
+      builder: (context, AsyncSnapshot<QuerySnapshot>snapshot) {
+        int length = snapshot.data!.docs.length;
+        return Scaffold(
+            floatingActionButton: FloatingActionButton(
+              child: const Icon(Icons.reply_rounded, color: const Color(0xFF585858),size: 35,),
+              backgroundColor: const Color(0xFFEFD1A9),
+              onPressed: () async {
+                Navigator.push(context, MaterialPageRoute(builder: (context) => (snapshot.data!.docs[1]['docid']).toString() == doc_id ? postReplay(doc_id: doc_id,) : Formp(doc_id: doc_id,value: value,)));
+              },
+            ),
+              backgroundColor: const Color(0xFFF1EEEE),
+              appBar: AppBar(
+              title: Text(Title, style: TextStyle(color: Colors.black),),
+            centerTitle: true,
+            backgroundColor: const Color(0xFFCAB8E0),
+            actions: [
+              GetBuilder<ReqSolved>(
+                  init: ReqSolved(),
+                  builder: (val) {
+                    return IconButton(
+                        icon: Icon(Icons.search_rounded, size: 26, color: Colors.black),
+                        onPressed: () {
+                          val.RSolved(doc_id).then((value) {
+                            snapshotData = value;
+                            solved = true;
+                          });
+
+                        });
+                  }
+              ),
+            ],
+            leading: IconButton(
+            icon: Icon(CupertinoIcons.back, size: 35, color: Colors.black),
+            onPressed: () {Navigator.push(context, MaterialPageRoute(builder: (context) => Homreq()));}),
           ),
-        ],
-        leading: IconButton(
-        icon: Icon(CupertinoIcons.back, size: 35, color: Colors.black),
-        onPressed: () {Navigator.push(context, MaterialPageRoute(builder: (context) => Homreq()));}),
-      ),
-      body: SingleChildScrollView(
-        child: Container(
-            child: Stack(
-              children: <Widget>[
-                Column(
-                    children: [
-                      Center(
-                        child: Container(
-                          margin: EdgeInsets.only(top: 30, bottom: 20),
-                          height: 150, width: 150,
-                          decoration: BoxDecoration(
-                            color: const Color(0xFFCAB8E0),
-                            borderRadius: BorderRadius.circular(20),
+          body: SingleChildScrollView(
+            child: Container(
+                child: Stack(
+                  children: <Widget>[
+                    Column(
+                        children: [
+                          Center(
+                            child: Container(
+                              margin: EdgeInsets.only(top: 30, bottom: 20),
+                              height: 150, width: 150,
+                              decoration: BoxDecoration(
+                                color: const Color(0xFFCAB8E0),
+                                borderRadius: BorderRadius.circular(20),
+                                ),
+                              child: Icon(Icons.paste_rounded, color: const Color(0xFF585858), size: 80,),
+                              ),
                             ),
-                          child: Icon(Icons.paste_rounded, color: const Color(0xFF585858), size: 80,),
-                          ),
-                        ),
-                      Container(child: Text(Title+' :', style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),)),
-                      Center(child: Text(Caption, style: TextStyle(fontSize: 20))),
-                      Container(child: Text('tag : #'+Tag)),
-                      ElevatedButton(
-                          child: Text(Subject, style: TextStyle(
-                              fontSize: 16, color: const Color(0xFF585858)),),
-                          style: ElevatedButton.styleFrom(
-                              primary: Color(0xFFCAB8E0).withOpacity(0.33),
-                              shape: RoundedRectangleBorder(
-                                  borderRadius: BorderRadius.circular(20.0)),
-                              minimumSize: (Size(50, 30))),
-                          onPressed: () {}),
-                      Text('Request by : '+Uname),
-                      Container(height: 410),
-                    ]
-                ),
-                Positioned.fill(
-                  child: DraggableScrollableSheet(
-                      initialChildSize: 0.53,
-                      maxChildSize: 0.6,
-                      minChildSize: 0.53,
-                      builder: (_, ScrollController){
-                        return Container(
-                          decoration: BoxDecoration(color: Color((0xFFF7F5F5)), borderRadius: BorderRadius.only(topRight: Radius.circular(40), topLeft: Radius.circular(40)),
-                          ),
-                          child: Column(
-                            children: [
-                              Container(margin: EdgeInsets.only(top: 20, bottom: 7), child: Text('Comments', style: TextStyle(color: const Color(0xFF585858), fontSize: 20, fontWeight: FontWeight.bold),)),
-                              Container(margin: EdgeInsets.only(bottom: 10), height: 7, width: 125, decoration: BoxDecoration(borderRadius: BorderRadius.circular(10), color: const Color(0xFFCAB8E0)),),
-                              Row(
-                                mainAxisAlignment: MainAxisAlignment.center,
+                          Container(child: Text(Title+' :', style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),)),
+                          Center(child: Text(Caption, style: TextStyle(fontSize: 20))),
+                          Container(child: Text('tag : #'+Tag)),
+                          ElevatedButton(
+                              child: Text(Subject, style: TextStyle(
+                                  fontSize: 16, color: const Color(0xFF585858)),),
+                              style: ElevatedButton.styleFrom(
+                                  primary: Color(0xFFCAB8E0).withOpacity(0.33),
+                                  shape: RoundedRectangleBorder(
+                                      borderRadius: BorderRadius.circular(20.0)),
+                                  minimumSize: (Size(50, 30))),
+                              onPressed: () {}),
+                          Text('Request by : '+Uname),
+                          Container(height: 410),
+                        ]
+                    ),
+                    Positioned.fill(
+                      child: DraggableScrollableSheet(
+                          initialChildSize: 0.53,
+                          maxChildSize: 0.6,
+                          minChildSize: 0.53,
+                          builder: (_, ScrollController){
+                            return Container(
+                              decoration: BoxDecoration(color: Color((0xFFF7F5F5)), borderRadius: BorderRadius.only(topRight: Radius.circular(40), topLeft: Radius.circular(40)),
+                              ),
+                              child: Column(
                                 children: [
-                                  Container(
-                                      margin: EdgeInsets.only(right: 5),
-                                      width: 300, height: 50,
-                                      padding: EdgeInsets.only(left: 20),
-                                      decoration: BoxDecoration(color: Colors.white30, border: Border.all(color: const Color(0xFFAEAEAE).withOpacity(0.2)), borderRadius: BorderRadius.circular(20)),
-                                      child: TextField(controller: comment, decoration: InputDecoration(border: InputBorder.none, hintText: "Type your comment.."),)
+                                  Container(margin: EdgeInsets.only(top: 20, bottom: 7), child: Text('Comments', style: TextStyle(color: const Color(0xFF585858), fontSize: 20, fontWeight: FontWeight.bold),)),
+                                  Container(margin: EdgeInsets.only(bottom: 10), height: 7, width: 125, decoration: BoxDecoration(borderRadius: BorderRadius.circular(10), color: const Color(0xFFCAB8E0)),),
+                                  Row(
+                                    mainAxisAlignment: MainAxisAlignment.center,
+                                    children: [
+                                      Container(
+                                          margin: EdgeInsets.only(right: 5),
+                                          width: 300, height: 50,
+                                          padding: EdgeInsets.only(left: 20),
+                                          decoration: BoxDecoration(color: Colors.white30, border: Border.all(color: const Color(0xFFAEAEAE).withOpacity(0.2)), borderRadius: BorderRadius.circular(20)),
+                                          child: TextField(controller: comment, decoration: InputDecoration(border: InputBorder.none, hintText: "Type your comment.."),)
+                                      ),
+                                      IconButton(
+                                        icon: Icon(Icons.send_rounded, size: 30, color: const Color(0xFF585858),),
+                                        onPressed: () async {
+                                          //commentS('FormRequest', doc_id, comment.text);
+                                          print(getSolved());
+                                          getSolved();
+                                        },
+                                      ),
+                                    ],
                                   ),
-                                  IconButton(
-                                    icon: Icon(Icons.send_rounded, size: 30, color: const Color(0xFF585858),),
-                                    onPressed: () async {
-                                      //commentS('FormRequest', doc_id, comment.text);
-                                      print(getSolved());
-                                    },
+                                  StreamBuilder(
+                                    stream: FirebaseFirestore.instance.collection('FormRequest').doc(doc_id).collection('Comments').snapshots(),
+                                    builder: (BuildContext context, AsyncSnapshot<QuerySnapshot> snapshot) {
+                                      if(!snapshot.hasData){
+                                        return Center(
+                                          child: CircularProgressIndicator(),
+                                        );
+                                      }
+                                      return Expanded(
+                                        child: ListView.builder(
+                                          controller: ScrollController,
+                                          itemCount: snapshot.data!.docs.length,
+                                          itemBuilder: (context, index) {
+                                            DocumentSnapshot docsnapshot = snapshot.data!.docs[index];
+                                            return Container(
+                                              padding: EdgeInsets.all(20),
+                                              margin: EdgeInsets.only(top: 10, left: 20, right: 20, bottom: 10),
+                                              decoration: BoxDecoration(
+                                                color: const Color(0xFFE9E3EB),
+                                                borderRadius: BorderRadius.circular(10),
+                                              ),
+                                              child : Column(
+                                                crossAxisAlignment: CrossAxisAlignment.start,
+                                                children: [
+                                                  Text(docsnapshot['Username']+' :', style: TextStyle(color: Color(0xFF585858),)),
+                                                  Text(docsnapshot['Context comment']),
+                                                ],
+                                              ),
+                                            );
+                                          },
+                                        ),
+                                      );
+                                    }
                                   ),
                                 ],
                               ),
-                              StreamBuilder(
-                                stream: FirebaseFirestore.instance.collection('FormRequest').doc(doc_id).collection('Comments').snapshots(),
-                                builder: (BuildContext context, AsyncSnapshot<QuerySnapshot> snapshot) {
-                                  if(!snapshot.hasData){
-                                    return Center(
-                                      child: CircularProgressIndicator(),
-                                    );
-                                  }
-                                  return Expanded(
-                                    child: ListView.builder(
-                                      controller: ScrollController,
-                                      itemCount: snapshot.data!.docs.length,
-                                      itemBuilder: (context, index) {
-                                        DocumentSnapshot docsnapshot = snapshot.data!.docs[index];
-                                        return Container(
-                                          padding: EdgeInsets.all(20),
-                                          margin: EdgeInsets.only(top: 10, left: 20, right: 20, bottom: 10),
-                                          decoration: BoxDecoration(
-                                            color: const Color(0xFFE9E3EB),
-                                            borderRadius: BorderRadius.circular(10),
-                                          ),
-                                          child : Column(
-                                            crossAxisAlignment: CrossAxisAlignment.start,
-                                            children: [
-                                              Text(docsnapshot['Username']+' :', style: TextStyle(color: Color(0xFF585858),)),
-                                              Text(docsnapshot['Context comment']),
-                                            ],
-                                          ),
-                                        );
-                                      },
-                                    ),
-                                  );
-                                }
-                              ),
-                            ],
-                          ),
-                        );
-                      }
-                  ),
-                ),
-              ],
-            )
-        ),
-      ),
+                            );
+                          }
+                      ),
+                    ),
+                  ],
+                )
+            ),
+          ),
+        );
+      }
     );
   }
 }
@@ -378,7 +423,8 @@ Future getSolved () async {
   String id;
   pnrewrd.then((QuerySnapshot docsnap) {
     docsnap.docs.forEach((doc) {
-      return doc['docid'];
+      id = doc['docid'];
+      print(id);
     });
   });
 }
@@ -398,6 +444,15 @@ Future solvedOrno (String docidrequest) async {
 }
 String prnts (String n) {
   return n;
+}
+
+int index (int length) {
+  int i = 0;
+  if(i==0)
+    i++;
+  if(i<length)
+    i++;
+  return i;
 }
 
 //solvedOrno(doc_id) ? subjectGroup(Subject: ' ', snapshotData: snapshotData) :

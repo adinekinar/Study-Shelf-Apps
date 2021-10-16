@@ -1,5 +1,6 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
 import 'package:study_shelf/sceen/loginpage.dart';
 
@@ -8,6 +9,7 @@ class Navbar extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final String docid = FirebaseAuth.instance.currentUser!.uid.toString();
     return Drawer(
           child : ListView(
                 padding: EdgeInsets.zero,
@@ -33,15 +35,20 @@ class Navbar extends StatelessWidget {
                           alignment: Alignment.topRight + Alignment(0, .6),
                           child: Text(FirebaseAuth.instance.currentUser!.email.toString(), style: TextStyle(color: const Color(0xFF585858), fontSize: 16),),
                         ),
-                        Container(
-                            margin: EdgeInsets.only(left: 220),
-                            alignment: Alignment.centerRight+ Alignment(0, .6),
-                            child: Row(
-                              children: [
-                                Image.network('https://i.postimg.cc/CMsRMRhk/badge.png', width: 20,height: 20,),
-                                Text('10', style: TextStyle(color: const Color(0xFF585858), fontSize: 20),),
-                              ],
-                            ),
+                        StreamBuilder(
+                          stream: FirebaseFirestore.instance.collection('Users').doc(FirebaseAuth.instance.currentUser!.uid).snapshots(),
+                          builder: (context, AsyncSnapshot<DocumentSnapshot>snapshot) {
+                            return Container(
+                                margin: EdgeInsets.only(left: 220),
+                                alignment: Alignment.centerRight+ Alignment(0, .6),
+                                child: Row(
+                                  children: [
+                                    Image.network('https://i.postimg.cc/CMsRMRhk/badge.png', width: 20,height: 20,),
+                                    Text((snapshot.data!['points']).toString(), style: TextStyle(color: const Color(0xFF585858), fontSize: 20),),
+                                  ],
+                                ),
+                            );
+                          }
                         ),
                     ]),
                     ),
