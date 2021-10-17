@@ -17,7 +17,6 @@ class _pdfViewerpageState extends State<pdfViewerpage> {
   int pages = 0;
   int indexpages = 0;
   late PDFViewController controller;
-
   @override
   Widget build(BuildContext context) {
     final text = '${indexpages+1} of ${pages}';

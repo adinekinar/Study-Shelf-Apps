@@ -251,17 +251,18 @@ class eachReq extends StatelessWidget {
     final comment = TextEditingController();
     late QuerySnapshot snapshotData;
     bool solved;
-    return StreamBuilder(
-      stream: FirebaseFirestore.instance.collection('FormPost').snapshots(),
-      builder: (context, AsyncSnapshot<QuerySnapshot>snapshot) {
-        int length = snapshot.data!.docs.length;
-        return Scaffold(
-            floatingActionButton: FloatingActionButton(
-              child: const Icon(Icons.reply_rounded, color: const Color(0xFF585858),size: 35,),
-              backgroundColor: const Color(0xFFEFD1A9),
-              onPressed: () async {
-                Navigator.push(context, MaterialPageRoute(builder: (context) => (snapshot.data!.docs[1]['docid']).toString() == doc_id ? postReplay(doc_id: doc_id,) : Formp(doc_id: doc_id,value: value,)));
-              },
+    return  Scaffold(
+            floatingActionButton: StreamBuilder(
+              stream: FirebaseFirestore.instance.collection('FormPost').snapshots(),
+              builder: (context, AsyncSnapshot<QuerySnapshot>snapshot) {
+                return FloatingActionButton(
+                  child: const Icon(Icons.reply_rounded, color: const Color(0xFF585858),size: 35,),
+                  backgroundColor: const Color(0xFFEFD1A9),
+                  onPressed: () async {
+                    (snapshot.data!.docs[2].id == doc_id) ? Navigator.push(context, MaterialPageRoute(builder: (context) => postReplay(doc_id: doc_id))) : Navigator.push(context, MaterialPageRoute(builder: (context) => Formp(doc_id: doc_id,value: value,)));
+                  },
+                );
+              }
             ),
               backgroundColor: const Color(0xFFF1EEEE),
               appBar: AppBar(
@@ -279,7 +280,6 @@ class eachReq extends StatelessWidget {
                             snapshotData = value;
                             solved = true;
                           });
-
                         });
                   }
               ),
@@ -347,9 +347,7 @@ class eachReq extends StatelessWidget {
                                       IconButton(
                                         icon: Icon(Icons.send_rounded, size: 30, color: const Color(0xFF585858),),
                                         onPressed: () async {
-                                          //commentS('FormRequest', doc_id, comment.text);
-                                          print(getSolved());
-                                          getSolved();
+                                          commentS('FormRequest', doc_id, comment.text);
                                         },
                                       ),
                                     ],
@@ -399,8 +397,6 @@ class eachReq extends StatelessWidget {
             ),
           ),
         );
-      }
-    );
   }
 }
 

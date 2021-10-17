@@ -91,12 +91,13 @@ class _FormpState extends State<Formp> {
                         final result = await FilePicker.platform.pickFiles(allowMultiple: false, type: FileType.custom, allowedExtensions: ['jpg', 'png', 'jpeg', 'pdf']);
                         if(result == null) return;
                         PlatformFile files = result.files.single;
-                        setState(() => file = File(files.path!));
                         String name = files.name;
                         Uint8List? byt = files.bytes;
                         int size = files.size;
                         String? ex = files.extension;
                         String? flpth = files.path;
+                        //postInfo(name, doc_id, byt!, size, ex!, flpth!);
+                        setState(() => file = File(files.path!));
                       },
                     ),
                     Container(child: Text(filename,style: TextStyle(fontSize: 11)), margin: EdgeInsets.only(top: 4),),

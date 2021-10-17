@@ -38,11 +38,11 @@ Future<void> unameStore(String username, int points) async {
 
 //for store data post
 Future<void> fillPost (String title, String caption, String subject, String tag, url, String format, String doc_id) async {
-  CollectionReference fillp = FirebaseFirestore.instance.collection('FormPost');
+  DocumentReference fillp = FirebaseFirestore.instance.collection('FormPost').doc(doc_id=='0'?null:doc_id);
   FirebaseAuth auth = FirebaseAuth.instance;
   String uid = auth.currentUser!.uid.toString();
   String username = auth.currentUser!.displayName.toString();
-  fillp.add({
+  fillp.set({
     'Upload Time' : Timestamp.now(),
     'File format' : format,
     'Title': title,

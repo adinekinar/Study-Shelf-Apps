@@ -79,6 +79,15 @@ class _FormqState extends State<Formq> {
                             onChanged: (newValue) {
                               setState(() {
                                 valueDropmenu = newValue as String?;
+                                if(int.parse(newValue!)>snapshot.data!['points']){
+                                  showDialog(context: context, builder: (BuildContext context){
+                                  return AlertDialog(
+                                  title: Text('Your Point not Enough', style: TextStyle(color: Colors.red)),
+                                  content: Text('Choose point for reward again!', style: TextStyle(color: Colors.red)),
+                                  );
+                                });}
+                                else if (int.parse(newValue)==snapshot.data!['points']){
+                                }
                               });
                             },
                             underline: SizedBox(),
@@ -113,7 +122,25 @@ class _FormqState extends State<Formq> {
       ),
     );
   }
-}
+  //get Reward
+  Future getReward (int point) async {
+    final firebase = FirebaseFirestore.instance;
+    final pnrewrd = firebase.collection('Users').get();
+    pnrewrd.then((QuerySnapshot docsnap) {
+      docsnap.docs.forEach((doc) {
+        int rwrd = doc['points'];
+        int rewrd = rwrd-point;
+          rewardUpdate(rewrd);
+        });
+      });
+    }
+  }
+  Future rewardUpdate(int points) async {
+    final firebase = FirebaseFirestore.instance;
+    FirebaseAuth auth = FirebaseAuth.instance;
+    String uid = auth.currentUser!.uid.toString();
+    final updt = firebase.collection('Users').doc(uid).update({'points' : points});
+  }
 
 class Inpform extends StatelessWidget {
   final String ttl;
@@ -150,23 +177,6 @@ class Inpform extends StatelessWidget {
   }
 }
 
-//get Reward
-Future getReward (int point) async {
-  final firebase = FirebaseFirestore.instance;
-  final pnrewrd = firebase.collection('Users').get();
-  pnrewrd.then((QuerySnapshot docsnap) {
-    docsnap.docs.forEach((doc) {
-      int rwrd = doc['points'];
-      int rewrd = rwrd-point;
-      rewardUpdate(rewrd);
-    });
-  });
-}
-Future rewardUpdate(int points) async {
-  final firebase = FirebaseFirestore.instance;
-  FirebaseAuth auth = FirebaseAuth.instance;
-  String uid = auth.currentUser!.uid.toString();
-  final updt = firebase.collection('Users').doc(uid).update({'points' : points});
-}
+
 
 //snapshot.data!['points']<listpoint ? listpoint :

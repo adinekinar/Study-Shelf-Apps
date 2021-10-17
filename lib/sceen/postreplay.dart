@@ -17,8 +17,8 @@ class postReplay extends StatelessWidget {
   Widget build(BuildContext context) {
     final comment = TextEditingController();
     return StreamBuilder(
-      stream: FirebaseFirestore.instance.collection('FormPost').snapshots(),
-      builder: (BuildContext context, AsyncSnapshot<QuerySnapshot> snapshot) {
+      stream: FirebaseFirestore.instance.collection('FormPost').doc(doc_id).snapshots(),
+      builder: (BuildContext context, AsyncSnapshot<DocumentSnapshot> snapshot) {
         if(!snapshot.hasData){
           return Center(
             child: CircularProgressIndicator(),
@@ -27,13 +27,13 @@ class postReplay extends StatelessWidget {
         return Scaffold(
             backgroundColor: const Color(0xFFF1EEEE),
             appBar: AppBar(
-              title: Text(snapshot.data!.docs[1]['Title'], style: TextStyle(color: Colors.black),),
+              title: Text(snapshot.data!['Title'], style: TextStyle(color: Colors.black),),
               centerTitle: true,
               backgroundColor: const Color(0xFFCAB8E0),
               actions: [
                 IconButton(icon: Icon(Icons.download_rounded, color: const Color(0xFF585858),),
                     onPressed: () async {
-                      _launchInBrowser(snapshot.data!.docs[1]['url']);
+                      _launchInBrowser(snapshot.data!['url']);
                     }
                 ),
               ],
@@ -50,24 +50,24 @@ class postReplay extends StatelessWidget {
                                   margin: EdgeInsets.only(top: 30, bottom: 20),
                                   height: 202, width: 267,
                                   decoration: BoxDecoration(
-                                    color: Color((snapshot.data!.docs[1]['File format'] == 'pdf') ? (0xFFCAB8E0) : (0xFFFFFFFF)),
+                                    color: Color((snapshot.data!['File format'] == 'pdf') ? (0xFFCAB8E0) : (0xFFFFFFFF)),
                                     borderRadius: BorderRadius.circular(20),
                                     image: DecorationImage(
-                                      image: NetworkImage((snapshot.data!.docs[1]['File format'] == 'pdf') ?  'https://i.postimg.cc/VNTd9w2Q/PDF-File-Online-1-removebg-preview.png' : snapshot.data!.docs[1]['url']),
+                                      image: NetworkImage((snapshot.data!['File format'] == 'pdf') ?  'https://i.postimg.cc/VNTd9w2Q/PDF-File-Online-1-removebg-preview.png' : snapshot.data!['url']),
                                     ),
                                   ),
                                 ),
                               ),
                               onPressed: () async {
-                                final file = await FileApi.loadFile(snapshot.data!.docs[1]['url']);
-                                (snapshot.data!.docs[1]['File format'] == 'pdf') ? openPdf(context, file) : {};
+                                final file = await FileApi.loadFile(snapshot.data!['url']);
+                                (snapshot.data!['File format'] == 'pdf') ? openPdf(context, file) : {};
                               },
                             ),
-                            Container(child: Text(snapshot.data!.docs[1]['Title']+' :', style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),)),
-                            Container(child: Text(snapshot.data!.docs[1]['Subject'], style: TextStyle(fontSize: 20))),
-                            Container(child: Text('tag : #'+snapshot.data!.docs[1]['Sub-subject Tag'])),
+                            Container(child: Text(snapshot.data!['Title']+' :', style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),)),
+                            Container(child: Text(snapshot.data!['Subject'], style: TextStyle(fontSize: 20))),
+                            Container(child: Text('tag : #'+snapshot.data!['Sub-subject Tag'])),
                             ElevatedButton(
-                                child: Text(snapshot.data!.docs[1]['Caption file'], style: TextStyle(
+                                child: Text(snapshot.data!['Caption file'], style: TextStyle(
                                     fontSize: 16, color: const Color(0xFF585858)),),
                                 style: ElevatedButton.styleFrom(
                                     primary: Color(0xFFCAB8E0).withOpacity(0.33),
@@ -75,7 +75,7 @@ class postReplay extends StatelessWidget {
                                         borderRadius: BorderRadius.circular(20.0)),
                                     minimumSize: (Size(50, 30))),
                                 onPressed: () {}),
-                            Text('Created by : '+snapshot.data!.docs[1]['Username']),
+                            Text('Created by : '+snapshot.data!['Username']),
                             Container(height: 357.5),
                           ]
                       ),
@@ -105,13 +105,13 @@ class postReplay extends StatelessWidget {
                                         IconButton(
                                           icon: Icon(Icons.send_rounded, size: 30, color: const Color(0xFF585858),),
                                           onPressed: (){
-                                            commentS('FormPost', snapshot.data!.docs[1].id, comment.text);
+                                            commentS('FormPost', snapshot.data!.id, comment.text);
                                           },
                                         ),
                                       ],
                                     ),
                                     StreamBuilder(
-                                        stream: FirebaseFirestore.instance.collection('FormPost').doc(snapshot.data!.docs[1].id).collection('Comments').snapshots(),
+                                        stream: FirebaseFirestore.instance.collection('FormPost').doc(snapshot.data!.id).collection('Comments').snapshots(),
                                         builder: (context, AsyncSnapshot<QuerySnapshot> snapshot) {
                                           if(!snapshot.hasData){
                                             return Center(
