@@ -1,8 +1,10 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
 import 'package:study_shelf/sceen/homepagereq.dart';
 import 'package:study_shelf/sceen/loginpage.dart';
+import 'package:study_shelf/sceen/meeting.dart';
 import 'package:study_shelf/sceen/navbar.dart';
 import 'package:study_shelf/sceen/process_uname.dart';
 import 'package:study_shelf/sceen/searchpost.dart';
@@ -28,6 +30,7 @@ class _HomeState extends State<Home> {
         ),
       backgroundColor: const Color(0xFFF1EEEE),
       appBar: AppBar(
+        iconTheme: IconThemeData(color: Colors.black,size:50),
         centerTitle: true,
         title: Text('Study Shelf', style: TextStyle(fontWeight: FontWeight.bold, color: Colors.black)),
         backgroundColor: const Color(0xFFC4B1DC),
@@ -38,7 +41,7 @@ class _HomeState extends State<Home> {
           ),
           MaterialButton(
             child: Image.network('https://i.postimg.cc/Pq2ZWTHF/Webcam.png', width: 35, height: 35,),
-            onPressed: () => Navigator.push(context, MaterialPageRoute(builder: (context) => SSlogin())),
+            onPressed: () => Navigator.push(context, MaterialPageRoute(builder: (context) => Meeting())),
           ),
         ],
       ),
@@ -102,11 +105,6 @@ class _HomeState extends State<Home> {
               ),
             ],
             ),
-          ),
-          IconButton(
-            icon: Icon(Icons.sort_rounded),
-            onPressed: (){
-            },
           ),
           Expanded(child: Container(child: Streamkeypost())),
         ],

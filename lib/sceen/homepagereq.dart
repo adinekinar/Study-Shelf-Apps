@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
 import 'package:study_shelf/sceen/homepage.dart';
 import 'package:study_shelf/sceen/loginpage.dart';
+import 'package:study_shelf/sceen/meeting.dart';
 import 'package:study_shelf/sceen/navbar.dart';
 import 'package:study_shelf/sceen/process_uname.dart';
 import 'package:study_shelf/sceen/searchreq.dart';
@@ -28,6 +29,7 @@ class _HomreqState extends State<Homreq> {
       ),
         backgroundColor: const Color(0xFFF1EEEE),
           appBar: AppBar(
+            iconTheme: IconThemeData(color: Colors.black,size:50),
             centerTitle: true,
             title: Text('Study Shelf', style: TextStyle(fontWeight: FontWeight.bold, color: Colors.black)),
             backgroundColor: const Color(0xFFC4B1DC),
@@ -38,7 +40,7 @@ class _HomreqState extends State<Homreq> {
               ),
               MaterialButton(
                 child: Image.network('https://i.postimg.cc/Pq2ZWTHF/Webcam.png', width: 35, height: 35),
-                onPressed: () => Navigator.push(context, MaterialPageRoute(builder: (context) => SSlogin())),
+                onPressed: () => Navigator.push(context, MaterialPageRoute(builder: (context) => Meeting())),
               ),
             ],
           ),

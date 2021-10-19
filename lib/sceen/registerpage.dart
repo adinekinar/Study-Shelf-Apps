@@ -104,7 +104,7 @@ class _SSregisterState extends State<SSregister> {
                       Container(child: Text('Have an account?', style: TextStyle(fontSize: 18),), margin: EdgeInsets.only(top: 10, bottom: 10),),
                       ElevatedButton(
                           child: Text('Login', style: TextStyle(fontSize: 25),),
-                          style: ElevatedButton.styleFrom(primary: Color(0xFFCAB8E0).withOpacity(0.33), shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(20.0))),
+                          style: ElevatedButton.styleFrom(primary: Color(0xFFA386C8), shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(20.0))),
                           onPressed: () {
                             Navigator.push(context, MaterialPageRoute(builder: (context) => SSlogin()));
                           } ),
