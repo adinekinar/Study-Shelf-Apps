@@ -15,11 +15,12 @@ class Meeting extends StatefulWidget {
 
 class _MeetingState extends State<Meeting> {
   final serverText = TextEditingController();
-  final roomText = TextEditingController(text: "plugintestroom");
-  final subjectText = TextEditingController(text: "My Plugin Test Meeting");
   bool? isAudioOnly = true;
   bool? isAudioMuted = true;
   bool? isVideoMuted = true;
+
+  String? valueDropmenu;
+  List listpoint = ['StudyShelfRoom1','StudyShelfRoom2','StudyShelfRoom3'];
 
   @override
   void initState() {
@@ -92,8 +93,13 @@ class _MeetingState extends State<Meeting> {
   Widget meetConfig() {
     return SingleChildScrollView(
       child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
         children: <Widget>[
           SizedBox(
+            height: 20,
+          ),
+          Container(padding:EdgeInsets.symmetric(horizontal: 40),child: Text('Choose Study Room : ', style: TextStyle(fontSize: 16, fontWeight: FontWeight.w500),)),
+          /*SizedBox(
             height: 16.0,
           ),
           TextField(
@@ -102,66 +108,70 @@ class _MeetingState extends State<Meeting> {
                 border: OutlineInputBorder(),
                 labelText: "Server URL",
                 hintText: "Hint: Leave empty for meet.jitsi.si"),
-          ),
-          SizedBox(
-            height: 14.0,
-          ),
-          TextField(
-            controller: roomText,
-            decoration: InputDecoration(
-              border: OutlineInputBorder(),
-              labelText: "Room",
+          ),*/
+          Container(
+            height: 60,
+            width: double.infinity,
+            margin: EdgeInsets.symmetric(vertical: 20,horizontal: 40),
+            padding: EdgeInsets.only(left: 16, right: 16),
+            decoration: BoxDecoration(
+              color: Colors.white30,
+              border: Border.all(color: Color(0xFFAEAEAE)),
+              borderRadius: BorderRadius.circular(20),
             ),
-          ),
-          SizedBox(
-            height: 14.0,
-          ),
-          TextField(
-            controller: subjectText,
-            decoration: InputDecoration(
-              border: OutlineInputBorder(),
-              labelText: "Subject",
+            child: Center(
+              child: DropdownButton(
+                      hint: Text('Choose room..    '),
+                      icon: Container(margin: EdgeInsets.only(left: 134),child: Icon(Icons.arrow_drop_down_rounded)),
+                      value: valueDropmenu,
+                      onChanged: (newValue) {
+                        setState(() {
+                          valueDropmenu = newValue as String?;
+                        });
+                      },
+                      underline: SizedBox(),
+                      items: (listpoint).map((valueItem) {
+                        return DropdownMenuItem(value: valueItem, child: Text(valueItem),);
+                      }).toList(),
+                    ),
             ),
-          ),
-          SizedBox(
-            height: 14.0,
-          ),
-          CheckboxListTile(
-            title: Text("Audio Only"),
-            value: isAudioOnly,
-            onChanged: _onAudioOnlyChanged,
-          ),
-          SizedBox(
-            height: 14.0,
-          ),
-          CheckboxListTile(
-            title: Text("Audio Muted"),
-            value: isAudioMuted,
-            onChanged: _onAudioMutedChanged,
-          ),
-          SizedBox(
-            height: 14.0,
-          ),
-          CheckboxListTile(
-            title: Text("Video Muted"),
-            value: isVideoMuted,
-            onChanged: _onVideoMutedChanged,
-          ),
-          SizedBox(
-            height: 14.0,
-          ),
-          SizedBox(
-            height: 40.0,
-            width: double.maxFinite,
-            child: ElevatedButton(
-              onPressed: () {
-                _joinMeeting();
-              },
-              child: Text(
-                'Join Meeting',
-                style: TextStyle(color: Colors.white, fontSize: 20),
+            ),
+          Container(
+            margin: EdgeInsets.symmetric(horizontal: 50),
+            padding: EdgeInsets.symmetric(vertical: 20, horizontal: 10),
+            decoration: BoxDecoration(
+              color: Colors.white30,
+              borderRadius: BorderRadius.circular(20)
+            ),
+            child: CheckboxListTile(
+              activeColor: const Color(0xFFC4B1DC),
+              title: Row(
+                children: [
+                  Icon(Icons.videocam_off_rounded, size: 25,),
+                  SizedBox(width: 12,),
+                  Text("Off Camera", style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),),
+                ],
               ),
-              style: ElevatedButton.styleFrom(primary: Color(0xFFA386C8), shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(20.0))),
+              value: isVideoMuted,
+              onChanged: _onVideoMutedChanged,
+            ),
+          ),
+          SizedBox(
+            height: 20.0,
+          ),
+          Center(
+            child: SizedBox(
+              height: 45.0,
+              child: ElevatedButton(
+                onPressed: () {
+                  _joinMeeting();
+                },
+                child: Text(
+                  'Join Stream',
+                  style: TextStyle(color: Colors.white, fontSize: 25),
+                ),
+                style: ElevatedButton.styleFrom(primary: Color(0xFFA386C8), shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(20.0))),
+              ),
             ),
           ),
           SizedBox(
@@ -172,15 +182,15 @@ class _MeetingState extends State<Meeting> {
     );
   }
 
-  _onAudioOnlyChanged(bool? value) {
+  _onAudioOnlyChanged() {
     setState(() {
-      isAudioOnly = value;
+      isAudioOnly = true;
     });
   }
 
-  _onAudioMutedChanged(bool? value) {
+  _onAudioMutedChanged() {
     setState(() {
-      isAudioMuted = value;
+      isAudioMuted = true;
     });
   }
 
@@ -221,9 +231,9 @@ class _MeetingState extends State<Meeting> {
       }
     }
     // Define meetings options here
-    var options = JitsiMeetingOptions(room: roomText.text)
+    var options = JitsiMeetingOptions(room: valueDropmenu!)
       ..serverURL = serverUrl
-      ..subject = subjectText.text
+      ..subject = valueDropmenu!
       ..userDisplayName = FirebaseAuth.instance.currentUser!.displayName
       ..userEmail = FirebaseAuth.instance.currentUser!.email
       ..audioOnly = isAudioOnly
@@ -231,7 +241,7 @@ class _MeetingState extends State<Meeting> {
       ..videoMuted = isVideoMuted
       ..featureFlags.addAll(featureFlags)
       ..webOptions = {
-        "roomName": roomText.text,
+        "roomName": valueDropmenu!,
         "width": "100%",
         "height": "100%",
         "enableWelcomePage": false,
