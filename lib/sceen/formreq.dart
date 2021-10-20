@@ -18,11 +18,13 @@ class _FormqState extends State<Formq> {
   final captf = TextEditingController();
   final subop = TextEditingController();
   final ssubtag = TextEditingController();
+  late bool isVisible = true;
 
   String? valueDropmenu;
   int? value;
   List listpoint = ['5','10','15','20','25'];
   late int index;
+
 
   @override
   Widget build(BuildContext context) {
@@ -80,6 +82,7 @@ class _FormqState extends State<Formq> {
                               setState(() {
                                 valueDropmenu = newValue as String?;
                                 if(int.parse(newValue!)>snapshot.data!['points']){
+                                  isVisible = false;
                                   showDialog(context: context, builder: (BuildContext context){
                                   return AlertDialog(
                                   title: Text('Your Point not Enough', style: TextStyle(color: Colors.red)),
@@ -87,6 +90,7 @@ class _FormqState extends State<Formq> {
                                   );
                                 });}
                                 else if (int.parse(newValue)==snapshot.data!['points']){
+                                  isVisible = true;
                                 }
                               });
                             },
@@ -98,17 +102,20 @@ class _FormqState extends State<Formq> {
                         }
                       ),
                     ),
-              Container(
-                margin: EdgeInsets.only(top: 20),
-                child: ElevatedButton(
-                  child: Text('Request', style: TextStyle(fontSize: 25, color: Colors.black),),
-                  style: ElevatedButton.styleFrom(primary: Color(0xFFEFD1A9), shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(20.0))),
-                  onPressed: () async {
-                    value = int.parse(valueDropmenu!);
-                    content: getReward(value!);
-                    content: DatabaseReq().fillReq(title.text, captf.text, subop.text, ssubtag.text, value!);
-                    Navigator.push(this.context, MaterialPageRoute(builder: (context) => Homreq()));
-                  },
+              Visibility(
+                visible: isVisible,
+                child: Container(
+                  margin: EdgeInsets.only(top: 20),
+                  child: ElevatedButton(
+                    child: Text('Request', style: TextStyle(fontSize: 25, color: Colors.black),),
+                    style: ElevatedButton.styleFrom(primary: Color(0xFFEFD1A9), shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(20.0))),
+                    onPressed: () async {
+                      value = int.parse(valueDropmenu!);
+                      content: getReward(value!);
+                      content: DatabaseReq().fillReq(title.text, captf.text, subop.text, ssubtag.text, value!);
+                      Navigator.push(this.context, MaterialPageRoute(builder: (context) => Homreq()));
+                    },
+                  ),
                 ),
               ),
               IconButton(

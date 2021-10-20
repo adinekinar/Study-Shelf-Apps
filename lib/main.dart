@@ -3,6 +3,8 @@ import 'package:flutter/material.dart';
 import 'package:study_shelf/sceen/homepage.dart';
 import 'package:study_shelf/sceen/loginpage.dart';
 import 'package:firebase_core/firebase_core.dart';
+import 'package:flutter_native_splash/flutter_native_splash.dart';
+
 
 Future main() async{
   WidgetsFlutterBinding.ensureInitialized();
