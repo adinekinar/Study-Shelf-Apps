@@ -47,7 +47,7 @@ class _HomreqState extends State<Homreq> {
         body: Column(
           children: [
             Container(
-              width: 445, height: 53,
+              width: MediaQuery.of(context).size.width, height: 53,
               decoration: BoxDecoration(
                 color: const Color(0xFFA386C8),
                 borderRadius: BorderRadius.only(
@@ -63,7 +63,7 @@ class _HomreqState extends State<Homreq> {
                     MaterialPageRoute(builder: (context) => Home()));
                   },
                 child: Container(
-                  width: 162, height: 55,
+                  width: (MediaQuery.of(context).size.width/2.65), height: 55,
                   margin: EdgeInsets.only(left: 9,top: 13),
                   child: Column(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -76,7 +76,7 @@ class _HomreqState extends State<Homreq> {
                   ),
                 ),
                 Container(
-                  margin: EdgeInsets.only(left: 9),
+                  margin: EdgeInsets.only(left: (MediaQuery.of(context).size.width/45)),
                   width: 1,
                   height: 35,
                   decoration: BoxDecoration(

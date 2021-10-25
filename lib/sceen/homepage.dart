@@ -49,7 +49,7 @@ class _HomeState extends State<Home> {
         children: [
           Container(
             //alignment: Alignment(30,81),
-            width: 445, height: 53,
+            width: MediaQuery.of(context).size.width, height: 53,
             decoration: BoxDecoration(
               color: const Color(0xFFA386C8),
               borderRadius: BorderRadius.only(
@@ -78,7 +78,7 @@ class _HomeState extends State<Home> {
                     ),
                   ),
                 Container(
-                  margin: EdgeInsets.only(left: 14),
+                  margin: EdgeInsets.only(left: (MediaQuery.of(context).size.width/29)),
                   width: 1,
                   height: 35,
                   decoration: BoxDecoration(
@@ -91,7 +91,7 @@ class _HomeState extends State<Home> {
                     MaterialPageRoute(builder: (context) => Homreq()));
                   },
                   child: Container(
-                    width: 170, height: 55,
+                    width: (MediaQuery.of(context).size.width/2.55), height: 55,
                     margin: EdgeInsets.only(left: 14,top: 13),
                     child: Column(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,

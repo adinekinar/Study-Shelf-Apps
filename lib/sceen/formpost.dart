@@ -35,6 +35,10 @@ class _FormpState extends State<Formp> {
 
   late String doc_id;
   late int value;
+  late String name;
+  late int size;
+  late String ex;
+  late String flpth;
 
   _FormpState(String doc_id, int value){
     this.doc_id = doc_id;
@@ -76,6 +80,7 @@ class _FormpState extends State<Formp> {
               ),
               Container(
                 child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     Container(
                       child: Text('Insert file :', style: TextStyle(fontSize: 14),),
@@ -91,13 +96,13 @@ class _FormpState extends State<Formp> {
                         final result = await FilePicker.platform.pickFiles(allowMultiple: false, type: FileType.custom, allowedExtensions: ['jpg', 'png', 'jpeg', 'pdf']);
                         if(result == null) return;
                         PlatformFile files = result.files.single;
-                        String name = files.name;
-                        Uint8List? byt = files.bytes;
-                        int size = files.size;
-                        String? ex = files.extension;
-                        String? flpth = files.path;
-                        //postInfo(name, doc_id, byt!, size, ex!, flpth!);
-                        setState(() => file = File(files.path!));
+                        setState((){
+                          file = File(files.path!);
+                          name = files.name;
+                          size = files.size;
+                          ex = files.extension!;
+                          flpth = files.path!;
+                        });
                       },
                     ),
                     Container(child: Text(filename,style: TextStyle(fontSize: 11)), margin: EdgeInsets.only(top: 4),),
@@ -172,7 +177,8 @@ class _FormpState extends State<Formp> {
     var downloadurl = await uploadFile(file!);
     int point = value;
     content: getReward(point);
-    content : fillPost(title.text, captf.text, subop.text, ssubtag.text, downloadurl, valueDropmenu!, doc_id);
+    content:InfPost().postInfo(name, size, ex, flpth, downloadurl);
+    content: fillPost(title.text, captf.text, subop.text, ssubtag.text, downloadurl, valueDropmenu!, doc_id);
     Navigator.push(this.context, MaterialPageRoute(builder: (context) => Home()));
   }
 }
@@ -232,14 +238,16 @@ class Inpform extends StatelessWidget {
   }
 
 //save file information
-Future<void> postInfo (String namefile, String doc_id, Uint8List byt, int size, String exten, String flpath) async {
-  DocumentReference posInf = FirebaseFirestore.instance.collection('PostForm').doc(doc_id).collection('FileInformation').doc();
-  posInf.set({
-    'filename' : namefile,
-    'bytes' : byt,
-    'filesize' : size,
-    'extension' : exten,
-    'filepath' : flpath,
-  });
-  return;
+class InfPost{
+  final  CollectionReference posInf = FirebaseFirestore.instance.collection('FileInformation');
+  Future<void> postInfo (String namefile, int size, String exten, String flpath, String fileurl) async {
+    posInf.add({
+      'filename' : namefile,
+      'filesize' : size,
+      'extension' : exten,
+      'filepath' : flpath,
+      'fileurl' : fileurl,
+    });
+    return;
+  }
 }

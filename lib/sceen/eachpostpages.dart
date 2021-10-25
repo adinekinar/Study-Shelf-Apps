@@ -199,7 +199,7 @@ class eachPost extends StatelessWidget {
     builder: (BuildContext context) {
       return Dialog(
         child: StreamBuilder<QuerySnapshot>(
-          stream: FirebaseFirestore.instance.collection('FormPost').doc(doc_id).collection('FileInformation').snapshots(),
+          stream: FirebaseFirestore.instance.collection('FileInformation').where('fileurl' ,isEqualTo: Url).snapshots(),
             builder: (context, AsyncSnapshot<QuerySnapshot> snapshot) {
               if(!snapshot.hasData){
                 return Center(
@@ -215,11 +215,14 @@ class eachPost extends StatelessWidget {
                 children: [
                   Center(child: Icon(Icons.info_outline_rounded, size: 50, color: const Color(0xFF585858),)),
                   //Text(snapshot.data!.docs[0]['namefile']),
-                  Text('name file'),
-                  Text('Byte file'),
-                  Text('Size file'),
-                  Text('Extension file'),
-                  Text('Path file'),
+                  SizedBox(height: 15,),
+                  Text('name file :'+snapshot.data!.docs[0]['filename']),
+                  SizedBox(height: 5,),
+                  Text('Size file :'+snapshot.data!.docs[0]['filesize'].toString()+'Byte'),
+                  SizedBox(height: 5,),
+                  Text('Extension file :'+snapshot.data!.docs[0]['extension']),
+                  SizedBox(height: 5,),
+                  Text('Path file :'+snapshot.data!.docs[0]['filepath']),
                 ],
               ),
             );
@@ -253,13 +256,13 @@ class eachReq extends StatelessWidget {
     bool solved;
     return  Scaffold(
             floatingActionButton: StreamBuilder(
-              stream: FirebaseFirestore.instance.collection('FormPost').snapshots(),
-              builder: (context, AsyncSnapshot<QuerySnapshot>snapshot) {
+              stream: FirebaseFirestore.instance.collection('FormPost').doc(doc_id).snapshots(),
+              builder: (context, AsyncSnapshot<DocumentSnapshot>snapshot) {
                 return FloatingActionButton(
                   child: const Icon(Icons.reply_rounded, color: const Color(0xFF585858),size: 35,),
                   backgroundColor: const Color(0xFFEFD1A9),
                   onPressed: () async {
-                    (snapshot.data!.docs[2].id == doc_id) ? Navigator.push(context, MaterialPageRoute(builder: (context) => postReplay(doc_id: doc_id))) : Navigator.push(context, MaterialPageRoute(builder: (context) => Formp(doc_id: doc_id,value: value,)));
+                    (snapshot.data!.exists) ? Navigator.push(context, MaterialPageRoute(builder: (context) => postReplay(doc_id: doc_id))) : Navigator.push(context, MaterialPageRoute(builder: (context) => Formp(doc_id: doc_id,value: value,)));
                   },
                 );
               }

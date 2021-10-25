@@ -40,9 +40,26 @@ class _FormqState extends State<Formq> {
             icon: Icon(Icons.arrow_back_ios_new_rounded, color: Colors.black,),
             onPressed: () => Navigator.push(context, MaterialPageRoute(builder: (context) => Selectpg())),
           ),
+          actions: [
+            StreamBuilder(
+                stream: FirebaseFirestore.instance.collection('Users').doc(FirebaseAuth.instance.currentUser!.uid).snapshots(),
+                builder: (context, AsyncSnapshot<DocumentSnapshot>snapshot) {
+                  return Container(
+                    margin: EdgeInsets.symmetric(horizontal: 10),
+                    child: Row(
+                      children: [
+                        Image.network('https://i.postimg.cc/CMsRMRhk/badge.png',width: 20,height: 20,),
+                        Text((snapshot.data!['points']).toString(), style: TextStyle(color: const Color(0xFF585858), fontSize: 20),),
+                      ],
+                    ),
+                  );
+                }
+            ),
+          ],
         ),
         body: SingleChildScrollView(
           child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               Container(
                 margin: EdgeInsets.only(left: 55, top: 20),
