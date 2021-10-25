@@ -43,25 +43,26 @@ class subjectGroup extends StatelessWidget {
             return Center(
               child: MaterialButton(
                 child: Container(
-                  width: 179, height: 370,
+                  //margin: EdgeInsets.symmetric(horizontal: 15),
+                  width: MediaQuery.of(context).size.width/1.2, height: MediaQuery.of(context).size.height/2.17,
                   decoration: BoxDecoration(color: const Color(0xFFCAB8E0).withOpacity(0.2), borderRadius: BorderRadius.circular(20)),
                   child: Column(
                     children: [
                       Container(
-                        width: 179, height: 190, decoration: BoxDecoration(color: Color((snapshotData.docs[index]['File format'] == 'pdf') ? (0xFFCAB8E0) : (0xFFFFFFFF)), borderRadius: BorderRadius.only(topLeft: Radius.circular(20), topRight: Radius.circular(20), bottomRight: Radius.circular(20)),
+                        width: MediaQuery.of(context).size.width/1.2, height: MediaQuery.of(context).size.height/4.15, decoration: BoxDecoration(color: Color((snapshotData.docs[index]['File format'] == 'pdf') ? (0xFFCAB8E0) : (0xFFFFFFFF)), borderRadius: BorderRadius.only(topLeft: Radius.circular(20), topRight: Radius.circular(20), bottomRight: Radius.circular(20)),
                           image: DecorationImage(
                             image: NetworkImage((snapshotData.docs[index]['File format'] == 'pdf') ?  'https://i.postimg.cc/VNTd9w2Q/PDF-File-Online-1-removebg-preview.png' : snapshotData.docs[index]['url']),
                           ),
                         ),
                       ),
+                      SizedBox(height:  15,),
                       Container(
-                        margin: EdgeInsets.only(top: 20),
                         child: ElevatedButton(
                           child: Text(snapshotData.docs[index]['Caption file'], style: TextStyle(fontSize: 13, color: const Color(0xFF585858)),),
                           style: ElevatedButton.styleFrom(primary: Color(0xFFCAB8E0).withOpacity(0.33), shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(20.0)), minimumSize: (Size(30, 25))),
                           onPressed: () {},
                         ),),
-                      Container(child: Text('#'+snapshotData.docs[index]['Sub-subject Tag']),),
+                      Container(child: Text('#'+snapshotData.docs[index]['Sub-subject Tag'], style: TextStyle(color: const Color(0xFF585858),),)),
                       Container(child: Text(snapshotData.docs[index]['Title'], style: TextStyle(fontSize: 18),),),
                       Container(child: Text(snapshotData.docs[index]['Username']),),
                       IconButton(icon: Icon(Icons.download_rounded, color: const Color(0xFF585858),),

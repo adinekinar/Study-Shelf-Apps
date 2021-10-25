@@ -57,6 +57,7 @@ Future<void> fillPost (String title, String caption, String subject, String tag,
   return;
 }
 
+//for store data request
 class DatabaseReq {
   final CollectionReference fillr = FirebaseFirestore.instance.collection('FormRequest');
 
@@ -107,18 +108,26 @@ class _StreamkeyreqState extends State<Streamkeyreq> {
                   return Center(
                     child: MaterialButton(
                       child: Container(
-                        width: 372, height: 132,
+                        width: MediaQuery.of(context).size.width/0.5, height: MediaQuery.of(context).size.height/6.5,
                         margin: EdgeInsets.all(10),
                         decoration: BoxDecoration(color: const Color(0xFFCAB8E0).withOpacity(0.2), borderRadius: BorderRadius.circular(30)),
                         child: Row(
                           children: [
-                            Container(width: 75, height: 75, margin: EdgeInsets.all(10), decoration: BoxDecoration(color: const Color(0xFFCAB8E0), borderRadius: BorderRadius.circular(25)),child: Icon(Icons.paste_rounded, size: 35, color: const Color(0xFF585858),)),
+                            Column(
+                              children: [
+                                Container(width: 75, height: 75, margin: EdgeInsets.symmetric(horizontal: 15, vertical: 10), decoration: BoxDecoration(color: const Color(0xFFCAB8E0), borderRadius: BorderRadius.circular(25)),child: Icon(Icons.paste_rounded, size: 35, color: const Color(0xFF585858),)),
+                                Text(document['Username']),
+                              ],
+                            ),
                             Container(
                               child: Column(
                                 crossAxisAlignment: CrossAxisAlignment.start,
                                 children: [
-                                  Container(margin: EdgeInsets.only(top: 15, bottom: 15), child: Text(document['Title'])),
+                                  SizedBox(height:  15,),
+                                  Container(child: Text(document['Title'])),
+                                  SizedBox(height:  10,),
                                   Container(child: Text('#'+document['Sub-subject Tag']),),
+                                  SizedBox(height:  10,),
                                   ElevatedButton(child: Text(document['Subject'], style: TextStyle(fontSize: 13, color: const Color(0xFF585858)),),
                                   style: ElevatedButton.styleFrom(primary: Color(0xFFCAB8E0).withOpacity(0.33), shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(20.0)), minimumSize: (Size(30, 25))),
                                   onPressed: () {}),
@@ -175,14 +184,14 @@ class _StreamkeypostState extends State<Streamkeypost> {
                 return Center(
                   child: MaterialButton(
                     child: Container(
-                      width: 179, height: 370,
+                      width: MediaQuery.of(context).size.width/1.2, height: MediaQuery.of(context).size.height/2.17,
                       decoration: BoxDecoration(color: const Color(0xFFCAB8E0).withOpacity(0.2), borderRadius: BorderRadius.circular(20)),
                       child: Column(
                         children: [
                           Column(
                             children: [
                               Container(
-                                width: 179, height: 190,
+                                width: MediaQuery.of(context).size.width/1.2, height: MediaQuery.of(context).size.height/4.15,
                                 decoration: BoxDecoration(
                                   color: Color((document['File format'] == 'pdf') ? (0xFFCAB8E0) : (0xFFFFFFFF)),
                                   borderRadius: BorderRadius.only(topLeft: Radius.circular(20), topRight: Radius.circular(20), bottomRight: Radius.circular(20)),
@@ -194,11 +203,11 @@ class _StreamkeypostState extends State<Streamkeypost> {
                               ),
                             ],
                           ),
+                          SizedBox(height:  15,),
                           GetBuilder<GroupPost> (
                             init: GroupPost(),
                             builder: (val) {
                               return Container(
-                                  margin: EdgeInsets.only(top: 20),
                                   child: ElevatedButton(
                                       child: Text(document['Caption file'], style: TextStyle(fontSize: 13, color: const Color(0xFF585858)),),
                                       style: ElevatedButton.styleFrom(primary: Color(0xFFCAB8E0).withOpacity(0.33), shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(20.0)), minimumSize: (Size(30, 25))),
@@ -212,7 +221,7 @@ class _StreamkeypostState extends State<Streamkeypost> {
                                   ));
                             },
                           ),
-                          Container(child: Text('#'+document['Sub-subject Tag']),),
+                          Container(child: Text('#'+document['Sub-subject Tag'], style: TextStyle(color: const Color(0xFF585858),),)),
                           Container(child: Text(document['Title'], style: TextStyle(fontSize: 18),),),
                           Container(child: Text(document['Username']),),
                           IconButton(icon: Icon(Icons.download_rounded, color: const Color(0xFF585858),),
@@ -242,7 +251,7 @@ class DatacontPost extends GetxController {
     return snapshot.docs;
   }
   Future Searchpost(String qStringpost) async {
-    return FirebaseFirestore.instance.collection('FormPost').where('Caption file', isEqualTo: qStringpost).get();
+    return FirebaseFirestore.instance.collection('FormPost').where('Title', isEqualTo: qStringpost).get();
   }
 }
 

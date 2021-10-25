@@ -36,8 +36,10 @@ class _SelectpgState extends State<Selectpg> {
         ),
       ),
         body: Column(
+          crossAxisAlignment: CrossAxisAlignment.center,
           children: [
-            Container(margin: EdgeInsets.only(right: 270, top: 30),child: Text('Select One :', style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),)),
+            SizedBox(height: 30,),
+            Align(alignment: Alignment.centerLeft,child: Container(padding: EdgeInsets.symmetric(horizontal: 20),child: Text('Select One :', style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),))),
             Container(
               margin: EdgeInsets.all(20),
               padding: EdgeInsets.all(20),
@@ -45,7 +47,7 @@ class _SelectpgState extends State<Selectpg> {
                 color: Colors.white30,
                 borderRadius: BorderRadius.circular(30),
               ),
-              height: 230,
+              height: MediaQuery.of(context).size.height/3.5,
               child: Column(
                 mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                 children: [

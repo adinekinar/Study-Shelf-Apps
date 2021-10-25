@@ -78,12 +78,13 @@ class eachPost extends StatelessWidget {
           child: Stack(
             children: <Widget>[
               Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   MaterialButton(
                     child: Center(
                       child: Container(
                         margin: EdgeInsets.only(top: 30, bottom: 20),
-                        height: 202, width: 267,
+                        width: MediaQuery.of(context).size.width/1.5, height: MediaQuery.of(context).size.height/4,
                         decoration: BoxDecoration(
                           color: Color((Format == 'pdf') ? (0xFFCAB8E0) : (0xFFFFFFFF)),
                           borderRadius: BorderRadius.circular(20),
@@ -101,19 +102,29 @@ class eachPost extends StatelessWidget {
                       infoPopUp(context);
                     },
                   ),
-                  Container(child: Text(Title+' :', style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),)),
-                  Container(child: Text(Caption, style: TextStyle(fontSize: 20))),
-                  Container(child: Text('tag : #'+Tag)),
-                  ElevatedButton(
-                    child: Text(Subject, style: TextStyle(
-                    fontSize: 16, color: const Color(0xFF585858)),),
-                    style: ElevatedButton.styleFrom(
-                    primary: Color(0xFFCAB8E0).withOpacity(0.33),
-                    shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(20.0)),
-                    minimumSize: (Size(50, 30))),
-                    onPressed: () {}),
-                  Text('Created by : '+Uname),
+                  Container(
+                    padding: EdgeInsets.symmetric(horizontal: 50),
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Container(child: Text(Title+' :', style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),)),
+                        Container(child: Text(Caption, style: TextStyle(fontSize: 20))),
+                        SizedBox(height: 15,),
+                        Container(child: Text('tag : #'+Tag)),
+                        ElevatedButton(
+                            child: Text(Subject, style: TextStyle(
+                                fontSize: 16, color: const Color(0xFF585858)),),
+                            style: ElevatedButton.styleFrom(
+                                primary: Color(0xFFCAB8E0).withOpacity(0.33),
+                                shape: RoundedRectangleBorder(
+                                    borderRadius: BorderRadius.circular(20.0)),
+                                minimumSize: (Size(50, 30))),
+                            onPressed: () {}),
+                        Align(alignment: Alignment.centerRight,child: Text('Created by : '+Uname)),
+                      ],
+                    ),
+                  ),
+                  SizedBox(height: 20,),
                   Container(height: 357.5),
                  ]
                 ),
@@ -272,21 +283,6 @@ class eachReq extends StatelessWidget {
               title: Text(Title, style: TextStyle(color: Colors.black),),
             centerTitle: true,
             backgroundColor: const Color(0xFFCAB8E0),
-            actions: [
-              GetBuilder<ReqSolved>(
-                  init: ReqSolved(),
-                  builder: (val) {
-                    return IconButton(
-                        icon: Icon(Icons.search_rounded, size: 26, color: Colors.black),
-                        onPressed: () {
-                          val.RSolved(doc_id).then((value) {
-                            snapshotData = value;
-                            solved = true;
-                          });
-                        });
-                  }
-              ),
-            ],
             leading: IconButton(
             icon: Icon(CupertinoIcons.back, size: 35, color: Colors.black),
             onPressed: () {Navigator.push(context, MaterialPageRoute(builder: (context) => Homreq()));}),
@@ -296,11 +292,12 @@ class eachReq extends StatelessWidget {
                 child: Stack(
                   children: <Widget>[
                     Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
                           Center(
                             child: Container(
                               margin: EdgeInsets.only(top: 30, bottom: 20),
-                              height: 150, width: 150,
+                              width: MediaQuery.of(context).size.width/2.5, height: MediaQuery.of(context).size.height/5.2,
                               decoration: BoxDecoration(
                                 color: const Color(0xFFCAB8E0),
                                 borderRadius: BorderRadius.circular(20),
@@ -308,19 +305,28 @@ class eachReq extends StatelessWidget {
                               child: Icon(Icons.paste_rounded, color: const Color(0xFF585858), size: 80,),
                               ),
                             ),
-                          Container(child: Text(Title+' :', style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),)),
-                          Center(child: Text(Caption, style: TextStyle(fontSize: 20))),
-                          Container(child: Text('tag : #'+Tag)),
-                          ElevatedButton(
-                              child: Text(Subject, style: TextStyle(
-                                  fontSize: 16, color: const Color(0xFF585858)),),
-                              style: ElevatedButton.styleFrom(
-                                  primary: Color(0xFFCAB8E0).withOpacity(0.33),
-                                  shape: RoundedRectangleBorder(
-                                      borderRadius: BorderRadius.circular(20.0)),
-                                  minimumSize: (Size(50, 30))),
-                              onPressed: () {}),
-                          Text('Request by : '+Uname),
+                          Container(
+                            padding: EdgeInsets.symmetric(horizontal: 50),
+                           child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              Text(Title+' :', style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),),
+                              Container(child: Text(Caption, style: TextStyle(fontSize: 20))),
+                              SizedBox(height: 8,),
+                              Container(child: Text('tag : #'+Tag)),
+                              ElevatedButton(
+                                  child: Text(Subject, style: TextStyle(
+                                      fontSize: 16, color: const Color(0xFF585858)),),
+                                  style: ElevatedButton.styleFrom(
+                                      primary: Color(0xFFCAB8E0).withOpacity(0.33),
+                                      shape: RoundedRectangleBorder(
+                                          borderRadius: BorderRadius.circular(20.0)),
+                                      minimumSize: (Size(50, 30))),
+                                  onPressed: () {}),
+                              Align(alignment: Alignment.centerRight,child: Text('Request by : '+Uname)),
+                            ],
+                          )),
+                          SizedBox(height: 20,),
                           Container(height: 410),
                         ]
                     ),

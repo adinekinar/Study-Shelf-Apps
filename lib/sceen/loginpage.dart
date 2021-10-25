@@ -31,71 +31,97 @@ class _SSloginState extends State<SSlogin> {
         backgroundColor: Colors.transparent,
         body: SingleChildScrollView(
           child: Container(
-            margin: EdgeInsets.only(left: 52, top: 130),
+            alignment: Alignment.center,
+            margin: EdgeInsets.symmetric(vertical: MediaQuery.of(context).size.height/7.5),
             child: Column(
             children: [
-              Text("Study Shelf", style: TextStyle(fontWeight: FontWeight.bold, fontSize: 20),),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  Image.network('https://i.postimg.cc/cCfWFLX9/Book-Shelf.png', height: 20, width: 20,),
+                  Text("Study Shelf", style: TextStyle(fontWeight: FontWeight.bold, fontSize: 20),),
+                ],
+              ),
               Container(
                margin: EdgeInsets.only(top: 20),
-               width: 330,
-               height: 468,
+               padding: EdgeInsets.symmetric(vertical: 10, horizontal: 43),
+               width: MediaQuery.of(context).size.width-100,
+               height: MediaQuery.of(context).size.height/1.75,
                decoration: BoxDecoration(
                 color: Colors.white30,
                 borderRadius: BorderRadius.circular(20)),
               child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  Container(
-                    child: Text("LOGIN", style: TextStyle(fontWeight: FontWeight.bold, fontSize: 30),textAlign: TextAlign.center,),
-                    margin: EdgeInsets.only(top: 20),
-                  ),
-                  Container(child: Text("Email :", style: TextStyle(fontSize: 18)), margin: EdgeInsets.only(right: 200, top: 5, bottom: 10),),
-                  Container(
-                    padding: EdgeInsets.only(left: 20),
-                    width: 254, height: 52,
-                    decoration: BoxDecoration(
-                        color: Colors.white30,
-                        borderRadius: BorderRadius.circular(20)),
-                    child: TextField(
-                            controller: emailcnt,
-                            decoration: InputDecoration(hintText: 'Input Email..', icon: Icon(Icons.email, size: 24), border: InputBorder.none),
-                          ),
-                  ),
-                  Container(child: Text("Password :", style: TextStyle(fontSize: 18),textAlign: TextAlign.left,),margin: EdgeInsets.only(top: 10, right: 165, bottom: 10),),
-                  Container(
-                    padding: EdgeInsets.only(left: 20),
-                    width: 254, height: 52,
-                    decoration: BoxDecoration(
-                        color: Colors.white30,
-                        borderRadius: BorderRadius.circular(20)),
-                    child: TextField(
-                      controller: passcnt,
-                      obscureText: true,
-                      decoration: InputDecoration(hintText: 'Input Password..', icon: Icon(Icons.vpn_key, size: 24), border: InputBorder.none),
+                  Center(
+                    child: Container(
+                      child: Text("LOGIN", style: TextStyle(fontWeight: FontWeight.bold, fontSize: 30),textAlign: TextAlign.center,),
+                      margin: EdgeInsets.only(top: 20),
                     ),
                   ),
-                  Container(
-                    child: MaterialButton(child: Text('Forgot password?', style: TextStyle(fontSize: 18, fontWeight: FontWeight.normal),),
-                      onPressed: () {
-                        Navigator.push(context, MaterialPageRoute(builder: (context) => PassReset()));
-                      },
+                  SizedBox(height: 10,),
+                  Container(child: Text("Email :", style: TextStyle(fontSize: 18)), ),
+                  SizedBox(height: 10,),
+                  Center(
+                    child: Container(
+                      padding: EdgeInsets.only(left: 20),
+                      width: 254, height: 52,
+                      decoration: BoxDecoration(
+                          color: Colors.white30,
+                          borderRadius: BorderRadius.circular(20)),
+                      child: TextField(
+                              controller: emailcnt,
+                              decoration: InputDecoration(hintText: 'Input Email..', icon: Icon(Icons.email, size: 24), border: InputBorder.none),
+                            ),
                     ),
-                    margin: EdgeInsets.only(left: 105),
                   ),
-                  ElevatedButton(
-                      child: Text('Login', style: TextStyle(fontSize: 25),),
-                      style: ElevatedButton.styleFrom(primary: Color(0xFFEFD1A9), shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(20.0))),
-                      onPressed: () async {
-                        content : await FirebaseAuth.instance.signInWithEmailAndPassword(email: emailcnt.text, password: passcnt.text);
-                        Navigator.push(context, MaterialPageRoute(builder: (context) => Home()));
-                        setState(() {});
-                      }),
-                  Container(child: Text('Haven’t account?', style: TextStyle(fontSize: 18),), margin: EdgeInsets.only(top: 10, bottom: 10),),
-                  ElevatedButton(
-                      child: Text('Sign Up', style: TextStyle(fontSize: 25),),
-                      style: ElevatedButton.styleFrom(primary: Color(0xFFA386C8), shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(20.0))),
-                      onPressed: () async {
-                        Navigator.push(context, MaterialPageRoute(builder: (context) => SSregister()));
-                      }),
+                  SizedBox(height: 10,),
+                  Container(child: Text("Password :", style: TextStyle(fontSize: 18),textAlign: TextAlign.left,)),
+                  SizedBox(height: 10,),
+                  Center(
+                    child: Container(
+                      padding: EdgeInsets.only(left: 20),
+                      width: 254, height: 52,
+                      decoration: BoxDecoration(
+                          color: Colors.white30,
+                          borderRadius: BorderRadius.circular(20)),
+                      child: TextField(
+                        controller: passcnt,
+                        obscureText: true,
+                        decoration: InputDecoration(hintText: 'Input Password..', icon: Icon(Icons.vpn_key, size: 24), border: InputBorder.none),
+                      ),
+                    ),
+                  ),
+                  Align(
+                    alignment: Alignment.centerRight,
+                    child: Container(
+                      padding: EdgeInsets.zero,
+                      child: MaterialButton(child: Text('Forgot password?', style: TextStyle(fontSize: 18, fontWeight: FontWeight.normal),),
+                        onPressed: () {
+                          Navigator.push(context, MaterialPageRoute(builder: (context) => PassReset()));
+                        },
+                      ),
+                    ),
+                  ),
+                  Center(
+                    child: ElevatedButton(
+                        child: Text('Login', style: TextStyle(fontSize: 25),),
+                        style: ElevatedButton.styleFrom(primary: Color(0xFFEFD1A9), shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(20.0))),
+                        onPressed: () async {
+                          content : await FirebaseAuth.instance.signInWithEmailAndPassword(email: emailcnt.text, password: passcnt.text);
+                          Navigator.push(context, MaterialPageRoute(builder: (context) => Home()));
+                          setState(() {});
+                        }),
+                  ),
+                  Center(child: Container(child: Text('Haven’t account?', style: TextStyle(fontSize: 18),), margin: EdgeInsets.only(top: 10, bottom: 10),)),
+                  Center(
+                    child: ElevatedButton(
+                        child: Text('Sign Up', style: TextStyle(fontSize: 25),),
+                        style: ElevatedButton.styleFrom(primary: Color(0xFFA386C8), shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(20.0))),
+                        onPressed: () async {
+                          Navigator.push(context, MaterialPageRoute(builder: (context) => SSregister()));
+                        }),
+                  ),
                 ],
               ),
             ),
