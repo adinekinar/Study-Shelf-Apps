@@ -61,9 +61,10 @@ class _FormqState extends State<Formq> {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
+              SizedBox(height: 20,),
               Container(
-                margin: EdgeInsets.only(left: 55, top: 20),
                 child: Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
                   children: [
                     Container(
                       width: 60, height: 60,
@@ -75,71 +76,71 @@ class _FormqState extends State<Formq> {
                   ],
                 ),
               ),
-              Inpform(ttl: 'Title request :', r: 250, h: 33, cont: title,),
-              Inpform(ttl: 'Caption request :', r: 230, h: 58, cont: captf,),
-              Inpform(ttl: 'Subject option :', r: 240, h: 33, cont: subop,),
-              Inpform(ttl: 'Sub-subject tag :', r: 235, h: 120, cont: ssubtag,),
-              Container(child: Text("Total Reward to Give :"), margin: EdgeInsets.only(top: 10, right: 200),),
-              Container(
-                margin: EdgeInsets.only(top: 10),
-                      padding: EdgeInsets.only(left: 16, right: 16),
-                      decoration: BoxDecoration(
-                        color: Colors.white30,
-                        border: Border.all(color: Color(0xFFAEAEAE)),
-                        borderRadius: BorderRadius.circular(20),
-                      ),
-                      child: StreamBuilder(
-                        stream: FirebaseFirestore.instance.collection('Users').doc(FirebaseAuth.instance.currentUser!.uid).snapshots(),
-                        builder: (context, AsyncSnapshot<DocumentSnapshot>snapshot) {
-                          return DropdownButton(
-                            hint: Text('Choose point..    '),
-                            icon: Icon(Icons.arrow_drop_down_rounded),
-                            value: valueDropmenu,
-                            onChanged: (newValue) {
-                              setState(() {
-                                valueDropmenu = newValue as String?;
-                                if(int.parse(newValue!)>snapshot.data!['points']){
-                                  isVisible = false;
-                                  showDialog(context: context, builder: (BuildContext context){
-                                  return AlertDialog(
-                                  title: Text('Your Point not Enough', style: TextStyle(color: Colors.red)),
-                                  content: Text('Choose point for reward again!', style: TextStyle(color: Colors.red)),
-                                  );
-                                });}
-                                else if (int.parse(newValue)==snapshot.data!['points']){
-                                  isVisible = true;
-                                }
-                              });
-                            },
-                            underline: SizedBox(),
-                            items: (listpoint).map((valueItem) {
-                              return DropdownMenuItem(value: valueItem, child: Text('$valueItem points'),);
-                          }).toList(),
-                          );
-                        }
-                      ),
-                    ),
-              Visibility(
-                visible: isVisible,
+              Inpform(ttl: 'Title request :', h: MediaQuery.of(context).size.height/20, cont: title,),
+              Inpform(ttl: 'Subject option :', h: MediaQuery.of(context).size.height/20, cont: subop,),
+              Inpform(ttl: 'Caption request :', h: MediaQuery.of(context).size.height/12, cont: captf,),
+              Inpform(ttl: 'Sub-subject tag :', h: MediaQuery.of(context).size.height/20, cont: ssubtag,),
+              SizedBox(height: 10,),
+              Container(padding: EdgeInsets.symmetric(horizontal: MediaQuery.of(context).size.width/9),child: Text("Total Reward to Give :")),
+              Center(
                 child: Container(
-                  margin: EdgeInsets.only(top: 20),
-                  child: ElevatedButton(
-                    child: Text('Request', style: TextStyle(fontSize: 25, color: Colors.black),),
-                    style: ElevatedButton.styleFrom(primary: Color(0xFFEFD1A9), shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(20.0))),
-                    onPressed: () async {
-                      value = int.parse(valueDropmenu!);
-                      content: getReward(value!);
-                      content: DatabaseReq().fillReq(title.text, captf.text, subop.text, ssubtag.text, value!);
-                      Navigator.push(this.context, MaterialPageRoute(builder: (context) => Homreq()));
-                    },
+                  margin: EdgeInsets.only(top: 10),
+                        padding: EdgeInsets.only(left: 16, right: 16),
+                        decoration: BoxDecoration(
+                          color: Colors.white30,
+                          border: Border.all(color: Color(0xFFAEAEAE)),
+                          borderRadius: BorderRadius.circular(20),
+                        ),
+                        child: StreamBuilder(
+                          stream: FirebaseFirestore.instance.collection('Users').doc(FirebaseAuth.instance.currentUser!.uid).snapshots(),
+                          builder: (context, AsyncSnapshot<DocumentSnapshot>snapshot) {
+                            return DropdownButton(
+                              hint: Text('Choose point..    '),
+                              icon: Icon(Icons.arrow_drop_down_rounded),
+                              value: valueDropmenu,
+                              onChanged: (newValue) {
+                                setState(() {
+                                  valueDropmenu = newValue as String?;
+                                  if(int.parse(newValue!)>snapshot.data!['points']){
+                                    isVisible = false;
+                                    showDialog(context: context, builder: (BuildContext context){
+                                    return AlertDialog(
+                                    title: Text('Your Point not Enough', style: TextStyle(color: Colors.red)),
+                                    content: Text('Choose point for reward again!', style: TextStyle(color: Colors.red)),
+                                    );
+                                  });}
+                                  else if (int.parse(newValue)==snapshot.data!['points']){
+                                    isVisible = true;
+                                  }
+                                });
+                              },
+                              underline: SizedBox(),
+                              items: (listpoint).map((valueItem) {
+                                return DropdownMenuItem(value: valueItem, child: Text('$valueItem points'),);
+                            }).toList(),
+                            );
+                          }
+                        ),
+                      ),
+              ),
+              Center(
+                child: Visibility(
+                  visible: isVisible,
+                  child: Container(
+                    margin: EdgeInsets.only(top: 20),
+                    child: ElevatedButton(
+                      child: Text('Request', style: TextStyle(fontSize: 25, color: Colors.black),),
+                      style: ElevatedButton.styleFrom(primary: Color(0xFFEFD1A9), shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(20.0))),
+                      onPressed: () async {
+                        value = int.parse(valueDropmenu!);
+                        content: getReward(value!);
+                        content: DatabaseReq().fillReq(title.text, captf.text, subop.text, ssubtag.text, value!);
+                        Navigator.push(this.context, MaterialPageRoute(builder: (context) => Homreq()));
+                      },
+                    ),
                   ),
                 ),
               ),
-              IconButton(
-              icon: Icon(Icons.add),
-              onPressed: (){
-                print(listpoint[1]);
-              }),
             ],
           ),
         ),
@@ -168,26 +169,30 @@ class _FormqState extends State<Formq> {
 
 class Inpform extends StatelessWidget {
   final String ttl;
-  final double r;
   final double h;
   final TextEditingController cont;
   const Inpform({
     Key? key, required this.ttl,
-    required this.r, required this.h,
+    required this.h,
     required this.cont,
   }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     return Container(
+      padding: EdgeInsets.symmetric(horizontal: MediaQuery.of(context).size.width/9),
       child: Column(
         children: [
-          Container(
-            child: Text(ttl, style: TextStyle(fontSize: 14),),
-            margin: EdgeInsets.only(top: 10, bottom: 4, right: r,),
+          SizedBox(height: 10,),
+          Align(
+            alignment: Alignment.centerLeft,
+            child: Container(
+              child: Text(ttl, style: TextStyle(fontSize: 14),),
+            ),
           ),
+          SizedBox(height: 10,),
           Container(
-            width: 335, height: h,
+            width: double.infinity, height: h,
             padding: EdgeInsets.only(left: 20),
             decoration: BoxDecoration(color: Colors.white30, border: Border.all(color: const Color(0xFFAEAEAE)), borderRadius: BorderRadius.circular(20)),
             child: TextField(

@@ -63,10 +63,12 @@ class _FormpState extends State<Formp> {
         ),
         body: SingleChildScrollView(
           child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
             children: [
+              SizedBox(height: 20,),
               Container(
-                margin: EdgeInsets.only(left: 90, top: 20),
                 child: Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
                   children: [
                     Container(
                       width: 60, height: 60,
@@ -78,82 +80,85 @@ class _FormpState extends State<Formp> {
                   ],
                 ),
               ),
+              SizedBox(height: 15,),
               Container(
+                padding: EdgeInsets.symmetric(horizontal: MediaQuery.of(context).size.width/9,),
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     Container(
                       child: Text('Insert file :', style: TextStyle(fontSize: 14),),
-                      margin: EdgeInsets.only(top: 10, bottom: 10, right: 280),
+                      //margin: EdgeInsets.only(top: 10, bottom: 10, right: 280),
                     ),
-                    MaterialButton(
-                      child: Container(
-                        child: Icon(Icons.add, size: 50, color: const Color(0xFF585858),),
-                        width: 80, height: 80,
-                        decoration: BoxDecoration(color: Colors.white30, borderRadius: BorderRadius.circular(20)),
+                    Center(
+                      child: MaterialButton(
+                        child: Container(
+                          child: Icon(Icons.add, size: 50, color: const Color(0xFF585858),),
+                          width: 80, height: 80,
+                          decoration: BoxDecoration(color: Colors.white30, borderRadius: BorderRadius.circular(20)),
+                        ),
+                        onPressed: () async {
+                          final result = await FilePicker.platform.pickFiles(allowMultiple: false, type: FileType.custom, allowedExtensions: ['jpg', 'png', 'jpeg', 'pdf']);
+                          if(result == null) return;
+                          PlatformFile files = result.files.single;
+                          setState((){
+                            file = File(files.path!);
+                            name = files.name;
+                            size = files.size;
+                            ex = files.extension!;
+                            flpth = files.path!;
+                          });
+                        },
                       ),
-                      onPressed: () async {
-                        final result = await FilePicker.platform.pickFiles(allowMultiple: false, type: FileType.custom, allowedExtensions: ['jpg', 'png', 'jpeg', 'pdf']);
-                        if(result == null) return;
-                        PlatformFile files = result.files.single;
-                        setState((){
-                          file = File(files.path!);
-                          name = files.name;
-                          size = files.size;
-                          ex = files.extension!;
-                          flpth = files.path!;
-                        });
-                      },
                     ),
-                    Container(child: Text(filename,style: TextStyle(fontSize: 11)), margin: EdgeInsets.only(top: 4),),
+                    SizedBox(height: 5,),
+                    Center(child: Container(child: Text(filename,style: TextStyle(fontSize: 11)), margin: EdgeInsets.only(top: 4),)),
+                    SizedBox(height: 10,),
                     Container(
                       child: Text('you can upload with format file : .pdf, .png, .jpg, .jpeg', style: TextStyle(fontSize: 11),),
-                      margin: EdgeInsets.only(top: 20, bottom: 6, right: 80),
+                      //margin: EdgeInsets.only(top: 20, bottom: 6, right: 80),
                     ),
                   ],
                 ),
               ),
-              Container(
-                margin: EdgeInsets.only(top: 10),
-                padding: EdgeInsets.only(left: 16, right: 16),
-                decoration: BoxDecoration(
-                  color: Colors.white30,
-                  border: Border.all(color: Color(0xFFAEAEAE)),
-                  borderRadius: BorderRadius.circular(20),
-                ),
-                child: DropdownButton(
-                  hint: Text('Choose format..    '),
-                  icon: Icon(Icons.arrow_drop_down_rounded),
-                  value: valueDropmenu,
-                  onChanged: (newValue) {
-                    setState(() {
-                      valueDropmenu = newValue as String?;
-                    });
-                  },
-                  underline: SizedBox(),
-                  items: listpoint.map((valueItem) {
-                    return DropdownMenuItem(value: valueItem, child: Text('$valueItem'),);
-                  }).toList(),
-                ),
-              ),
-              Inpform(ttl: 'Title file :', r: 280, h: 33, cont: title,),
-              Inpform(ttl: 'Subject option :', r: 240, h: 33, cont: captf,),
-              Inpform(ttl: 'Caption file :', r: 260, h: 58, cont: subop,),
-              Inpform(ttl: 'Sub-subject tag :', r: 235, h: 58, cont: ssubtag,),
-              Container(
-                margin: EdgeInsets.only(top: 20),
-                child: ElevatedButton(
-                  child: Text('Post', style: TextStyle(fontSize: 25, color: Colors.black),),
-                  style: ElevatedButton.styleFrom(primary: Color(0xFFEFD1A9), shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(20.0))),
-                  onPressed: submitPost,
+              Center(
+                child: Container(
+                  margin: EdgeInsets.only(top: 10),
+                  padding: EdgeInsets.only(left: 16, right: 16),
+                  decoration: BoxDecoration(
+                    color: Colors.white30,
+                    border: Border.all(color: Color(0xFFAEAEAE)),
+                    borderRadius: BorderRadius.circular(20),
+                  ),
+                  child: DropdownButton(
+                    hint: Text('Choose format..    '),
+                    icon: Icon(Icons.arrow_drop_down_rounded),
+                    value: valueDropmenu,
+                    onChanged: (newValue) {
+                      setState(() {
+                        valueDropmenu = newValue as String?;
+                      });
+                    },
+                    underline: SizedBox(),
+                    items: listpoint.map((valueItem) {
+                      return DropdownMenuItem(value: valueItem, child: Text('$valueItem'),);
+                    }).toList(),
+                  ),
                 ),
               ),
-              IconButton(
-                icon: Icon(Icons.add),
-                onPressed: (){
-                  int point = 10;
-                  getReward(point);
-                },
+              Inpform(ttl: 'Title file :', h: MediaQuery.of(context).size.height/20, cont: title,),
+              Inpform(ttl: 'Subject option :', h: MediaQuery.of(context).size.height/20, cont: captf,),
+              Inpform(ttl: 'Caption file :', h: MediaQuery.of(context).size.height/12, cont: subop,),
+              Inpform(ttl: 'Sub-subject tag :', h: MediaQuery.of(context).size.height/20, cont: ssubtag,),
+              Center(
+                child: Container(
+                  margin: EdgeInsets.only(top: 20),
+                  child: ElevatedButton(
+                    child: Text('Post', style: TextStyle(fontSize: 25, color: Colors.black),),
+                    style: ElevatedButton.styleFrom(primary: Color(0xFFEFD1A9), shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(20.0))),
+                    onPressed: submitPost,
+                  ),
+                ),
               ),
             ],
           ),
@@ -185,26 +190,31 @@ class _FormpState extends State<Formp> {
 
 class Inpform extends StatelessWidget {
   final String ttl;
-  final double r;
   final double h;
   final TextEditingController cont;
   const Inpform({
     Key? key, required this.ttl,
-    required this.r, required this.h,
+    required this.h,
     required this.cont,
   }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     return Container(
+      padding: EdgeInsets.symmetric(horizontal: MediaQuery.of(context).size.width/9,),
       child: Column(
         children: [
-          Container(
-            child: Text(ttl, style: TextStyle(fontSize: 14),),
-            margin: EdgeInsets.only(top: 10, bottom: 4, right: r,),
+          SizedBox(height: 10,),
+          Align(
+            alignment: Alignment.centerLeft,
+            child: Container(
+              child: Text(ttl, style: TextStyle(fontSize: 14),),
+              //margin: EdgeInsets.only(top: 10, bottom: 4, right: r,),
+            ),
           ),
+          SizedBox(height: 10,),
           Container(
-            width: 335, height: h,
+            width: double.infinity, height: h,
             padding: EdgeInsets.only(left: 20),
             decoration: BoxDecoration(color: Colors.white30, border: Border.all(color: const Color(0xFFAEAEAE)), borderRadius: BorderRadius.circular(20)),
             child: TextField(
