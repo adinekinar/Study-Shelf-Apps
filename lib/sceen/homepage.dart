@@ -60,15 +60,15 @@ class _HomeState extends State<Home> {
             child:Row(
               children: [
                 Container(
-                    margin: EdgeInsets.only(left: 14,top: 13),
                     child: Column(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
                         Center(
-                          child: Text("Posting", style: TextStyle(fontWeight: FontWeight.bold,fontSize: 20, color: Colors.white),),
+                          child: Container(margin: EdgeInsets.symmetric(vertical: 13),child: Text("Posting", style: TextStyle(fontWeight: FontWeight.bold,fontSize: 18, color: Colors.white),)),
                         ),
                         Container(
-                          width: 185, height: 5,
+                          margin: EdgeInsets.symmetric(horizontal: 13),
+                          width: MediaQuery.of(context).size.width/2.5, height: 5,
                           decoration: BoxDecoration(
                             color: const Color(0xFFEFD1A9),
                             borderRadius: BorderRadius.circular(18),
@@ -92,12 +92,12 @@ class _HomeState extends State<Home> {
                   },
                   child: Container(
                     width: (MediaQuery.of(context).size.width/2.55), height: 55,
-                    margin: EdgeInsets.only(left: 14,top: 13),
+                    //margin: EdgeInsets.only(left: 14,top: 13),
                     child: Column(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
                     Center(
-                    child: Text("Request", style: TextStyle(fontWeight: FontWeight.bold,fontSize: 20, color: Colors.white),),
+                    child: Container(margin: EdgeInsets.symmetric(vertical: 13), child: Text("Request", style: TextStyle(fontWeight: FontWeight.bold,fontSize: 18, color: Colors.white),)),
                   ),
                       ],
                   ),

@@ -60,7 +60,7 @@ class _SSloginState extends State<SSlogin> {
                     ),
                   ),
                   SizedBox(height: 10,),
-                  Container(child: Text("Email :", style: TextStyle(fontSize: 18)), ),
+                  Container(child: Text("Email :", style: TextStyle(fontSize: 16)), ),
                   SizedBox(height: 10,),
                   Center(
                     child: Container(
@@ -76,7 +76,7 @@ class _SSloginState extends State<SSlogin> {
                     ),
                   ),
                   SizedBox(height: 10,),
-                  Container(child: Text("Password :", style: TextStyle(fontSize: 18),textAlign: TextAlign.left,)),
+                  Container(child: Text("Password :", style: TextStyle(fontSize: 16),textAlign: TextAlign.left,)),
                   SizedBox(height: 10,),
                   Center(
                     child: Container(
@@ -96,7 +96,7 @@ class _SSloginState extends State<SSlogin> {
                     alignment: Alignment.centerRight,
                     child: Container(
                       padding: EdgeInsets.zero,
-                      child: MaterialButton(child: Text('Forgot password?', style: TextStyle(fontSize: 18, fontWeight: FontWeight.normal),),
+                      child: MaterialButton(child: Text('Forgot password?', style: TextStyle(fontSize: 15, fontWeight: FontWeight.normal),),
                         onPressed: () {
                           Navigator.push(context, MaterialPageRoute(builder: (context) => PassReset()));
                         },
@@ -105,7 +105,7 @@ class _SSloginState extends State<SSlogin> {
                   ),
                   Center(
                     child: ElevatedButton(
-                        child: Text('Login', style: TextStyle(fontSize: 25),),
+                        child: Text('Login', style: TextStyle(fontSize: 20),),
                         style: ElevatedButton.styleFrom(primary: Color(0xFFEFD1A9), shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(20.0))),
                         onPressed: () async {
                           content : await FirebaseAuth.instance.signInWithEmailAndPassword(email: emailcnt.text, password: passcnt.text);
@@ -113,10 +113,10 @@ class _SSloginState extends State<SSlogin> {
                           setState(() {});
                         }),
                   ),
-                  Center(child: Container(child: Text('Haven’t account?', style: TextStyle(fontSize: 18),), margin: EdgeInsets.only(top: 10, bottom: 10),)),
+                  Center(child: Container(child: Text('Haven’t account?', style: TextStyle(fontSize: 16),), margin: EdgeInsets.only(top: 10, bottom: 10),)),
                   Center(
                     child: ElevatedButton(
-                        child: Text('Sign Up', style: TextStyle(fontSize: 25),),
+                        child: Text('Sign Up', style: TextStyle(fontSize: 20),),
                         style: ElevatedButton.styleFrom(primary: Color(0xFFA386C8), shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(20.0))),
                         onPressed: () async {
                           Navigator.push(context, MaterialPageRoute(builder: (context) => SSregister()));

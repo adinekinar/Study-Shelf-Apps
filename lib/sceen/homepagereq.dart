@@ -64,19 +64,19 @@ class _HomreqState extends State<Homreq> {
                   },
                 child: Container(
                   width: (MediaQuery.of(context).size.width/2.65), height: 55,
-                  margin: EdgeInsets.only(left: 9,top: 13),
+                  margin: EdgeInsets.symmetric(vertical: 13),
                   child: Column(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
                       Center(
-                        child: Text("Posting", style: TextStyle(fontWeight: FontWeight.bold,fontSize: 20, color: Colors.white),),
+                        child: Text("Posting", style: TextStyle(fontWeight: FontWeight.bold,fontSize: 18, color: Colors.white),),
                       ),
                     ],
                     ),
                   ),
                 ),
                 Container(
-                  margin: EdgeInsets.only(left: (MediaQuery.of(context).size.width/45)),
+                  margin: EdgeInsets.only(left: (MediaQuery.of(context).size.width/25)),
                   width: 1,
                   height: 35,
                   decoration: BoxDecoration(
@@ -84,15 +84,15 @@ class _HomreqState extends State<Homreq> {
                   ),
                 ),
                 Container(
-                  margin: EdgeInsets.only(left: 23,top: 13),
                   child: Column(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
                       Center(
-                        child: Text("Request", style: TextStyle(fontWeight: FontWeight.bold,fontSize: 20, color: Colors.white),),
+                        child: Container(margin: EdgeInsets.symmetric(vertical: 12),child: Text("Request", style: TextStyle(fontWeight: FontWeight.bold,fontSize: 18, color: Colors.white),)),
                       ),
                       Container(
-                        width: 185, height: 5,
+                        width: MediaQuery.of(context).size.width/2.3, height: 5,
+                        margin: EdgeInsets.symmetric(horizontal: 13),
                         decoration: BoxDecoration(
                           color: const Color(0xFFEFD1A9),
                           borderRadius: BorderRadius.circular(18),
@@ -130,7 +130,7 @@ class listRequested extends StatelessWidget {
               margin: EdgeInsets.all(10),
               child: Column(
                 children: [
-                  Container(child: Text(title!, style: TextStyle(fontSize: 13, color: Colors.black),textAlign: TextAlign.left,)),
+                  Container(child: Text(title!, style: TextStyle(fontSize: 13, color: Colors.black),softWrap: true,)),
                   Container(child: Text(caption!, style: TextStyle(fontSize: 12, color: const Color(0xFF585858)),)),
                   Container(
                     child: ElevatedButton(
