@@ -50,7 +50,7 @@ class _SSregisterState extends State<SSregister> {
                     margin: EdgeInsets.only(top: 20),
                     padding: EdgeInsets.symmetric(vertical: 20, horizontal: 43),
                     width: MediaQuery.of(context).size.width-100,
-                    height: MediaQuery.of(context).size.height/1.5,
+                    //height: MediaQuery.of(context).size.height/1.5,
                     decoration: BoxDecoration(
                         color: Colors.white30,
                         borderRadius: BorderRadius.circular(20)),
@@ -64,7 +64,7 @@ class _SSregisterState extends State<SSregister> {
                         ),
                       ),
                       SizedBox(height: 10,),
-                      Container(child: Text("Email :", style: TextStyle(fontSize: 18))),
+                      Container(child: Text("Email :", style: TextStyle(fontSize: 16))),
                       SizedBox(height: 10,),
                       Center(
                         child: Container(
@@ -80,7 +80,7 @@ class _SSregisterState extends State<SSregister> {
                     ),
                       ),
                       SizedBox(height: 10,),
-                      Container(child: Text("Username :", style: TextStyle(fontSize: 18))),
+                      Container(child: Text("Username :", style: TextStyle(fontSize: 16))),
                       SizedBox(height: 10,),
                       Center(
                         child: Container(
@@ -96,7 +96,7 @@ class _SSregisterState extends State<SSregister> {
                     ),
                       ),
                       SizedBox(height: 10,),
-                      Container(child: Text("Password :", style: TextStyle(fontSize: 18))),
+                      Container(child: Text("Password :", style: TextStyle(fontSize: 16))),
                       SizedBox(height: 10,),
                       Center(
                         child: Container(
@@ -116,7 +116,7 @@ class _SSregisterState extends State<SSregister> {
                       SizedBox(height: 10,),
                       Center(
                         child: ElevatedButton(
-                        child: Text('Sign Up', style: TextStyle(fontSize: 25),),
+                        child: Text('Sign Up', style: TextStyle(fontSize: 20),),
                         style: ElevatedButton.styleFrom(primary: Color(0xFFEFD1A9), shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(20.0))),
                         onPressed: () async {
                           content: await FirebaseAuth.instance.createUserWithEmailAndPassword(email: emailcnt.text, password: passcnt.text);
@@ -127,15 +127,16 @@ class _SSregisterState extends State<SSregister> {
                           setState(() {});
                         }),
                       ),
-                      Center(child: Container(child: Text('Have an account?', style: TextStyle(fontSize: 18),), margin: EdgeInsets.only(top: 10, bottom: 10),)),
+                      Center(child: Container(child: Text('Have an account?', style: TextStyle(fontSize: 16),), margin: EdgeInsets.only(top: 10, bottom: 10),)),
                       Center(
                         child: ElevatedButton(
-                            child: Text('Login', style: TextStyle(fontSize: 25),),
+                            child: Text('Login', style: TextStyle(fontSize: 20),),
                             style: ElevatedButton.styleFrom(primary: Color(0xFFA386C8), shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(20.0))),
                             onPressed: () {
                               Navigator.push(context, MaterialPageRoute(builder: (context) => SSlogin()));
                             } ),
                       ),
+                      SizedBox(height: 20,)
                     ],
                   ),),
                 ],

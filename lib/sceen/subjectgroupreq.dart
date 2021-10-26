@@ -28,8 +28,8 @@ class subjectGroupreq extends StatelessWidget {
         itemBuilder: (BuildContext context, index) {
           return Center(
             child: Container(
-              width: MediaQuery.of(context).size.width/0.5, height: MediaQuery.of(context).size.height/6.5,
-              margin: EdgeInsets.all(10),
+              //width: MediaQuery.of(context).size.width/0.5, height: MediaQuery.of(context).size.height/6.5,
+              margin: EdgeInsets.all(15),
               decoration: BoxDecoration(color: const Color(0xFFCAB8E0).withOpacity(0.2), borderRadius: BorderRadius.circular(30)),
               child: Row(
                 children: [
@@ -37,6 +37,7 @@ class subjectGroupreq extends StatelessWidget {
                     children: [
                       Container(width: 75, height: 75, margin: EdgeInsets.symmetric(horizontal: 15, vertical: 10), decoration: BoxDecoration(color: const Color(0xFFCAB8E0), borderRadius: BorderRadius.circular(25)),child: Icon(Icons.paste_rounded, size: 35, color: const Color(0xFF585858),)),
                       Text(snapshotData.docs[index]['Username']),
+                      SizedBox(height: 20,)
                     ],
                   ),
                   Container(

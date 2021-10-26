@@ -35,11 +35,11 @@ class _HomreqState extends State<Homreq> {
             backgroundColor: const Color(0xFFC4B1DC),
             actions: [
               IconButton(
-                  icon: Icon(Icons.search_rounded, size: 35, color: Colors.black),
+                  icon: Icon(Icons.search_rounded, size: MediaQuery.of(context).size.width/12, color: Colors.black),
                   onPressed: () => Navigator.push(context, MaterialPageRoute(builder: (context) => searchReqpages()))
               ),
               MaterialButton(
-                child: Image.network('https://i.postimg.cc/Pq2ZWTHF/Webcam.png', width: 35, height: 35),
+                child: Image.network('https://i.postimg.cc/Pq2ZWTHF/Webcam.png', width: MediaQuery.of(context).size.width/12, height: MediaQuery.of(context).size.width/12),
                 onPressed: () => Navigator.push(context, MaterialPageRoute(builder: (context) => Meeting())),
               ),
             ],
@@ -60,7 +60,19 @@ class _HomreqState extends State<Homreq> {
                 MaterialButton(
                   onPressed: () async {
                     Navigator.push(context,
-                    MaterialPageRoute(builder: (context) => Home()));
+                        PageRouteBuilder(
+                            pageBuilder: (BuildContext context, Animation<double> animation, Animation<double> secAnimation) {
+                              return Home();
+                            },
+                            transitionDuration: Duration(milliseconds: 2),
+                            transitionsBuilder: (BuildContext context, Animation<double> animation, Animation<double> secAnimation, Widget child) {
+                              return FadeTransition(
+                                opacity: animation,
+                                child: child,
+                              );
+                            }
+                        )
+                    );
                   },
                 child: Container(
                   width: (MediaQuery.of(context).size.width/2.65), height: 55,

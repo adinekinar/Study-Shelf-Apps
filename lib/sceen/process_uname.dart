@@ -2,6 +2,7 @@ import 'dart:io';
 import 'dart:math';
 import 'dart:typed_data';
 import 'package:flutter/cupertino.dart';
+import 'package:flutter/widgets.dart';
 import 'package:get/get.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
@@ -106,38 +107,44 @@ class _StreamkeyreqState extends State<Streamkeyreq> {
               return ListView(
                 children: snapshot.data!.docs.map((document) {
                   return Center(
-                    child: MaterialButton(
-                      child: Container(
-                        width: MediaQuery.of(context).size.width/0.5, height: MediaQuery.of(context).size.height/6.5,
-                        margin: EdgeInsets.all(10),
-                        decoration: BoxDecoration(color: const Color(0xFFCAB8E0).withOpacity(0.2), borderRadius: BorderRadius.circular(30)),
-                        child: Row(
-                          children: [
-                            Column(
+                    child: Column(
+                      children: [
+                        SizedBox(height: 5,),
+                        MaterialButton(
+                          child: Container(
+                            //width: MediaQuery.of(context).size.width, //height: MediaQuery.of(context).size.height/6.5,
+                            margin: EdgeInsets.all(5),
+                            decoration: BoxDecoration(color: const Color(0xFFCAB8E0).withOpacity(0.2), borderRadius: BorderRadius.circular(30)),
+                            child: Row(
                               children: [
-                                Container(width: 75, height: 75, margin: EdgeInsets.symmetric(horizontal: 15, vertical: 10), decoration: BoxDecoration(color: const Color(0xFFCAB8E0), borderRadius: BorderRadius.circular(25)),child: Icon(Icons.paste_rounded, size: 35, color: const Color(0xFF585858),)),
-                                Text(document['Username']),
+                                Column(
+                                  children: [
+                                    Container(width: 75, height: 75, margin: EdgeInsets.symmetric(horizontal: 15, vertical: 10), decoration: BoxDecoration(color: const Color(0xFFCAB8E0), borderRadius: BorderRadius.circular(25)),child: Icon(Icons.paste_rounded, size: 35, color: const Color(0xFF585858),)),
+                                    Text(document['Username']),
+                                    SizedBox(height: 20,)
+                                  ],
+                                ),
+                                Container(
+                                  child: Column(
+                                    crossAxisAlignment: CrossAxisAlignment.start,
+                                    children: [
+                                      SizedBox(height:  15,),
+                                      Container(child: Text(document['Title'], overflow: TextOverflow.clip,),),
+                                      SizedBox(height:  10,),
+                                      Container(child: Text('#'+document['Sub-subject Tag']),),
+                                      SizedBox(height:  10,),
+                                      ElevatedButton(child: Text(document['Subject'], style: TextStyle(fontSize: 13, color: const Color(0xFF585858)),),
+                                      style: ElevatedButton.styleFrom(primary: Color(0xFFCAB8E0).withOpacity(0.33), shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(20.0)), minimumSize: (Size(30, 25))),
+                                      onPressed: () {}),
+                                    ],
+                                  ),
+                                ),
                               ],
                             ),
-                            Container(
-                              child: Column(
-                                crossAxisAlignment: CrossAxisAlignment.start,
-                                children: [
-                                  SizedBox(height:  15,),
-                                  Container(child: Text(document['Title'])),
-                                  SizedBox(height:  10,),
-                                  Container(child: Text('#'+document['Sub-subject Tag']),),
-                                  SizedBox(height:  10,),
-                                  ElevatedButton(child: Text(document['Subject'], style: TextStyle(fontSize: 13, color: const Color(0xFF585858)),),
-                                  style: ElevatedButton.styleFrom(primary: Color(0xFFCAB8E0).withOpacity(0.33), shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(20.0)), minimumSize: (Size(30, 25))),
-                                  onPressed: () {}),
-                                ],
-                              ),
-                            ),
-                          ],
+                          ),
+                          onPressed: (){Navigator.push(context, MaterialPageRoute(builder: (context) => eachReq(Title: document['Title'], Caption: document['Caption request'], Tag: document['Sub-subject Tag'], Uname: document['Username'], Subject: document['Subject'], doc_id: document.id, value: document['Point Reward'],)));},
                         ),
-                      ),
-                      onPressed: (){Navigator.push(context, MaterialPageRoute(builder: (context) => eachReq(Title: document['Title'], Caption: document['Caption request'], Tag: document['Sub-subject Tag'], Uname: document['Username'], Subject: document['Subject'], doc_id: document.id, value: document['Point Reward'],)));},
+                      ],
                     ),
                   );
                 }).toList(),
@@ -178,61 +185,66 @@ class _StreamkeypostState extends State<Streamkeypost> {
             );
           }
           return GridView.count(
-              childAspectRatio: MediaQuery.of(context).size.width / (MediaQuery.of(context).size.height),
+              childAspectRatio: (MediaQuery.of(context).size.width) / (MediaQuery.of(context).size.height-70),
               crossAxisCount: 2,
               children: snapshot.data!.docs.map((document) {
                 return Center(
-                  child: MaterialButton(
-                    child: Container(
-                      width: MediaQuery.of(context).size.width/1.2, height: MediaQuery.of(context).size.height/2.17,
-                      decoration: BoxDecoration(color: const Color(0xFFCAB8E0).withOpacity(0.2), borderRadius: BorderRadius.circular(20)),
-                      child: Column(
-                        children: [
-                          Column(
+                  child: Column(
+                    children: [
+                      SizedBox(height: 10,),
+                      MaterialButton(
+                        child: Container(
+                          //width: MediaQuery.of(context).size.width, //height: MediaQuery.of(context).size.height/2.17,
+                          decoration: BoxDecoration(color: const Color(0xFFCAB8E0).withOpacity(0.2), borderRadius: BorderRadius.circular(20)),
+                          child: Column(
                             children: [
-                              Container(
-                                width: MediaQuery.of(context).size.width/1.2, height: MediaQuery.of(context).size.height/4.15,
-                                decoration: BoxDecoration(
-                                  color: Color((document['File format'] == 'pdf') ? (0xFFCAB8E0) : (0xFFFFFFFF)),
-                                  borderRadius: BorderRadius.only(topLeft: Radius.circular(20), topRight: Radius.circular(20), bottomRight: Radius.circular(20)),
-                                  image: DecorationImage(
-                                    image: NetworkImage((document['File format'] == 'pdf') ?  'https://i.postimg.cc/VNTd9w2Q/PDF-File-Online-1-removebg-preview.png' : document['url'],),
-                                    fit: BoxFit.cover,
+                              Column(
+                                children: [
+                                  Container(
+                                    //width: MediaQuery.of(context).size.width,
+                                    height: MediaQuery.of(context).size.height/4.15,
+                                    decoration: BoxDecoration(
+                                      color: Color((document['File format'] == 'pdf') ? (0xFFCAB8E0) : (0xFFFFFFFF)),
+                                      borderRadius: BorderRadius.only(topLeft: Radius.circular(20), topRight: Radius.circular(20), bottomRight: Radius.circular(20)),
+                                      image: DecorationImage(
+                                        image: NetworkImage((document['File format'] == 'pdf') ?  'https://i.postimg.cc/VNTd9w2Q/PDF-File-Online-1-removebg-preview.png' : document['url'],),
+                                        fit: BoxFit.cover,
+                                      ),
+                                    ),
                                   ),
-                                ),
+                                ],
+                              ),
+                              GetBuilder<GroupPost> (
+                                init: GroupPost(),
+                                builder: (val) {
+                                  return Container(
+                                      child: ElevatedButton(
+                                          child: Text(document['Caption file'], style: TextStyle(fontSize: 13, color: const Color(0xFF585858)),),
+                                          style: ElevatedButton.styleFrom(primary: Color(0xFFCAB8E0).withOpacity(0.33), shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(20.0)), minimumSize: (Size(30, 25))),
+                                          onPressed: () { (snapshotData != null) ?
+                                          val.GrPost(document['Caption file']).then((value) {
+                                            snapshotData = value;
+                                            document['Caption file'].clear();
+                                          }): (snapshotData = document['Caption file']);
+                                          isExecuted ? Navigator.push(context, MaterialPageRoute(builder: (context) => subjectGroup(Subject : document['Caption file'], snapshotData: snapshotData,))) : {};
+                                          }
+                                      ));
+                                },
+                              ),
+                              Container(child: Text('#'+document['Sub-subject Tag'], style: TextStyle(color: const Color(0xFF585858),),)),
+                              FittedBox(child: Container(child: Text(document['Title'], style: TextStyle(fontSize: 18),),)),
+                              Container(child: Text(document['Username']),),
+                              IconButton(icon: Icon(Icons.download_rounded, color: const Color(0xFF585858),),
+                                  onPressed: () async {
+                                    await _launchInBrowser(document['url']);
+                                  }
                               ),
                             ],
                           ),
-                          SizedBox(height:  15,),
-                          GetBuilder<GroupPost> (
-                            init: GroupPost(),
-                            builder: (val) {
-                              return Container(
-                                  child: ElevatedButton(
-                                      child: Text(document['Caption file'], style: TextStyle(fontSize: 13, color: const Color(0xFF585858)),),
-                                      style: ElevatedButton.styleFrom(primary: Color(0xFFCAB8E0).withOpacity(0.33), shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(20.0)), minimumSize: (Size(30, 25))),
-                                      onPressed: () { (snapshotData != null) ?
-                                      val.GrPost(document['Caption file']).then((value) {
-                                        snapshotData = value;
-                                        document['Caption file'].clear();
-                                      }): (snapshotData = document['Caption file']);
-                                      isExecuted ? Navigator.push(context, MaterialPageRoute(builder: (context) => subjectGroup(Subject : document['Caption file'], snapshotData: snapshotData,))) : {};
-                                      }
-                                  ));
-                            },
-                          ),
-                          Container(child: Text('#'+document['Sub-subject Tag'], style: TextStyle(color: const Color(0xFF585858),),)),
-                          Container(child: Text(document['Title'], style: TextStyle(fontSize: 18),),),
-                          Container(child: Text(document['Username']),),
-                          IconButton(icon: Icon(Icons.download_rounded, color: const Color(0xFF585858),),
-                              onPressed: () async {
-                                await _launchInBrowser(document['url']);
-                              }
-                          ),
-                        ],
+                        ),
+                        onPressed: (){Navigator.push(context, MaterialPageRoute(builder: (context) => eachPost(Title: document['Title'], Url: document['url'],Format: document['File format'], Caption: document['Subject'], Tag: document['Sub-subject Tag'], Uname: document['Username'], Subject: document['Caption file'], doc_id: document.id,)));},
                       ),
-                    ),
-                    onPressed: (){Navigator.push(context, MaterialPageRoute(builder: (context) => eachPost(Title: document['Title'], Url: document['url'],Format: document['File format'], Caption: document['Subject'], Tag: document['Sub-subject Tag'], Uname: document['Username'], Subject: document['Caption file'], doc_id: document.id,)));},
+                    ],
                   ),
                );
             }).toList(),

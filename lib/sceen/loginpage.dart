@@ -46,7 +46,7 @@ class _SSloginState extends State<SSlogin> {
                margin: EdgeInsets.only(top: 20),
                padding: EdgeInsets.symmetric(vertical: 10, horizontal: 43),
                width: MediaQuery.of(context).size.width-100,
-               height: MediaQuery.of(context).size.height/1.75,
+               //height: MediaQuery.of(context).size.height/1.75,
                decoration: BoxDecoration(
                 color: Colors.white30,
                 borderRadius: BorderRadius.circular(20)),
@@ -122,6 +122,7 @@ class _SSloginState extends State<SSlogin> {
                           Navigator.push(context, MaterialPageRoute(builder: (context) => SSregister()));
                         }),
                   ),
+                  SizedBox(height: 20,)
                 ],
               ),
             ),

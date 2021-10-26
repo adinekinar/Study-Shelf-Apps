@@ -217,24 +217,26 @@ class eachPost extends StatelessWidget {
                   child: CircularProgressIndicator(),
                 );
               }
-            return Container(
-              padding: EdgeInsets.all(30),
-              height: 250,
-              child: Column(
-                mainAxisAlignment: MainAxisAlignment.center,
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Center(child: Icon(Icons.info_outline_rounded, size: 50, color: const Color(0xFF585858),)),
-                  //Text(snapshot.data!.docs[0]['namefile']),
-                  SizedBox(height: 15,),
-                  Text('name file :'+snapshot.data!.docs[0]['filename']),
-                  SizedBox(height: 5,),
-                  Text('Size file :'+snapshot.data!.docs[0]['filesize'].toString()+'Byte'),
-                  SizedBox(height: 5,),
-                  Text('Extension file :'+snapshot.data!.docs[0]['extension']),
-                  SizedBox(height: 5,),
-                  Text('Path file :'+snapshot.data!.docs[0]['filepath']),
-                ],
+            return SingleChildScrollView(
+              child: Container(
+                height: 250,
+                padding: EdgeInsets.all(30),
+                child: Column(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Center(child: Icon(Icons.info_outline_rounded, size: 50, color: const Color(0xFF585858),)),
+                      //Text(snapshot.data!.docs[0]['namefile']),
+                      SizedBox(height: 15,),
+                      Text('name file :'+snapshot.data!.docs[0]['filename']),
+                      SizedBox(height: 5,),
+                      Text('Size file :'+snapshot.data!.docs[0]['filesize'].toString()+'Byte'),
+                      SizedBox(height: 5,),
+                      Text('Extension file :'+snapshot.data!.docs[0]['extension']),
+                      SizedBox(height: 5,),
+                      Text('Path file :'+snapshot.data!.docs[0]['filepath']),
+                    ],
+                  ),
               ),
             );
           }
@@ -356,7 +358,8 @@ class eachReq extends StatelessWidget {
                                       IconButton(
                                         icon: Icon(Icons.send_rounded, size: 30, color: const Color(0xFF585858),),
                                         onPressed: () async {
-                                          commentS('FormRequest', doc_id, comment.text);
+                                          (comment.text.isNotEmpty) ? commentS('FormRequest', doc_id, comment.text) : {};
+                                          comment.clear();
                                         },
                                       ),
                                     ],

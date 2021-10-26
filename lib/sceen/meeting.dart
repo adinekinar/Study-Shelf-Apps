@@ -122,7 +122,7 @@ class _MeetingState extends State<Meeting> {
             child: Center(
               child: DropdownButton(
                       hint: Text('Choose room..    '),
-                      icon: Container(margin: EdgeInsets.only(left: 134),child: Icon(Icons.arrow_drop_down_rounded)),
+                      icon: Container(margin: EdgeInsets.only(left: MediaQuery.of(context).size.width/4),child: Icon(Icons.arrow_drop_down_rounded)),
                       value: valueDropmenu,
                       onChanged: (newValue) {
                         setState(() {

@@ -55,7 +55,7 @@ class _SelectpgState extends State<Selectpg> {
                       child: Row(
                         children: [
                           Container(width: 60, height: 60, margin: EdgeInsets.only(top: 10, bottom: 10, right: 15), decoration: BoxDecoration(color: Colors.white30, borderRadius: BorderRadius.circular(60)),child: Icon(CupertinoIcons.paperclip, color: const Color(0xFF585858), size: 26,),),
-                          Container(child: Text('Post your new notes..', style: TextStyle(fontSize: 18, color: Colors.black),)),
+                          Container(child: Text('New notes', style: TextStyle(fontSize: 18, color: Colors.black),)),
                         ],
                       ),
                       style: ElevatedButton.styleFrom(primary: Color(0xFFEFD1A9), shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(20.0)), minimumSize: Size(double.infinity, 40)),
@@ -66,7 +66,7 @@ class _SelectpgState extends State<Selectpg> {
                       child: Row(
                         children: [
                           Container(width: 60, height: 60, margin: EdgeInsets.only(top: 10, bottom: 10, right: 15), decoration: BoxDecoration(color: Colors.white30, borderRadius: BorderRadius.circular(60)),child: Icon(Icons.paste_rounded, color: const Color(0xFF585858), size: 26,),),
-                          Container(child: Text('Post your new notes request..', style: TextStyle(fontSize: 17, color: Colors.black))),
+                          Container(child: Text('New notes request', style: TextStyle(fontSize: 17, color: Colors.black))),
                         ],
                       ),
                       style: ElevatedButton.styleFrom(primary: Color(0xFFEFD1A9), shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(20.0)), minimumSize: Size(double.infinity, 40)),

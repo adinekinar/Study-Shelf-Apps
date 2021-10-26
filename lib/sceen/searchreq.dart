@@ -25,49 +25,55 @@ class _searchReqpagesState extends State<searchReqpages> {
         itemCount: snapshotData.docs.length,
         itemBuilder: (BuildContext context, index) {
           return Center(
-            child: Container(
-              width: MediaQuery.of(context).size.width/0.5, height: MediaQuery.of(context).size.height/6.5,
-              margin: EdgeInsets.all(10),
-              decoration: BoxDecoration(color: const Color(0xFFCAB8E0).withOpacity(0.2), borderRadius: BorderRadius.circular(30)),
-              child: Row(
-                children: [
-                  Column(
+            child: Column(
+              children: [
+                SizedBox(height: 5,),
+                Container(
+                  //width: MediaQuery.of(context).size.width/0.5, height: MediaQuery.of(context).size.height/6.5,
+                  margin: EdgeInsets.all(15),
+                  decoration: BoxDecoration(color: const Color(0xFFCAB8E0).withOpacity(0.2), borderRadius: BorderRadius.circular(30)),
+                  child: Row(
                     children: [
-                      Container(width: 75, height: 75, margin: EdgeInsets.symmetric(horizontal: 15, vertical: 10), decoration: BoxDecoration(color: const Color(0xFFCAB8E0), borderRadius: BorderRadius.circular(25)),child: Icon(Icons.paste_rounded, size: 35, color: const Color(0xFF585858),)),
-                      Text(snapshotData.docs[index]['Username']),
+                      Column(
+                        children: [
+                          Container(width: 75, height: 75, margin: EdgeInsets.symmetric(horizontal: 15, vertical: 10), decoration: BoxDecoration(color: const Color(0xFFCAB8E0), borderRadius: BorderRadius.circular(25)),child: Icon(Icons.paste_rounded, size: 35, color: const Color(0xFF585858),)),
+                          Text(snapshotData.docs[index]['Username']),
+                          SizedBox(height: 20,),
+                        ],
+                      ),
+                      Container(
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            SizedBox(height:  15,),
+                            Container(child: Text(snapshotData.docs[index]['Title'])),
+                            SizedBox(height:  10,),
+                            Container(child: Text('#'+snapshotData.docs[index]['Sub-subject Tag']),),
+                            SizedBox(height:  10,),
+                            GetBuilder<GroupPost> (
+                              init: GroupPost(),
+                              builder: (val) {
+                                return Container(
+                                    child: ElevatedButton(
+                                        child: Text(snapshotData.docs[index]['Subject'], style: TextStyle(fontSize: 13, color: const Color(0xFF585858)),),
+                                        style: ElevatedButton.styleFrom(primary: Color(0xFFCAB8E0).withOpacity(0.33), shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(20.0)), minimumSize: (Size(30, 25))),
+                                        onPressed: () { (snapshotData != null) ?
+                                        val.GrPost(snapshotData.docs[index]['Subject']).then((value) {
+                                          snapshotData = value;
+                                          snapshotData.docs[index]['Subject'].clear();
+                                        }): (snapshotData = snapshotData.docs[index]['Subject']);
+                                        isExecuted ? Navigator.push(context, MaterialPageRoute(builder: (context) => subjectGroupreq(Subject : snapshotData.docs[index]['Subject'], snapshotData: snapshotData,))) : {};
+                                        }
+                                    ));
+                              },
+                            ),
+                          ],
+                        ),
+                      ),
                     ],
                   ),
-                  Container(
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        SizedBox(height:  15,),
-                        Container(child: Text(snapshotData.docs[index]['Title'])),
-                        SizedBox(height:  10,),
-                        Container(child: Text('#'+snapshotData.docs[index]['Sub-subject Tag']),),
-                        SizedBox(height:  10,),
-                        GetBuilder<GroupPost> (
-                          init: GroupPost(),
-                          builder: (val) {
-                            return Container(
-                                child: ElevatedButton(
-                                    child: Text(snapshotData.docs[index]['Subject'], style: TextStyle(fontSize: 13, color: const Color(0xFF585858)),),
-                                    style: ElevatedButton.styleFrom(primary: Color(0xFFCAB8E0).withOpacity(0.33), shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(20.0)), minimumSize: (Size(30, 25))),
-                                    onPressed: () { (snapshotData != null) ?
-                                    val.GrPost(snapshotData.docs[index]['Subject']).then((value) {
-                                      snapshotData = value;
-                                      snapshotData.docs[index]['Subject'].clear();
-                                    }): (snapshotData = snapshotData.docs[index]['Subject']);
-                                    isExecuted ? Navigator.push(context, MaterialPageRoute(builder: (context) => subjectGroupreq(Subject : snapshotData.docs[index]['Subject'], snapshotData: snapshotData,))) : {};
-                                    }
-                                ));
-                          },
-                        ),
-                      ],
-                    ),
-                  ),
-                ],
-              ),
+                ),
+              ],
             ),
           );
         });
