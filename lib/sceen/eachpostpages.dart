@@ -219,7 +219,7 @@ class eachPost extends StatelessWidget {
               }
             return SingleChildScrollView(
               child: Container(
-                height: 250,
+                height: 400,
                 padding: EdgeInsets.all(30),
                 child: Column(
                     mainAxisAlignment: MainAxisAlignment.center,
